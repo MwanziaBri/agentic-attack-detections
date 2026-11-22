@@ -1,5 +1,13 @@
 # Changelog
 
+## 2.9.3, November 23, 2026
+
+No detection changes. Sigma rules can now be tested against sample events.
+
+- `tests/sigma/run_tests.py` evaluates a Sigma rule against test events in `tests/sigma/fixtures/<rule name>.jsonl` and fails when a rule matches an event it should not, or misses one it should match. It also evaluates every Sigma rule once, so a rule the test cannot handle fails the run. Until now Sigma rules were checked for syntax and conversion only.
+- First test events: "AI Agent CLI Starts an Attack Tool", with a match and a near miss. [`tests/sigma/README.md`](tests/sigma/README.md) has the format for adding more. Suggested in #13.
+- CI runs the test on every push.
+
 ## 2.9.2, November 23, 2026
 
 Address indicators: expired ones leave the active outputs, and confidence is no longer overstated. Contributed by @Bropdrop in #12.

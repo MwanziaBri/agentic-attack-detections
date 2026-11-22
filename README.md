@@ -159,6 +159,7 @@ Addresses from cloud and VPS providers are reassigned. Every address has a `revi
 pip install -r tools/requirements.txt
 python3 tools/validate.py                              # Sigma, KQL, ES|QL, TOML, Splunk, Suricata SIDs, YARA, Zeek, osquery, feeds
 python3 -m unittest discover -s tests/feeds            # indicator confidence, expiry and SID policy
+python3 tests/sigma/run_tests.py                       # Sigma rules against test events
 python3 tools/convert.py                               # regenerate generated/
 python3 tools/build_waf.py                             # regenerate waf/
 python3 tests/waf/run_tests.py                         # offline checks of the WAF rules on every platform

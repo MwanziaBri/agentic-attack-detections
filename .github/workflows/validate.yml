@@ -21,6 +21,8 @@ jobs:
         run: python3 -m unittest discover -s tests/feeds -p 'test_*.py' -v
       - name: Validate rules, queries and feeds
         run: python tools/validate.py
+      - name: Check Sigma rules against test events
+        run: python tests/sigma/run_tests.py
       - name: Replay test flows through Suricata
         run: python tests/suricata/run_tests.py
       - name: Convert Sigma to Splunk, Sentinel and Elastic

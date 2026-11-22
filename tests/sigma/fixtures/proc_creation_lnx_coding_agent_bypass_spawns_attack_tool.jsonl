@@ -1,0 +1,2 @@
+{"name": "nmap started from the shell Claude Code runs commands through", "expected": true, "event": {"Image": "/usr/bin/nmap", "CommandLine": "nmap -sV 10.20.0.5", "ParentImage": "/bin/zsh", "ParentCommandLine": "/bin/zsh -c source /home/dev/.claude/shell-snapshots/snapshot-zsh-1763800000000-ab12cd.sh && eval 'nmap -sV 10.20.0.5'"}}
+{"name": "the same tool started by a person from an ordinary shell", "expected": false, "event": {"Image": "/usr/bin/nmap", "CommandLine": "nmap -sV 10.20.0.5", "ParentImage": "/usr/bin/bash", "ParentCommandLine": "-bash"}}

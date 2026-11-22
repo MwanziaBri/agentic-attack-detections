@@ -31,6 +31,7 @@ python3 tools/build_feeds.py           # rebuild feeds/ and the per-framework li
 python3 tools/convert.py               # rebuild generated/ from the Sigma rules
 python3 tools/validate.py              # Sigma, KQL, Elastic, Splunk, Suricata, YARA, Zeek, feeds
 python3 tests/suricata/run_tests.py    # one flow per Suricata rule
+python3 tests/sigma/run_tests.py       # Sigma rules against test events in tests/sigma/fixtures
 python3 tools/build_waf.py             # rebuild waf/ from waf/signatures.yaml and iocs/indicators.csv
 python3 tests/waf/run_tests.py         # every WAF signature on Cloudflare, AWS WAF and Azure WAF
 ```
@@ -57,6 +58,7 @@ CI runs the same checks on every pull request.
 **Sigma**
 - One behavior per rule, with `falsepositives` filled in honestly.
 - Keep a rule's file path stable: its ID is derived from the path.
+- Test events are welcome: a match and a near miss in `tests/sigma/fixtures/`, in the format described in [tests/sigma/README.md](tests/sigma/README.md).
 
 **Every signature string** should come from the framework's source code at a named commit, or from a report that published it. Say which in the pull request.
 
