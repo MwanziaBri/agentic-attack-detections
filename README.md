@@ -189,7 +189,7 @@ Provided as is, without warranty. A match is a lead, not a verdict. Absence of a
 
 ## Credits
 
-Started and maintained by [ThreatDefence](https://threatdefence.com), with fixes from [@jack51706](https://github.com/jack51706), [@tridev-tej](https://github.com/tridev-tej) and [@Bropdrop](https://github.com/Bropdrop). Background on ARTEX: the [advisory](https://threatdefence.com/article/artex-agentic-attack-framework-detection-hunting) and the [source code signals article](https://threatdefence.com/article/artex-source-code-signals-deep-hunting).
+Started and maintained by [ThreatDefence](https://threatdefence.com), with fixes from [@jack51706](https://github.com/jack51706), [@tridev-tej](https://github.com/tridev-tej), [@Bropdrop](https://github.com/Bropdrop) and [@blitzcrieg1](https://github.com/blitzcrieg1). Background on ARTEX: the [advisory](https://threatdefence.com/article/artex-agentic-attack-framework-detection-hunting) and the [source code signals article](https://threatdefence.com/article/artex-source-code-signals-deep-hunting).
 
 ## History
 
