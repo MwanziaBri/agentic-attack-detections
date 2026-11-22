@@ -17,6 +17,8 @@ jobs:
           pip install -r tools/requirements.txt
           sudo apt-get update
           sudo apt-get install -y suricata
+      - name: Test IOC confidence, expiry and SID policy
+        run: python3 -m unittest discover -s tests/feeds -p 'test_*.py' -v
       - name: Validate rules, queries and feeds
         run: python tools/validate.py
       - name: Replay test flows through Suricata

@@ -1,5 +1,14 @@
 # Changelog
 
+## 2.9.2, November 23, 2026
+
+Address indicators: expired ones leave the active outputs, and confidence is no longer overstated. Contributed by @Bropdrop in #12.
+
+- Addresses past their `review_by` date are left out of the plain lists, the Zeek intel files and the Suricata address rules, as the WAF rules already did. They stay in `iocs/indicators.csv` and the STIX bundle as history. On this release that removes 21 addresses, all CyberStrikeAI servers that Team Cymru reported on March 2, 2026.
+- Suricata address rules carried `confidence Medium` whatever the indicator said. A rule now takes the lowest confidence among its addresses, and low confidence rules use `classtype:misc-activity`. Their revision is now 2.
+- A group whose addresses have all expired keeps its SID pair reserved, so the rules after it keep their numbers.
+- `review_by` must be a valid date, and `tests/feeds/` checks the expiry, confidence and SID rules on every push.
+
 ## 2.9.1, November 22, 2026
 
 Agent Zero gets its source review, the review corrected two rules (#7), and the Zeek behaviors package installs with `zkg`.

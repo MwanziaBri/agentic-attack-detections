@@ -151,13 +151,14 @@ No rule has been tested against a captured intrusion. Treat every rule as experi
 | Medium | Seen in a framework's activity but changeable or shared: reported addresses, generic agent user agents, prompt text shared with similar tools | Alert after baselining, or hunt |
 | Low | Common or legitimate: AI model APIs, request-collection services, agent CLI user agents, hosting ASNs, proxy providers | Context for another finding only |
 
-Addresses from cloud and VPS providers are reassigned. Every address has a `review_by` date 180 days after it was reported. Check before you block.
+Addresses from cloud and VPS providers are reassigned. Every address has a `review_by` date 180 days after it was reported. Addresses past that date are left out of the plain lists, the Zeek intel files and the Suricata address rules; they stay in the CSV and the STIX bundle as history. Check before you block.
 
 ## Testing
 
 ```bash
 pip install -r tools/requirements.txt
 python3 tools/validate.py                              # Sigma, KQL, ES|QL, TOML, Splunk, Suricata SIDs, YARA, Zeek, osquery, feeds
+python3 -m unittest discover -s tests/feeds            # indicator confidence, expiry and SID policy
 python3 tools/convert.py                               # regenerate generated/
 python3 tools/build_waf.py                             # regenerate waf/
 python3 tests/waf/run_tests.py                         # offline checks of the WAF rules on every platform
@@ -187,7 +188,7 @@ Provided as is, without warranty. A match is a lead, not a verdict. Absence of a
 
 ## Credits
 
-Started and maintained by [ThreatDefence](https://threatdefence.com), with fixes from [@jack51706](https://github.com/jack51706) and [@tridev-tej](https://github.com/tridev-tej). Background on ARTEX: the [advisory](https://threatdefence.com/article/artex-agentic-attack-framework-detection-hunting) and the [source code signals article](https://threatdefence.com/article/artex-source-code-signals-deep-hunting).
+Started and maintained by [ThreatDefence](https://threatdefence.com), with fixes from [@jack51706](https://github.com/jack51706), [@tridev-tej](https://github.com/tridev-tej) and [@Bropdrop](https://github.com/Bropdrop). Background on ARTEX: the [advisory](https://threatdefence.com/article/artex-agentic-attack-framework-detection-hunting) and the [source code signals article](https://threatdefence.com/article/artex-source-code-signals-deep-hunting).
 
 ## History
 
