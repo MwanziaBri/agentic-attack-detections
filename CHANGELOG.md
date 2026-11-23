@@ -2,7 +2,7 @@
 
 ## Unreleased
 
-- New page: [docs/threat-intelligence-platforms.md](docs/threat-intelligence-platforms.md) has the steps for loading the plain lists and the STIX bundle into MISP and OpenCTI, and says which fields arrive and which are dropped (#5). The MISP steps were run on MISP 2.5.52.
+- New page: [docs/threat-intelligence-platforms.md](docs/threat-intelligence-platforms.md) has the steps for loading the plain lists and the STIX bundle into MISP and OpenCTI, and says which fields arrive and which are dropped (#5).
 - New shared behavior: an attack agent proving it can write to a container registry. Agents that find a registry open to pushes push a small image named after themselves, such as `artex-i127739`, `hermes-h23645-writecheck`, `csai-push-probe` or `xalgorix-pwn`; one open registry carried test images from at least five tools. A Sigma rule with test events and Suricata rules 3801041 and 3801042 match the push. Eight repository names are added as indicators, including the `gh0st/` and `fsociety/` images that match Carbonato's naming.
 - Honeypots are marked in the exposure list and left out of the counts. `exposure/consoles.csv` has a `honeypot` column, set from the tag the scan data carries: 682 services, 681 of them pages titled CyberStrikeAI on 521 addresses. The README table and `exposure/history.csv` count 3,968 active hosts and 6,200 in 30 days without them, and show how many were left out.
 - The README has a table of exposed consoles per framework: hosts seen in the last seven days and in the last 30. `tools/exposure_snapshot.py` rewrites it on every snapshot and records the counts in `exposure/history.csv`, so the numbers can be followed over time. `--summary` recounts from `consoles.csv` without a key.
