@@ -13,6 +13,7 @@ Free to use under the MIT license. Fixes, false-positive reports and new indicat
 - **Framework folders.** ARTEX and its AntiFox fork, Cairn, PentAGI, HexStrike, CyberStrikeAI, Strix, Hermes Agent and Agent Zero. Each folder is built from a review of the framework's source code and the public reporting on its use.
 - **Shared behaviors.** Rules for what these frameworks have in common, whatever the tool or the model behind it.
 - **Indicators and feeds.** One CSV of 516 sourced indicators, and the feeds generated from it.
+- **Exposed consoles.** A dated list of addresses where Shodan has seen one of these consoles, in [`exposure/`](exposure). It is a record of what is exposed, not a detection feed.
 
 Formats: KQL for Microsoft Sentinel and Defender XDR, Sigma, Suricata, Zeek, YARA and STIX 2.1, plus WAF rules for Cloudflare, AWS WAF and Azure WAF. Splunk and Elastic are covered by a Splunk app and Elastic rules for ARTEX, and by Sigma conversions for everything else.
 
@@ -160,6 +161,7 @@ pip install -r tools/requirements.txt
 python3 tools/validate.py                              # Sigma, KQL, ES|QL, TOML, Splunk, Suricata SIDs, YARA, Zeek, osquery, feeds
 python3 -m unittest discover -s tests/feeds            # indicator confidence, expiry and SID policy
 python3 tests/sigma/run_tests.py                       # Sigma rules against test events
+python3 tests/kql/run_tests.py                         # hunts and analytics against sample rows; needs the Kusto emulator
 python3 tools/convert.py                               # regenerate generated/
 python3 tools/build_waf.py                             # regenerate waf/
 python3 tests/waf/run_tests.py                         # offline checks of the WAF rules on every platform

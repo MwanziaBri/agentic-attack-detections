@@ -1,5 +1,12 @@
 # Changelog
 
+## 2.10.0, November 23, 2026
+
+KQL hunts can now be tested against sample rows, and the repository gains a list of exposed consoles.
+
+- `tests/kql/run_tests.py` runs a hunt or an analytics rule in Microsoft's Kusto emulator against sample rows and fails when a case that should come back does not, or a near miss does. The query runs as written: only its tables are replaced by the sample rows. First cases: hunt 1 and its analytics rule (50 each) and hunt 9 (13). CI starts the emulator and runs the test on every push. Contributed by @nerdyhacks in #19; [`tests/kql/README.md`](tests/kql/README.md) has the format for adding cases.
+- [`exposure/`](exposure): addresses where Shodan has seen the web console of one of the frameworks, found with the fingerprints the rules already use. The first snapshot has 7,612 services on 6,670 addresses. It is a record of what is exposed and stays out of the Suricata address rules, the WAF lists, the STIX bundle and the plain feeds, which keep to addresses a named report tied to attacks. `tools/exposure_snapshot.py` rebuilds it from the searches in `exposure/shodan-queries.csv`.
+
 ## 2.9.3, November 23, 2026
 
 Sigma rules can now be tested against sample events, and rules that missed real activity or matched look-alike names are corrected. The rule fixes were contributed by @nerdyhacks in #15, #16, #17 and #18.
