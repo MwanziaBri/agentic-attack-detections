@@ -32,6 +32,7 @@ python3 tools/convert.py               # rebuild generated/ from the Sigma rules
 python3 tools/validate.py              # Sigma, KQL, Elastic, Splunk, Suricata, YARA, Zeek, feeds
 python3 tests/suricata/run_tests.py    # one flow per Suricata rule
 python3 tests/sigma/run_tests.py       # Sigma rules against test events in tests/sigma/fixtures
+python3 tests/kql/run_tests.py         # hunts and analytics against sample rows; needs the Kusto emulator, see tests/kql/README.md
 python3 tools/build_waf.py             # rebuild waf/ from waf/signatures.yaml and iocs/indicators.csv
 python3 tests/waf/run_tests.py         # every WAF signature on Cloudflare, AWS WAF and Azure WAF
 ```
@@ -54,6 +55,7 @@ CI runs the same checks on every pull request.
 **KQL**
 - Use real table and column names. `tools/validate.py` checks them against Microsoft's table reference.
 - If a hunt uses a table the checker does not know, add it with `python3 tools/kqlcheck/fetch_schema.py <TableName>`.
+- Test cases are welcome: sample rows the query must return, and near misses, in the format described in [tests/kql/README.md](tests/kql/README.md).
 
 **Sigma**
 - One behavior per rule, with `falsepositives` filled in honestly.
