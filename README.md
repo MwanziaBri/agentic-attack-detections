@@ -116,6 +116,7 @@ The ARTEX folder also carries behavior hunts that apply to every framework: user
 | [`feeds/`](feeds) | Generated from the CSV: a STIX 2.1 bundle, a Sentinel watchlist, and plain lists of addresses, domains, URLs, user agents and hashes. The plain lists carry medium and high confidence rows only. Low confidence rows, which include legitimate services such as AI model APIs, need their context, so they stay in the CSV, the watchlist and the STIX bundle. [`feeds/by-framework/`](feeds/by-framework) has the lists per framework |
 | [`generated/`](generated) | Every Sigma rule converted to Splunk SPL, Sentinel and Defender XDR KQL, and Elastic ES\|QL and Lucene. [`SUMMARY.md`](generated/SUMMARY.md) shows which rule converted to which backend |
 | [`waf/`](waf) | Cloudflare, AWS WAF and Azure WAF rules built from [`waf/signatures.yaml`](waf/signatures.yaml) and the CSV. The [README](waf/README.md) covers when a WAF helps and how to deploy |
+| [`exposure/`](exposure) | Addresses where Shodan has seen one of these consoles, with the fingerprint that found each one. A record of what is exposed, kept out of the feeds above. `tools/exposure_snapshot.py` rebuilds it |
 | [`tools/`](tools) | Feed builder, WAF builder, release file builder, Sigma converter and validator |
 | [`docs/`](docs) | [Adding a framework](docs/adding-a-framework.md) |
 
@@ -145,7 +146,7 @@ suricata-update
 
 - **From source.** A signature string comes from the framework's code at a named commit, or from a report that published it. `source-code-signals.md` gives the file and line.
 - **From reports.** Every indicator names the report it came from, and each value was checked against that report.
-- **Tested.** Each Suricata rule has a test flow and a near miss. Every KQL query is parsed with Microsoft's parser and its columns checked. The Zeek packages run against test captures. CI runs the validator and the Suricata tests on every push.
+- **Tested.** Each Suricata rule has a test flow and a near miss. Sigma rules are run against test events, and hunts and analytics rules against sample rows in Microsoft's Kusto emulator, where cases have been written: [`tests/sigma/`](tests/sigma) and [`tests/kql/`](tests/kql) have the formats, and new cases are welcome. Every KQL query is parsed with Microsoft's parser and its columns checked. The Zeek packages run against test captures. CI runs the validator and the Suricata, Sigma and KQL tests on every push.
 - **Run on real data.** Version 2.7.0 was run over 30 days of production telemetry to remove rules that could not fire and to quiet rules that were noisy.
 
 No rule has been tested against a captured intrusion. Treat every rule as experimental until it has run on your own data.
