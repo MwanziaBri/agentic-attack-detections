@@ -1,5 +1,9 @@
 # Changelog
 
+## Unreleased
+
+- "AI Agent CLI Starts an Attack Tool" gains four test events, 48 in all: a Pi parent started with `--provider cairn` next to the same parent without it, and the Windows PowerShell launcher starting `nmap.exe` next to the same launcher starting a harmless tool. Contributed by @blitzcrieg1 in #20.
+
 ## 2.10.0, November 23, 2026
 
 RedAmon, Xalgorix and Pentest Swarm AI are added, KQL hunts can now be tested against sample rows, and the repository gains a list of exposed consoles.
