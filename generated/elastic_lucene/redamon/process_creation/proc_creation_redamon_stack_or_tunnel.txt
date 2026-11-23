@@ -1,0 +1,3 @@
+# RedAmon Stack or Reverse Shell Tunnel on a Host
+# Sigma id be46e125-4e31-5c6e-bb54-fa0cd011195e, pipeline ecs
+(process.command_line:(*redamon\-kali* OR *redamon\-agent* OR *redamon\-webapp* OR *redamon\-recon\-* OR *redamon\-docker\-broker* OR *\/opt\/mcp_servers\/run_servers.py* OR *\/opt\/mcp_servers\/tunnel_manager.py* OR *redamon.sh\ *)) OR process.command_line:*ngrok\ tcp\ 4444* OR (process.command_line:*chisel\ client* AND process.command_line:*R\:4444\:localhost\:4444*)

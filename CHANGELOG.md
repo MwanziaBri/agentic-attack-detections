@@ -2,10 +2,15 @@
 
 ## 2.10.0, November 23, 2026
 
-KQL hunts can now be tested against sample rows, and the repository gains a list of exposed consoles.
+RedAmon, Xalgorix and Pentest Swarm AI are added, KQL hunts can now be tested against sample rows, and the repository gains a list of exposed consoles.
 
+- New framework folders, each built from a review of the framework's source code with a file and line for every signal. No public report of any of them in a real intrusion was found, so the rules find the software: its probes reaching you, the tool on a host, and its console exposed.
+  - [RedAmon](frameworks/redamon) (samugit83/redamon, 7.9.0): the `RedAmon-AISurfaceRecon/1.0` probe of model API and MCP paths, the XSS canary `rEdAm0n1337XsS`, the cache poisoning canary under `redamon-poc.invalid`, the Docker stack and its reverse shell tunnels on port 4444, the console and the open agent API on port 8090. Suricata 3808001 to 3808010.
+  - [Xalgorix](frameworks/xalgorix) (xalgorix/xalgorix, v4.6.205): the verifier's `xalgorix-nonexistent-`, `xalgorix-missing-` and `xalgorix-xxe-` markers, the CSRF check origin, the callback listener's answer, the shell wrapper around every agent command, and the dashboard on port 9137. Suricata 3809001 to 3809010.
+  - [Pentest Swarm AI](frameworks/pentestswarm) (Armur-Ai/Pentest-Swarm-AI): the negative-control probe `/nx-<16 hex>`, the checks that carry `evil.pentestswarm.invalid`, `<!DOCTYPE pstest [`, `191*193` and `/vV9x-nonexistent-9271`, the consent log on the host, and the dashboard and API. Suricata 3810001 to 3810011.
+  - Each has 3 KQL hunts, 3 Sigma rules with test events, a YARA rule checked against its own source and the other agent code bases, and its indicators: 56 new rows, 572 in all.
 - `tests/kql/run_tests.py` runs a hunt or an analytics rule in Microsoft's Kusto emulator against sample rows and fails when a case that should come back does not, or a near miss does. The query runs as written: only its tables are replaced by the sample rows. First cases: hunt 1 and its analytics rule (50 each) and hunt 9 (13). CI starts the emulator and runs the test on every push. Contributed by @nerdyhacks in #19; [`tests/kql/README.md`](tests/kql/README.md) has the format for adding cases.
-- [`exposure/`](exposure): addresses where Shodan has seen the web console of one of the frameworks, found with the fingerprints the rules already use. The first snapshot has 7,612 services on 6,670 addresses. It is a record of what is exposed and stays out of the Suricata address rules, the WAF lists, the STIX bundle and the plain feeds, which keep to addresses a named report tied to attacks. `tools/exposure_snapshot.py` rebuilds it from the searches in `exposure/shodan-queries.csv`.
+- [`exposure/`](exposure): addresses where Shodan has seen the web console of one of the frameworks, found with the fingerprints the rules already use. The first snapshot has 7,659 services on 6,715 addresses. It is a record of what is exposed and stays out of the Suricata address rules, the WAF lists, the STIX bundle and the plain feeds, which keep to addresses a named report tied to attacks. `tools/exposure_snapshot.py` rebuilds it from the searches in `exposure/shodan-queries.csv`.
 
 ## 2.9.3, November 23, 2026
 

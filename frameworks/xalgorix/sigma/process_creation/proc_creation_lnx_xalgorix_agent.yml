@@ -1,0 +1,32 @@
+title: Xalgorix Agent on a Host
+id: 20414e72-e491-5594-872d-4b65742ac069
+status: experimental
+description: |
+    Detects Xalgorix running: the binary or its container image, and the shell wrapper it puts in front of every
+    command the agent runs (export XALGORIX_WORKSPACE=..., the __xalgorix_resolve_path function, and xalgorix-scan-init
+    when it runs as root). Xalgorix is an autonomous penetration testing agent that needs no approval for tool calls.
+references:
+    - https://github.com/xalgorix/xalgorix
+    - https://github.com/ThreatDefence/agentic-attack-detections
+author: ThreatDefence
+date: 2026-11-23
+tags:
+    - attack.execution
+    - attack.t1059.004
+logsource:
+    category: process_creation
+    product: linux
+detection:
+    selection_image:
+        Image|endswith: '/xalgorix'
+    selection_cmd:
+        CommandLine|contains:
+            - 'XALGORIX_WORKSPACE='
+            - '__xalgorix_resolve_path'
+            - 'xalgorix-scan-init'
+            - 'xalgord/xalgorix'
+            - 'xalgorix --web'
+    condition: 1 of selection_*
+falsepositives:
+    - Bug bounty hunters and security teams running Xalgorix
+level: medium

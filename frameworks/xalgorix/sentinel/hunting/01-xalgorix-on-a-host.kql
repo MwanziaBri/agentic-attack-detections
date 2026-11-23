@@ -1,0 +1,35 @@
+// Xalgorix on a host you monitor
+// Agentic attack detections by ThreatDefence (Xalgorix). Source: https://github.com/ThreatDefence/agentic-attack-detections
+// Example hunt for Defender XDR advanced hunting. Test and baseline before alerting.
+// Xalgorix (xalgorix/xalgorix) is a Go binary with a web dashboard on port 9137 whose agent runs a penetration test
+// without asking for approval. No report of its use in a real intrusion was found on November 23, 2026, so this hunt
+// looks for the software itself, from its source code:
+//  - The binary (xalgorix --web) or the image xalgord/xalgorix, run privileged with the volume xalgorix-data.
+//  - Every command the agent runs is bash -c with a wrapper that starts export XALGORIX_WORKSPACE=... and defines
+//    __xalgorix_resolve_path. As root on Linux it also uses xalgorix-scan-init and nsenter.
+//  - Its browser: Chromium with --no-sandbox --disable-web-security --allow-running-insecure-content.
+//  - Files: ~/.xalgorix.env, /etc/xalgorix.env, ~/.xalgorix/data/<target>/, /etc/systemd/system/xalgorix.service.
+// What each signal relies on in the source is in ../../source-code-signals.md.
+
+let Window = 30d;
+let Wrapper = dynamic(["XALGORIX_WORKSPACE=", "__xalgorix_resolve_path", "xalgorix-scan-init", "xalgord/xalgorix", "xalgorix --web"]);
+let XalgorixProcesses = DeviceProcessEvents
+    | where Timestamp > ago(Window)
+    | where FileName =~ "xalgorix" or ProcessCommandLine has_any (Wrapper);
+let XalgorixDevices = XalgorixProcesses | distinct DeviceName;
+union isfuzzy=true
+    (XalgorixProcesses
+        | summarize Commands=make_set(substring(ProcessCommandLine, 0, 200), 10), Timestamp=min(Timestamp) by DeviceName
+        | project Timestamp, DeviceName, Signal="Xalgorix binary, image or agent shell wrapper", Detail=tostring(Commands)),
+    (DeviceProcessEvents
+        | where Timestamp > ago(Window)
+        | where DeviceName in (XalgorixDevices)
+        | where ProcessCommandLine has "--disable-web-security" and ProcessCommandLine has "--allow-running-insecure-content"
+        | summarize Runs=count(), Timestamp=min(Timestamp) by DeviceName, FileName
+        | project Timestamp, DeviceName, Signal="Browser with web security off on a device that runs Xalgorix", Detail=strcat(FileName, " x", Runs)),
+    (DeviceFileEvents
+        | where Timestamp > ago(Window)
+        | where FolderPath has "/.xalgorix/data/" or FileName =~ ".xalgorix.env" or FolderPath in~ ("/etc/xalgorix.env", "/etc/systemd/system/xalgorix.service")
+        | summarize Files=make_set(FolderPath, 10), Timestamp=min(Timestamp) by DeviceName
+        | project Timestamp, DeviceName, Signal="Xalgorix configuration, service or scan data", Detail=tostring(Files))
+| order by Timestamp desc

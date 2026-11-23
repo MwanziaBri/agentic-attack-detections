@@ -7598,6 +7598,40 @@ address,port,framework,matched_on,page_title,asn,country,last_seen
 217.60.194.113,8443,pentagi,page title,PentAGI,AS213900,JP,2026-10-25
 217.182.92.79,8443,pentagi,page title,PentAGI,AS16276,FR,2026-11-22
 221.229.107.118,8443,pentagi,page title,PentAGI,AS146966,CN,2026-11-21
+4.227.177.164,443,redamon,favicon,RedAmon,AS8075,US,2026-11-20
+5.83.150.55,3000,redamon,favicon,RedAmon,AS209874,DE,2026-11-05
+13.234.67.17,443,redamon,favicon,RedAmon,AS16509,IN,2026-11-06
+20.55.130.57,3000,redamon,favicon,RedAmon,AS8075,US,2026-11-16
+20.71.150.37,3000,redamon,favicon,RedAmon,AS8075,NL,2026-11-07
+23.251.136.10,3000,redamon,favicon,RedAmon,AS396982,BE,2026-11-16
+34.207.196.78,80,redamon,favicon,RedAmon,AS14618,US,2026-11-20
+45.13.186.190,3000,redamon,favicon,RedAmon,AS218688,NL,2026-11-16
+45.76.230.186,3000,redamon,favicon,RedAmon,AS20473,US,2026-11-19
+45.154.96.159,3000,redamon,favicon,RedAmon,AS212815,FR,2026-11-21
+50.80.155.26,3000,redamon,favicon,RedAmon,AS30036,US,2026-11-21
+61.18.208.82,3000,redamon,favicon,RedAmon,AS22160,HK,2026-11-06
+64.181.197.99,3000,redamon,favicon,RedAmon,AS31898,US,2026-11-16
+69.197.178.254,3000,redamon,console theme script,Anvigil,AS32097,US,2026-11-18
+77.42.71.16,3000,redamon,favicon,RedAmon,AS24940,FI,2026-11-20
+79.72.68.104,3000,redamon,favicon,RedAmon,AS31898,GB,2026-11-16
+83.229.124.91,80,redamon,favicon,RedAmon,AS139659,HK,2026-11-12
+89.167.54.27,3000,redamon,favicon,RedAmon,AS24940,DE,2026-11-19
+94.249.150.86,3000,redamon,favicon,RedAmon,AS209874,DE,2026-11-09
+118.107.77.237,3000,redamon,favicon,RedAmon,AS38726,VN,2026-11-22
+131.123.38.22,3000,redamon,favicon,RedAmon,AS200019,US,2026-11-23
+137.184.85.26,3000,redamon,favicon,RedAmon,AS14061,US,2026-11-21
+143.92.57.247,18071,redamon,favicon,RedAmon,AS152194,HK,2026-11-23
+144.48.38.203,3000,redamon,favicon,RedAmon,AS136557,AU,2026-11-22
+147.224.215.112,443,redamon,favicon,RedAmon,AS31898,US,2026-11-21
+159.195.60.224,3000,redamon,favicon,RedAmon,AS197540,DK,2026-11-17
+160.191.28.10,3000,redamon,favicon,RedAmon,AS150623,IN,2026-11-23
+162.35.10.108,443,redamon,favicon,401 Authorization Required,AS26666,US,2026-11-18
+163.172.8.7,3000,redamon,favicon,RedAmon,AS12876,FR,2026-11-09
+164.68.119.160,3000,redamon,favicon,RedAmon,AS51167,DE,2026-11-12
+169.58.136.189,443,redamon,favicon,RedAmon,AS51167,US,2026-11-21
+185.18.221.59,3000,redamon,favicon,RedAmon,AS214973,IE,2026-11-16
+188.119.123.60,3000,redamon,page title,RedAmon - Security Reconnaissance Dashboard,AS62005,PL,2026-11-18
+202.162.109.6,18071,redamon,favicon,RedAmon,AS152194,HK,2026-11-23
 2.29.51.16,8080,strix,page title,Strix Results,AS24940,GB,2026-11-14
 2.29.97.130,8080,strix,page title,Strix Results,AS24940,GB,2026-11-18
 23.88.114.165,443,strix,page title,Strix Results,AS24940,DE,2026-11-20
@@ -7611,3 +7645,16 @@ address,port,framework,matched_on,page_title,asn,country,last_seen
 167.99.0.98,8080,strix,page title,Strix Results,AS14061,US,2026-11-03
 209.99.191.116,8081,strix,page title,Strix Results,AS402253,US,2026-11-14
 209.222.97.126,8080,strix,page title,Strix Results,AS23470,US,2026-11-08
+20.16.180.15,443,xalgorix,favicon,Xalgorix — Security Scanner,AS8075,NL,2026-11-18
+37.60.242.232,8443,xalgorix,favicon,Xalgorix — Security Scanner,AS51167,DE,2026-11-20
+46.225.167.158,9137,xalgorix,favicon,Xalgorix — Security Scanner,AS24940,AE,2026-11-21
+82.29.53.133,9137,xalgorix,favicon,Xalgorix — Security Scanner,AS142036,US,2026-11-20
+101.96.200.5,1337,xalgorix,page title,Xalgorix — Access Terminal,AS137718,CN,2026-10-24
+103.75.199.115,9137,xalgorix,favicon,Xalgorix — Security Scanner,AS212552,DE,2026-10-25
+120.79.255.24,9137,xalgorix,favicon,Xalgorix — Security Scanner,AS37963,CN,2026-11-16
+150.158.142.159,1337,xalgorix,page title,Xalgorix — Access Terminal,AS45090,CN,2026-11-11
+163.7.7.216,80,xalgorix,console theme script,MindSOC - VAPT,AS150436,SG,2026-11-23
+169.58.71.203,9137,xalgorix,favicon,VulnHawk — Security Scanner,AS51167,US,2026-11-03
+169.58.142.60,9137,xalgorix,favicon,Xalgorix — Security Scanner,AS51167,US,2026-11-21
+185.176.254.223,9137,xalgorix,favicon,Xalgorix — Security Scanner,AS51167,DE,2026-11-15
+216.203.20.219,9137,xalgorix,favicon,Xalgorix — Security Scanner,AS399629,US,2026-11-16

@@ -1,0 +1,3 @@
+# RedAmon User Agent or Canary in Web Logs
+# Sigma id 0e549584-b7f1-5c5a-8172-c9f4f328c970, pipeline ecs
+user_agent.original:*RedAmon* OR (url.query:(*rEdAm0n1337XsS* OR *rdmncb\=cb*)) OR cs-referer:*rEdAm0n1337XsS*

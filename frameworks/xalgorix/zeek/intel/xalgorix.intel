@@ -1,0 +1,4 @@
+#fields	indicator	indicator_type	meta.source	meta.desc	meta.url
+xalgorix-origin-calibration/1	Intel::SOFTWARE	threatdefence-xalgorix	Xalgorix high: Xalgorix request that calibrates its callback service, with the header X-Xalgorix-Origin-Calibration (internal/oob/server.go) (Xalgorix operators)	https://github.com/xalgorix/xalgorix
+7ce3d0eeae5c13ad1cf02ed0062c99b9	Intel::FILE_HASH	threatdefence-xalgorix	Xalgorix medium: Xalgorix dashboard icon logo.png (Xalgorix operators)	https://github.com/xalgorix/xalgorix
+8925c407162e52796838ff5de5a246dc34c673f156c1a575d20b996c8f725903	Intel::FILE_HASH	threatdefence-xalgorix	Xalgorix medium: Xalgorix dashboard icon logo.png (Xalgorix operators)	https://github.com/xalgorix/xalgorix

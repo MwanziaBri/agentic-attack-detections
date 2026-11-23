@@ -1,0 +1,4 @@
+# RedAmon Stack or Reverse Shell Tunnel on a Host
+# Sigma id be46e125-4e31-5c6e-bb54-fa0cd011195e, pipeline sentinel_asim
+imProcessCreate
+| where (TargetProcessCommandLine contains "redamon-kali" or TargetProcessCommandLine contains "redamon-agent" or TargetProcessCommandLine contains "redamon-webapp" or TargetProcessCommandLine contains "redamon-recon-" or TargetProcessCommandLine contains "redamon-docker-broker" or TargetProcessCommandLine contains "/opt/mcp_servers/run_servers.py" or TargetProcessCommandLine contains "/opt/mcp_servers/tunnel_manager.py" or TargetProcessCommandLine contains "redamon.sh ") or TargetProcessCommandLine contains "ngrok tcp 4444" or (TargetProcessCommandLine contains "chisel client" and TargetProcessCommandLine contains "R:4444:localhost:4444")

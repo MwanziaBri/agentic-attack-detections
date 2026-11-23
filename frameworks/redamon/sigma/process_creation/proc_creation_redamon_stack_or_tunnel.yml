@@ -1,0 +1,41 @@
+title: RedAmon Stack or Reverse Shell Tunnel on a Host
+id: be46e125-4e31-5c6e-bb54-fa0cd011195e
+status: experimental
+description: |
+    Detects the RedAmon Docker stack being run (its container names, control script and sandbox servers) and the
+    tunnels it opens for reverse shells: ngrok or chisel forwarding port 4444 to the Metasploit handler in its Kali
+    sandbox. RedAmon is a penetration testing platform; on a host that is not a tester's, find out who installed it.
+references:
+    - https://github.com/samugit83/redamon
+    - https://github.com/ThreatDefence/agentic-attack-detections
+author: ThreatDefence
+date: 2026-11-23
+tags:
+    - attack.execution
+    - attack.t1059
+    - attack.command-and-control
+    - attack.t1572
+logsource:
+    category: process_creation
+detection:
+    selection_stack:
+        CommandLine|contains:
+            - 'redamon-kali'
+            - 'redamon-agent'
+            - 'redamon-webapp'
+            - 'redamon-recon-'
+            - 'redamon-docker-broker'
+            - '/opt/mcp_servers/run_servers.py'
+            - '/opt/mcp_servers/tunnel_manager.py'
+            - 'redamon.sh '
+    selection_ngrok:
+        CommandLine|contains: 'ngrok tcp 4444'
+    selection_chisel:
+        CommandLine|contains|all:
+            - 'chisel client'
+            - 'R:4444:localhost:4444'
+    condition: 1 of selection_*
+falsepositives:
+    - Penetration testers and students running RedAmon
+    - Another tool that forwards port 4444 through ngrok or chisel, which is also worth a look
+level: medium

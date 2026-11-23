@@ -1,0 +1,32 @@
+title: Xalgorix Verifier Marker or Canary in Web Logs
+id: e0695ca0-fe5f-50ca-bbcd-5223ee61e805
+status: experimental
+description: |
+    Detects the paths Xalgorix's verifier requests when it confirms a finding (<path>-xalgorix-nonexistent-<id> for
+    access control, xalgorix-missing-<id> before a path traversal), the reflection canary XALG0R1XTEST from its system
+    prompt, and its own user agents. The verifier strings are in the code; the canary is an example the model may vary.
+references:
+    - https://github.com/xalgorix/xalgorix
+    - https://github.com/ThreatDefence/agentic-attack-detections
+author: ThreatDefence
+date: 2026-11-23
+tags:
+    - attack.reconnaissance
+    - attack.t1595.002
+    - attack.initial-access
+    - attack.t1190
+logsource:
+    category: webserver
+detection:
+    selection_path:
+        cs-uri-stem|contains:
+            - 'xalgorix-nonexistent-'
+            - 'xalgorix-missing-'
+    selection_query:
+        cs-uri-query|contains: 'XALG0R1XTEST'
+    selection_ua:
+        cs-user-agent|startswith: 'xalgorix'
+    condition: 1 of selection_*
+falsepositives:
+    - Authorized tests with Xalgorix
+level: high

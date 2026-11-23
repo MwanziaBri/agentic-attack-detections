@@ -1,0 +1,4 @@
+# RedAmon Stack or Reverse Shell Tunnel on a Host
+# Sigma id be46e125-4e31-5c6e-bb54-fa0cd011195e, pipeline azure_monitor
+SecurityEvent
+| where (CommandLine contains "redamon-kali" or CommandLine contains "redamon-agent" or CommandLine contains "redamon-webapp" or CommandLine contains "redamon-recon-" or CommandLine contains "redamon-docker-broker" or CommandLine contains "/opt/mcp_servers/run_servers.py" or CommandLine contains "/opt/mcp_servers/tunnel_manager.py" or CommandLine contains "redamon.sh ") or CommandLine contains "ngrok tcp 4444" or (CommandLine contains "chisel client" and CommandLine contains "R:4444:localhost:4444")

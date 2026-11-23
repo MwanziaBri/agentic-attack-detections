@@ -1,0 +1,4 @@
+# Xalgorix Agent on a Host
+# Sigma id 20414e72-e491-5594-872d-4b65742ac069, pipeline sentinel_asim
+imProcessCreate
+| where TargetProcessName endswith "/xalgorix" or (TargetProcessCommandLine contains "XALGORIX_WORKSPACE=" or TargetProcessCommandLine contains "__xalgorix_resolve_path" or TargetProcessCommandLine contains "xalgorix-scan-init" or TargetProcessCommandLine contains "xalgord/xalgorix" or TargetProcessCommandLine contains "xalgorix --web")

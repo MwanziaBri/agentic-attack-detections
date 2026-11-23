@@ -6,6 +6,7 @@ SHODAN_API_KEY environment variable; each page of 100 results costs one query cr
 
     SHODAN_API_KEY=... python3 tools/exposure_snapshot.py            # full run
     SHODAN_API_KEY=... python3 tools/exposure_snapshot.py --count    # totals only, costs no credits
+    SHODAN_API_KEY=... python3 tools/exposure_snapshot.py --only cairn,strix   # refresh some frameworks, keep the rest
 
 This is a record of what is exposed, not a detection feed: nothing here is read by tools/build_feeds.py.
 """
@@ -42,12 +43,23 @@ def main():
     ap = argparse.ArgumentParser(description=__doc__.split("\n")[0])
     ap.add_argument("--count", action="store_true", help="print the total for each search and stop (no query credits)")
     ap.add_argument("--max-pages", type=int, default=60, help="stop a search after this many pages of 100 (default 60)")
+    ap.add_argument("--only", default="", metavar="FRAMEWORKS", help="comma-separated frameworks to refresh; rows of the others are kept as they are")
     args = ap.parse_args()
     key = os.environ.get("SHODAN_API_KEY", "").strip()
     if not key:
         raise SystemExit("Set SHODAN_API_KEY first.")
     searches = list(csv.DictReader(QUERIES.open(encoding="utf-8")))
     rows, pages = {}, 0
+    only = {f.strip() for f in args.only.split(",") if f.strip()}
+    if only:
+        unknown = only - {s["framework"] for s in searches}
+        if unknown:
+            raise SystemExit(f"No search for: {', '.join(sorted(unknown))}")
+        searches = [s for s in searches if s["framework"] in only]
+        if not args.count and OUT.exists():
+            for r in csv.DictReader(OUT.open(encoding="utf-8")):
+                if r["framework"] not in only:
+                    rows[(r["address"], int(r["port"]))] = dict(r, port=int(r["port"]))
     for s in searches:
         label = f"{s['framework']}: {s['matched_on']}"
         if args.count:

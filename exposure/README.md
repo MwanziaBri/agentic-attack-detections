@@ -26,16 +26,20 @@ Use it to check whether one of your own addresses is on it, to see where console
 | CyberStrikeAI | 1,408 | 1,188 | 8444, 8080, 443 |
 | PentAGI | 510 | 500 | 8443, 8666, 443 |
 | Agent Zero | 186 | 175 | 5080, 443, 50080 |
+| RedAmon | 34 | 34 | 3000, 443, 80 |
 | Cairn | 31 | 30 | 8000, 8001 |
 | HexStrike | 30 | 30 | 8888 |
 | Strix | 13 | 12 | 8080, 443, 7777 |
-| All | 7,612 | 6,670 | |
+| Xalgorix | 13 | 13 | 9137, 1337, 443 |
+| Pentest Swarm AI | 0 | 0 | |
+| All | 7,659 | 6,715 | |
 
-- A service is one address and port. 4,842 of the 7,612 were seen in the seven days before the snapshot.
+- A service is one address and port. 4,868 of the 7,659 were seen in the seven days before the snapshot.
 - One network, AS398823, holds 423 of the services: 236 pages titled CyberStrikeAI on port 8444 and 186 titled PentAGI on port 8666, on addresses that also serve a write-up of PentAGI's prompts. That looks like one mass deployment or a set of decoys, not that many operators. Leave it out before quoting a count.
 - 431 ARTEX services were found by title or page text and not by favicon: builds with another icon or another name that kept the title, its ending or the description.
+- Renamed builds show up for the newer frameworks too: a RedAmon console titled `Anvigil` and Xalgorix dashboards titled `VulnHawk — Security Scanner` and `MindSOC - VAPT`, found by icon or by the theme script.
 - 57 addresses are also in [`iocs/indicators.csv`](../iocs/indicators.csv), where a named report ties them to attacks.
-- Most services are in the United States (2,769), China (1,247), Hong Kong (759), Germany (463) and Singapore (358).
+- Most services are in the United States (2,785), China (1,250), Hong Kong (763), Germany (470) and Singapore (359).
 
 ## Rebuild it
 

@@ -1,0 +1,3 @@
+# Xalgorix Agent on a Host
+# Sigma id 20414e72-e491-5594-872d-4b65742ac069, pipeline ecs
+from * metadata _id, _index, _version | where ends_with(process.executable, "/xalgorix") or process.command_line like "*XALGORIX_WORKSPACE=*" or process.command_line like "*__xalgorix_resolve_path*" or process.command_line like "*xalgorix-scan-init*" or process.command_line like "*xalgord/xalgorix*" or process.command_line like "*xalgorix --web*"

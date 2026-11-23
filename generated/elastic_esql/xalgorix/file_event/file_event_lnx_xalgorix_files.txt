@@ -1,0 +1,3 @@
+# Xalgorix Configuration, Service or Scan Data Written
+# Sigma id 9d651383-5871-5ba1-84da-625f1860e5b6, pipeline ecs
+from * metadata _id, _index, _version | where TargetFilename in ("/etc/xalgorix.env", "/etc/systemd/system/xalgorix.service", "/tmp/xalgorix.log", "/tmp/xalgorix-crash.log") or TargetFilename like "*/.xalgorix/data/*" or ends_with(TargetFilename, "/.xalgorix.env")

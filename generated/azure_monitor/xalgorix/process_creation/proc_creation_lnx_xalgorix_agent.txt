@@ -1,0 +1,4 @@
+# Xalgorix Agent on a Host
+# Sigma id 20414e72-e491-5594-872d-4b65742ac069, pipeline azure_monitor
+SecurityEvent
+| where NewProcessName endswith "/xalgorix" or (CommandLine contains "XALGORIX_WORKSPACE=" or CommandLine contains "__xalgorix_resolve_path" or CommandLine contains "xalgorix-scan-init" or CommandLine contains "xalgord/xalgorix" or CommandLine contains "xalgorix --web")

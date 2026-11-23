@@ -1,0 +1,9 @@
+#fields	indicator	indicator_type	meta.source	meta.desc	meta.url
+RedAmon-AISurfaceRecon/1.0	Intel::SOFTWARE	threatdefence-redamon	RedAmon high: RedAmon AI attack surface probe, on by default: a one-token chat request POSTed to model API paths and an MCP initialize sent to /mcp, /sse and /messages (recon/main_recon_modules/ai_surface_recon.py) (RedAmon operators)	https://github.com/samugit83/redamon
+Mozilla/5.0 (compatible; RedAmon/4.7)	Intel::SOFTWARE	threatdefence-redamon	RedAmon high: RedAmon subdomain takeover checks, a module that is off by default (recon/main_recon_modules/subdomain_takeover.py:1183) (RedAmon operators)	https://github.com/samugit83/redamon
+Mozilla/5.0 (compatible; RedAmon-JsRecon/1.0)	Intel::SOFTWARE	threatdefence-redamon	RedAmon high: RedAmon endpoint validation in its JavaScript recon module, off by default (recon/main_recon_modules/js_recon.py) (RedAmon operators)	https://github.com/samugit83/redamon
+RedAmon-CachePoison/1.0	Intel::SOFTWARE	threatdefence-redamon	RedAmon high: RedAmon web cache poisoning tests, off by default (recon/cache_scan/scanner.py:103) (RedAmon operators)	https://github.com/samugit83/redamon
+620b55364a1b370943ceeab58e1f49a3	Intel::FILE_HASH	threatdefence-redamon	RedAmon medium: RedAmon console favicon.ico (RedAmon operators)	https://github.com/samugit83/redamon
+dca9c654ddce6aa63d1187c509a89345	Intel::FILE_HASH	threatdefence-redamon	RedAmon medium: RedAmon console favicon.png (RedAmon operators)	https://github.com/samugit83/redamon
+94309d127e1669150c5fd002b4dfd5c7168ee654d4022f6ecb8ad376d92e8ac5	Intel::FILE_HASH	threatdefence-redamon	RedAmon medium: RedAmon console favicon.ico (RedAmon operators)	https://github.com/samugit83/redamon
+ee50a0eb4fc75bda9e004889c2d3c43b0b4c15178aeea66e2eda52e338674201	Intel::FILE_HASH	threatdefence-redamon	RedAmon medium: RedAmon console favicon.png (RedAmon operators)	https://github.com/samugit83/redamon

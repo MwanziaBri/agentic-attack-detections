@@ -16,10 +16,14 @@ Mozilla/5.0 (X11; Linux x86_64) artex-verify/1.0
 Mozilla/5.0 (compatible; ArtEx/1.0)
 Mozilla/5.0 (compatible; ArtExVerify/1.0)
 Mozilla/5.0 (compatible; CyberStrikeAI-WebShell/1.0)
+Mozilla/5.0 (compatible; RedAmon-JsRecon/1.0)
+Mozilla/5.0 (compatible; RedAmon/4.7)
 Mozilla/5.0 (spa-api-recon spider)
 Mozilla/5.0 (spa-api-recon)
 Mozilla/5.0 ARTeX
 ReconProbe/1.0
+RedAmon-AISurfaceRecon/1.0
+RedAmon-CachePoison/1.0
 antifox-enrich/1.0
 antifox-selfupdate
 artex-agent
@@ -34,4 +38,7 @@ artex-update-check
 artex-verify/1.0
 azure-toolkit/1.0
 norma/0.4
+pentestswarm-cli
+pentestswarm-webhook/1.0
 scopeweaver
+xalgorix-origin-calibration/1

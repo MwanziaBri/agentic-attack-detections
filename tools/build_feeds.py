@@ -68,6 +68,18 @@ FRAMEWORKS = {
                    "aliases": ["agent0ai/agent-zero", "AgentZero"],
                    "description": "Open-source general-purpose AI agent framework that runs in a Kali-based container with a built-in hacker profile and a web UI; GTIG reported threat-actor experimentation with it in 2026.",
                    "own_actor": "Agent Zero operators"},
+    "redamon": {"name": "RedAmon", "sid": 3808500, "created": "2026_11_23",
+                "aliases": ["samugit83/redamon"],
+                "description": "Open-source self-hosted penetration testing platform (samugit83/redamon, December 2025): a Docker stack with a web console, a recon pipeline and an agent that exploits from a Kali sandbox with Metasploit; no public report of use in an intrusion.",
+                "own_actor": "RedAmon operators"},
+    "xalgorix": {"name": "Xalgorix", "sid": 3809500, "created": "2026_11_23",
+                 "aliases": ["xalgorix/xalgorix", "xalgord/xalgorix"],
+                 "description": "Open-source Go binary with a web dashboard (xalgorix/xalgorix, March 2026) whose agent runs a web and API penetration test without approval steps and re-exploits each finding; no public report of use in an intrusion.",
+                 "own_actor": "Xalgorix operators"},
+    "pentestswarm": {"name": "Pentest Swarm AI", "sid": 3810500, "created": "2026_11_23",
+                     "aliases": ["Armur-Ai/Pentest-Swarm-AI", "pentestswarm"],
+                     "description": "Open-source Go command-line tool (Armur-Ai/Pentest-Swarm-AI, 2026) that runs recon, exploit and report agents over about 40 security tools; no public report of use in an intrusion.",
+                     "own_actor": "Pentest Swarm AI operators"},
 }
 ZEEK_TYPES = {"ipv4": "Intel::ADDR", "ipv6": "Intel::ADDR", "md5": "Intel::FILE_HASH", "domain": "Intel::DOMAIN", "user_agent": "Intel::SOFTWARE", "sha256": "Intel::FILE_HASH", "url": "Intel::URL"}
 

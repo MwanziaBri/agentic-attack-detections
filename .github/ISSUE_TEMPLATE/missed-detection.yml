@@ -10,7 +10,7 @@ body:
     id: framework
     attributes:
       label: Framework
-      options: [ARTEX or AntiFox, Cairn, PentAGI, HexStrike, CyberStrikeAI, Strix, Hermes Agent, Agent Zero, Shared behavior, Other]
+      options: [ARTEX or AntiFox, Cairn, PentAGI, HexStrike, CyberStrikeAI, Strix, Hermes Agent, Agent Zero, RedAmon, Xalgorix, Pentest Swarm AI, Shared behavior, Other]
     validations:
       required: true
   - type: textarea

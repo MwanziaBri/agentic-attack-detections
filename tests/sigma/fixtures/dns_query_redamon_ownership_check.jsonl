@@ -1,0 +1,3 @@
+{"name": "the ownership record lookup", "expected": true, "event": {"QueryName": "_redamon-verify.example.test"}}
+{"name": "another verification record", "expected": false, "event": {"QueryName": "_acme-challenge.example.test"}}
+{"name": "a name that only holds the label later", "expected": false, "event": {"QueryName": "www._redamon-verify.example.test"}}

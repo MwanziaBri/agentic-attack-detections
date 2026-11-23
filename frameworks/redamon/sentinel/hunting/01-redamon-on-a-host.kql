@@ -1,0 +1,33 @@
+// RedAmon on a host you monitor, and the reverse shell tunnel it opens
+// Agentic attack detections by ThreatDefence (RedAmon). Source: https://github.com/ThreatDefence/agentic-attack-detections
+// Example hunt for Defender XDR advanced hunting. Test and baseline before alerting.
+// RedAmon (samugit83/redamon) is a self-hosted penetration testing platform. No report of its use in a real intrusion
+// was found on November 23, 2026, so this hunt looks for the software itself, from its source code:
+//  - The Docker Compose stack: containers redamon-webapp, redamon-agent, redamon-kali, redamon-recon-<id>,
+//    redamon-docker-broker, the control script redamon.sh, and the sandbox servers under /opt/mcp_servers.
+//  - Per-scan tool containers (redamon-httpx-<id>, redamon-nuclei-detection-<id>) and the scratch folder /tmp/redamon.
+//  - Reverse shells: a Metasploit handler on port 4444 in the sandbox, reached through ngrok tcp 4444 or
+//    chisel client <url> R:4444:localhost:4444, and interactsh-client -server oast.fun for callbacks.
+// What each signal relies on in the source is in ../../source-code-signals.md.
+
+let Window = 30d;
+let Stack = dynamic(["redamon-kali", "redamon-agent", "redamon-webapp", "redamon-recon-", "redamon-docker-broker", "redamon-httpx-",
+    "redamon-nuclei-", "/opt/mcp_servers/run_servers.py", "/opt/mcp_servers/tunnel_manager.py", "redamon.sh "]);
+union isfuzzy=true
+    (DeviceProcessEvents
+        | where Timestamp > ago(Window)
+        | where ProcessCommandLine has_any (Stack)
+        | summarize Commands=make_set(substring(ProcessCommandLine, 0, 200), 10), Timestamp=min(Timestamp) by DeviceName
+        | project Timestamp, DeviceName, Signal="RedAmon stack or sandbox process", Detail=tostring(Commands)),
+    (DeviceProcessEvents
+        | where Timestamp > ago(Window)
+        | where ProcessCommandLine has "ngrok tcp 4444"
+            or (ProcessCommandLine has "chisel client" and ProcessCommandLine has "R:4444:localhost:4444")
+            or (ProcessCommandLine has "interactsh-client" and ProcessCommandLine has "oast.fun")
+        | project Timestamp, DeviceName, Signal="Reverse shell tunnel or callback client the RedAmon sandbox starts", Detail=substring(ProcessCommandLine, 0, 300)),
+    (DeviceFileEvents
+        | where Timestamp > ago(Window)
+        | where FolderPath startswith "/tmp/redamon/" or FileName =~ "redamon.sh" or FolderPath has "/.redamon-deploy/"
+        | summarize Files=make_set(FileName, 10), Timestamp=min(Timestamp) by DeviceName
+        | project Timestamp, DeviceName, Signal="RedAmon files", Detail=tostring(Files))
+| order by Timestamp desc

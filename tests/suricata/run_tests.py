@@ -248,6 +248,80 @@ def define_cases(work):
     http("agent zero login title", [3807002], get("/login"), client="int", port=50080, response=ok("<html><head><title>Login - Agent Zero</title></head></html>"))
     http("agent zero user agent", [3807003], get("/oauth/token", ua="agent-zero/v1.2.3"), client="int", server="ext")
 
+    # ---- RedAmon
+    probe = '{"model": "probe", "messages": [{"role": "user", "content": "ping"}], "max_tokens": 1}'
+    mcp_init = ('{"jsonrpc": "2.0", "id": 1, "method": "initialize", "params": {"protocolVersion": "2025-06-18", "capabilities": {}, '
+                '"clientInfo": {"name": "RedAmon-AISurfaceRecon", "version": "1.0"}}}')
+    http("redamon ai endpoint probe", [3808001, 3808003], post("/v1/chat/completions", probe, ua="RedAmon-AISurfaceRecon/1.0"))
+    http("redamon mcp handshake", [3808001, 3808002], post("/mcp", mcp_init, ua="RedAmon-AISurfaceRecon/1.0"))
+    http("redamon probe body with the user agent changed in settings", [3808003], post("/api/chat", probe))
+    http("redamon takeover check user agent", [3808001], get("/", ua="Mozilla/5.0 (compatible; RedAmon/4.7)"))
+    http("redamon cache poisoning canary", [3808001, 3808004],
+         get("/?rdmncb=cb0123456789ab", ua="RedAmon-CachePoison/1.0", headers="X-Forwarded-Host: rdmn0a1b2c3d4e.redamon-poc.invalid\r\n"))
+    http("redamon xss canary in a parameter", [3808005], get("/search?q=rEdAm0n1337XsS"))
+    http("redamon xss canary in the referer", [3808006], get("/", headers="Referer: http://x/?rEdAm0n1337XsS\r\n"))
+    lookup("redamon ownership check lookup", [3808007], "_redamon-verify.example.test")
+    console = "<html><head><title>{}</title><script>var theme = localStorage.getItem('redamon-theme');</script></head></html>"
+    http("redamon console page", [3808008, 3808009], get("/login"), client="int", port=3000, response=ok(console.format("RedAmon")))
+    http("redamon console under another title", [3808009], get("/login"), client="int", port=3000, response=ok(console.format("Acme Portal")))
+    http("redamon agent api description", [3808010], get("/openapi.json"), client="int", port=8090,
+         response=ok('{"openapi":"3.1.0","info":{"title":"RedAmon Agent API","version":"3.0.0"}}', ctype="application/json"))
+    http("near miss: an ordinary chat completion request", [],
+         post("/v1/chat/completions", '{"model": "gpt-4o", "messages": [{"role": "user", "content": "ping"}], "max_tokens": 1}'))
+    lookup("near miss: another verification record", [], "_acme-challenge.example.test")
+
+    # ---- Xalgorix
+    http("xalgorix access control verifier path", [3809001], get("/admin/users-xalgorix-nonexistent-k3j9x2"), ok("nf", "404 Not Found"))
+    http("xalgorix path traversal verifier path", [3809001], get("/static/xalgorix-missing-m4q8z1/..%2f..%2fetc/passwd"), ok("nf", "404 Not Found"))
+    http("xalgorix xxe verifier body", [3809002],
+         post("/api/import", '<?xml version="1.0"?><!DOCTYPE r [<!ENTITY x SYSTEM "file:///xalgorix-xxe-missing-0123456789abcdef0123456789abcdef">]>'
+              '<r>xalgorix-xxe-start-0123456789abcdef0123456789abcdef&x;</r>', ctype="application/xml"))
+    http("xalgorix canary in a parameter", [3809003], get("/search?q=XALG0R1XTEST"))
+    http("xalgorix canary in a form body", [3809004], post("/comment", "text=XALG0R1XTEST", ctype="application/x-www-form-urlencoded"))
+    http("xalgorix csrf verifier origin", [3809005],
+         post("/account/email", "email=a%40example.test", headers="Origin: https://csrf-attacker.example\r\nReferer: https://csrf-attacker.example/\r\n",
+              ctype="application/x-www-form-urlencoded"))
+    http("xalgorix callback calibration", [3809006],
+         get("/x0123456789abcdef", ua="xalgorix-origin-calibration/1", headers="X-Xalgorix-Origin-Calibration: 1\r\n"), client="int", server="ext")
+    http("xalgorix callback listener answer", [3809007], get("/x0123456789abcdef", ua="curl/8.5.0"), client="int", server="ext", port=8089,
+         response=ok("xalgorix-oob-ok:x0123456789abcdef", ctype="text/plain"))
+    dash = '<html><head><title>{}</title><script>var stored = localStorage.getItem("xalgorix.theme");</script></head></html>'
+    http("xalgorix console page", [3809008, 3809009], get("/"), client="int", port=9137, response=ok(dash.format("Xalgorix — Security Scanner")))
+    http("xalgorix console under another title", [3809009], get("/"), client="int", port=9137, response=ok(dash.format("Scanner")))
+    http("xalgorix console session cookie", [3809010], get("/api/scans", headers="Cookie: xalgorix_session=abc123\r\n"), client="int", port=9137)
+    http("near miss: a page that only names xalgorix", [], get("/blog/xalgorix-review"))
+    http("near miss: an ordinary cross-origin post", [],
+         post("/account/email", "email=a%40example.test", headers="Origin: https://app.example.test\r\n", ctype="application/x-www-form-urlencoded"))
+
+    # ---- Pentest Swarm AI
+    def control_probe(path, body="{}"):
+        return (f"GET {path} HTTP/1.1\r\nHost: app.example.test\r\nUser-Agent: {BROWSER}\r\nContent-Type: application/json\r\n"
+                f"Content-Length: {len(body)}\r\n\r\n{body}").encode()
+    http("pentestswarm open redirect check", [3810001], get("/login?next=https%3A%2F%2Fevil.pentestswarm.invalid%2Fpstest"))
+    http("pentestswarm xxe check", [3810002],
+         post("/api/xml", '<?xml version="1.0"?><!DOCTYPE pstest [<!ENTITY xxe SYSTEM "http://203.0.113.9/x">]><root><data>&xxe;</data></root>',
+              ctype="application/xml"))
+    http("pentestswarm 403 bypass control path", [3810003], get("/", headers="X-Original-URL: /vV9x-nonexistent-9271\r\n"))
+    http("pentestswarm template check in engine delimiters", [3810004], get("/search?q=%7B%7B191%2A193%7D%7D"))
+    http("pentestswarm template check control", [3810004], get("/search?q=191%2A193"))
+    http("pentestswarm control credentials", [3810005], post("/login", '{"username":{"$gt":""},"password":{"$gt":""},"u":"nx_nonexistent_zzq"}'))
+    http("pentestswarm negative-control probe", [3810006], control_probe("/nx-0123456789abcdef"), ok("nf", "404 Not Found"))
+    http("pentestswarm negative-control probe under /api", [3810006], control_probe("/api/nx-0123456789abcdef"), ok("nf", "404 Not Found"))
+    http("near miss: the same path with no body", [], get("/nx-0123456789abcdef"), ok("nf", "404 Not Found"))
+    http("near miss: a shorter nx path with the empty body", [], control_probe("/nx-0123"), ok("nf", "404 Not Found"))
+    http("pentestswarm throwaway account", [3810007],
+         post("/identity/api/auth/signup", '{"email":"atk_k3j9x2m4@example.com","password":"Attacker@123","name":"atk"}'))
+    http("pentestswarm webhook user agent", [3810008],
+         post("/hooks/scan", '{"event":"campaign.completed"}', ua="pentestswarm-webhook/1.0", headers="X-PentestSwarm-Signature: sha256=00\r\n"),
+         client="int", server="ext")
+    http("pentestswarm dashboard page", [3810009, 3810010], get("/"), client="int", port=7777,
+         response=ok('<html><head><title>Pentest Swarm Operations Deck</title></head>'
+                     '<body data-palette="#ff5d6e,#f5b35a,#ffcf5c,#5b93ff,#7d8a83"></body></html>'))
+    http("pentestswarm api health answer", [3810011], get("/api/v1/health"), client="int", port=8080,
+         response=ok('{"service":"pentestswarm","status":"ok"}', ctype="application/json"))
+    http("near miss: another product's health answer", [], get("/api/v1/health"), client="int", port=8080,
+         response=ok('{"service":"billing","status":"ok"}', ctype="application/json"))
+
     # ---- Cross-framework behaviors
     http("claude code page reader", [3801010], get("/", ua="Claude-User (claude-code/2.1.98; +https://support.anthropic.com/)"))
     http("qwen code user agent", [3801012], get("/", ua="QwenCode/0.2.1 (linux; x64)"))

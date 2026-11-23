@@ -1,0 +1,33 @@
+title: Xalgorix Configuration, Service or Scan Data Written
+id: 9d651383-5871-5ba1-84da-625f1860e5b6
+status: experimental
+description: |
+    Detects the files Xalgorix writes on the host that runs it: its environment files, its systemd unit, and the scan
+    data folder with scan.json and events.jsonl for every target.
+references:
+    - https://github.com/xalgorix/xalgorix
+    - https://github.com/ThreatDefence/agentic-attack-detections
+author: ThreatDefence
+date: 2026-11-23
+tags:
+    - attack.execution
+    - attack.persistence
+    - attack.t1543.002
+logsource:
+    category: file_event
+    product: linux
+detection:
+    selection_exact:
+        TargetFilename:
+            - '/etc/xalgorix.env'
+            - '/etc/systemd/system/xalgorix.service'
+            - '/tmp/xalgorix.log'
+            - '/tmp/xalgorix-crash.log'
+    selection_path:
+        TargetFilename|contains: '/.xalgorix/data/'
+    selection_env:
+        TargetFilename|endswith: '/.xalgorix.env'
+    condition: 1 of selection_*
+falsepositives:
+    - Bug bounty hunters and security teams running Xalgorix
+level: low

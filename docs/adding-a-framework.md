@@ -41,6 +41,9 @@ Suricata rule IDs (SIDs) come from the block 3800000 to 3819999, the range reque
 | Strix | 3805001 to 3805499 | from 3805500 |
 | Hermes Agent | 3806001 to 3806499 | from 3806500 |
 | Agent Zero | 3807001 to 3807499 | from 3807500 |
-| Next framework | 3808001 to 3808499 | from 3808500 |
+| RedAmon | 3808001 to 3808499 | from 3808500 |
+| Xalgorix | 3809001 to 3809499 | from 3809500 |
+| Pentest Swarm AI | 3810001 to 3810499 | from 3810500 |
+| Next framework | 3811001 to 3811499 | from 3811500 |
 
 Rules in `behaviors/suricata/` use numbers inside the Cairn block (3801010 to 3801059), where they were first published. Sigma and Sentinel rule ids are UUIDv5 values derived from the file path, so they stay stable as long as a file is not renamed.

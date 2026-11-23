@@ -1,0 +1,4 @@
+# RedAmon Stack or Reverse Shell Tunnel on a Host
+# Sigma id be46e125-4e31-5c6e-bb54-fa0cd011195e, pipeline microsoft_xdr
+DeviceProcessEvents
+| where (ProcessCommandLine contains "redamon-kali" or ProcessCommandLine contains "redamon-agent" or ProcessCommandLine contains "redamon-webapp" or ProcessCommandLine contains "redamon-recon-" or ProcessCommandLine contains "redamon-docker-broker" or ProcessCommandLine contains "/opt/mcp_servers/run_servers.py" or ProcessCommandLine contains "/opt/mcp_servers/tunnel_manager.py" or ProcessCommandLine contains "redamon.sh ") or ProcessCommandLine contains "ngrok tcp 4444" or (ProcessCommandLine contains "chisel client" and ProcessCommandLine contains "R:4444:localhost:4444")

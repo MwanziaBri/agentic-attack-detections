@@ -1,0 +1,21 @@
+// Xalgorix testing you: its verifier paths, canary and user agents in web and proxy logs
+// Agentic attack detections by ThreatDefence (Xalgorix). Source: https://github.com/ThreatDefence/agentic-attack-detections
+// Example hunt for Microsoft Sentinel. Test and baseline before alerting.
+// From the Xalgorix source code (xalgorix/xalgorix, reviewed at f5b1a99a):
+//  - When its verifier confirms a finding it requests <path>-xalgorix-nonexistent-<id> (access control) and
+//    <dir>/xalgorix-missing-<id> followed by ../ steps to etc/passwd (path traversal). These strings are in the code.
+//  - The reflection canary XALG0R1XTEST is an example in its system prompt, so the model may use another string.
+//  - Its own user agents start with xalgorix (xalgorix-origin-calibration/1, xalgorix/<version>).
+// A verifier marker means a finding was being confirmed: look at what the same source requested just before it.
+
+let Markers = @"xalgorix-nonexistent-|xalgorix-missing-|XALG0R1XTEST";
+union isfuzzy=true
+    (W3CIISLog | extend UA=replace_string(csUserAgent, "+", " ")
+        | where csUriStem matches regex Markers or csUriQuery matches regex Markers or UA startswith "xalgorix"
+        | project TimeGenerated, Source="W3CIISLog", Src=cIP, Target=csHost, Detail=strcat(csUriStem, "?", csUriQuery), UA),
+    (CommonSecurityLog | where RequestURL matches regex Markers or RequestClientApplication startswith "xalgorix"
+        | project TimeGenerated, Source="CommonSecurityLog", Src=SourceIP, Target=DestinationHostName, Detail=RequestURL, UA=RequestClientApplication)
+| where TimeGenerated > ago(90d)
+| summarize Events=count(), FirstSeen=min(TimeGenerated), LastSeen=max(TimeGenerated), Samples=make_set(Detail, 10),
+    UAs=make_set(UA, 5) by Source, Src, Target
+| order by FirstSeen asc

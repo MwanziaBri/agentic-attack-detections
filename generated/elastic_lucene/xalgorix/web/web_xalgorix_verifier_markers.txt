@@ -1,0 +1,3 @@
+# Xalgorix Verifier Marker or Canary in Web Logs
+# Sigma id e0695ca0-fe5f-50ca-bbcd-5223ee61e805, pipeline ecs
+(url.path:(*xalgorix\-nonexistent\-* OR *xalgorix\-missing\-*)) OR url.query:*XALG0R1XTEST* OR user_agent.original:xalgorix*

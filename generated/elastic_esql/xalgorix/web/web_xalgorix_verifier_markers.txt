@@ -1,0 +1,3 @@
+# Xalgorix Verifier Marker or Canary in Web Logs
+# Sigma id e0695ca0-fe5f-50ca-bbcd-5223ee61e805, pipeline ecs
+from * metadata _id, _index, _version | where url.path like "*xalgorix-nonexistent-*" or url.path like "*xalgorix-missing-*" or url.query like "*XALG0R1XTEST*" or starts_with(user_agent.original, "xalgorix")

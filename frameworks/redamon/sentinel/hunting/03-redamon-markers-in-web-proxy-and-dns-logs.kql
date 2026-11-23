@@ -1,0 +1,24 @@
+// RedAmon scanning you: its user agents, canaries and ownership lookup in web, proxy and DNS logs
+// Agentic attack detections by ThreatDefence (RedAmon). Source: https://github.com/ThreatDefence/agentic-attack-detections
+// Example hunt for Microsoft Sentinel. Test and baseline before alerting.
+// From the RedAmon source code (samugit83/redamon, reviewed at 73ca9d38):
+//  - User agents that name it: RedAmon-AISurfaceRecon/1.0 (on by default, probes model API and MCP paths),
+//    "Mozilla/5.0 (compatible; RedAmon/4.7)", RedAmon-JsRecon/1.0 and RedAmon-CachePoison/1.0 (modules off by default).
+//  - The XSS canary rEdAm0n1337XsS, which the agent's prompt says to put in every parameter, in User-Agent and in Referer.
+//  - The cache buster rdmncb=cb<12 hex> of its cache poisoning tests.
+//  - A TXT lookup for _redamon-verify.<domain>, when a project turns on ownership verification.
+// These are code defaults. Penetration testers run RedAmon too, so check whether the test was agreed.
+
+let Canaries = @"rEdAm0n1337XsS|rdmncb=cb";
+union isfuzzy=true
+    (W3CIISLog | extend UA=replace_string(csUserAgent, "+", " ")
+        | where UA has "RedAmon" or csUriQuery matches regex Canaries or csReferer contains "rEdAm0n1337XsS"
+        | project TimeGenerated, Source="W3CIISLog", Src=cIP, Target=csHost, Detail=strcat(csUriStem, "?", csUriQuery), UA),
+    (CommonSecurityLog | where RequestClientApplication has "RedAmon" or RequestURL matches regex Canaries
+        | project TimeGenerated, Source="CommonSecurityLog", Src=SourceIP, Target=DestinationHostName, Detail=RequestURL, UA=RequestClientApplication),
+    (DnsEvents | where Name startswith "_redamon-verify."
+        | project TimeGenerated, Source="DnsEvents", Src=ClientIP, Target=Name, Detail="ownership check lookup", UA="")
+| where TimeGenerated > ago(90d)
+| summarize Events=count(), FirstSeen=min(TimeGenerated), LastSeen=max(TimeGenerated), Samples=make_set(Detail, 10),
+    UAs=make_set(UA, 5) by Source, Src, Target
+| order by FirstSeen asc

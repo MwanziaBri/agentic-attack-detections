@@ -1,0 +1,5 @@
+{"name": "the settings file in a home folder", "expected": true, "event": {"TargetFilename": "/root/.xalgorix.env", "Image": "/usr/local/bin/tool"}}
+{"name": "the systemd unit", "expected": true, "event": {"TargetFilename": "/etc/systemd/system/xalgorix.service", "Image": "/usr/local/bin/tool"}}
+{"name": "scan data for a target", "expected": true, "event": {"TargetFilename": "/home/kali/.xalgorix/data/app.example.test/2026-11-23/app_scan/events.jsonl", "Image": "/usr/local/bin/tool"}}
+{"name": "another service unit", "expected": false, "event": {"TargetFilename": "/etc/systemd/system/nginx.service", "Image": "/usr/local/bin/tool"}}
+{"name": "a download of the release archive", "expected": false, "event": {"TargetFilename": "/home/kali/Downloads/xalgorix-linux-amd64.tar.gz", "Image": "/usr/local/bin/tool"}}

@@ -1,6 +1,6 @@
 {
  "type": "bundle",
- "id": "bundle--926f41f1-30bd-574c-90fe-08c7f531db75",
+ "id": "bundle--14fc0e1a-65dc-5de7-b766-f2759126da6f",
  "objects": [
   {
    "type": "identity",
@@ -145,6 +145,56 @@
     "AgentZero"
    ],
    "description": "Open-source general-purpose AI agent framework that runs in a Kali-based container with a built-in hacker profile and a web UI; GTIG reported threat-actor experimentation with it in 2026.",
+   "tool_types": [
+    "exploitation",
+    "vulnerability-scanning"
+   ]
+  },
+  {
+   "type": "tool",
+   "spec_version": "2.1",
+   "id": "tool--00d83d06-c0bd-517f-bc48-74237d8115be",
+   "created": "2026-11-21T00:00:00.000Z",
+   "modified": "2026-11-21T00:00:00.000Z",
+   "name": "RedAmon",
+   "aliases": [
+    "samugit83/redamon"
+   ],
+   "description": "Open-source self-hosted penetration testing platform (samugit83/redamon, December 2025): a Docker stack with a web console, a recon pipeline and an agent that exploits from a Kali sandbox with Metasploit; no public report of use in an intrusion.",
+   "tool_types": [
+    "exploitation",
+    "vulnerability-scanning"
+   ]
+  },
+  {
+   "type": "tool",
+   "spec_version": "2.1",
+   "id": "tool--88e2a7c4-e228-5cfd-a8f9-03af87d10c9b",
+   "created": "2026-11-21T00:00:00.000Z",
+   "modified": "2026-11-21T00:00:00.000Z",
+   "name": "Xalgorix",
+   "aliases": [
+    "xalgorix/xalgorix",
+    "xalgord/xalgorix"
+   ],
+   "description": "Open-source Go binary with a web dashboard (xalgorix/xalgorix, March 2026) whose agent runs a web and API penetration test without approval steps and re-exploits each finding; no public report of use in an intrusion.",
+   "tool_types": [
+    "exploitation",
+    "vulnerability-scanning"
+   ]
+  },
+  {
+   "type": "tool",
+   "spec_version": "2.1",
+   "id": "tool--666d3ef8-7359-5891-9d94-8ac80847885f",
+   "created": "2026-11-21T00:00:00.000Z",
+   "modified": "2026-11-21T00:00:00.000Z",
+   "name": "Pentest Swarm AI",
+   "aliases": [
+    "Armur-Ai/Pentest-Swarm-AI",
+    "pentestswarm"
+   ],
+   "description": "Open-source Go command-line tool (Armur-Ai/Pentest-Swarm-AI, 2026) that runs recon, exploit and report agents over about 40 security tools; no public report of use in an intrusion.",
    "tool_types": [
     "exploitation",
     "vulnerability-scanning"
@@ -13327,6 +13377,598 @@
    "relationship_type": "indicates",
    "source_ref": "indicator--742c28cb-502e-58d2-acd0-f8d502499f01",
    "target_ref": "tool--d2118b51-9a0c-5d1b-b458-dc8f1aa0b270"
+  },
+  {
+   "type": "indicator",
+   "spec_version": "2.1",
+   "id": "indicator--59b8f20c-be69-50af-b24d-902b7f4a1383",
+   "created": "2026-11-21T00:00:00.000Z",
+   "modified": "2026-11-21T00:00:00.000Z",
+   "created_by_ref": "identity--cfb32124-d0d1-5d3a-8537-b5b8d8c30a0d",
+   "name": "RedAmon user_agent: RedAmon-AISurfaceRecon/1.0",
+   "description": "RedAmon AI attack surface probe, on by default: a one-token chat request POSTed to model API paths and an MCP initialize sent to /mcp, /sse and /messages (recon/main_recon_modules/ai_surface_recon.py). Reported by ThreatDefence review of the RedAmon source code.",
+   "indicator_types": [
+    "malicious-activity"
+   ],
+   "pattern": "[network-traffic:extensions.'http-request-ext'.request_header.'User-Agent' = 'RedAmon-AISurfaceRecon/1.0']",
+   "pattern_type": "stix",
+   "valid_from": "2026-11-23T00:00:00Z",
+   "confidence": 85,
+   "labels": [
+    "redamon",
+    "high"
+   ],
+   "external_references": [
+    {
+     "source_name": "ThreatDefence review of the RedAmon source code",
+     "url": "https://github.com/samugit83/redamon"
+    }
+   ]
+  },
+  {
+   "type": "relationship",
+   "spec_version": "2.1",
+   "id": "relationship--320b4d39-5f48-5dbf-910c-fe43723ada2f",
+   "created": "2026-11-21T00:00:00.000Z",
+   "modified": "2026-11-21T00:00:00.000Z",
+   "relationship_type": "indicates",
+   "source_ref": "indicator--59b8f20c-be69-50af-b24d-902b7f4a1383",
+   "target_ref": "tool--00d83d06-c0bd-517f-bc48-74237d8115be"
+  },
+  {
+   "type": "indicator",
+   "spec_version": "2.1",
+   "id": "indicator--13db9355-ebc3-5342-91c5-4f91b060dc5b",
+   "created": "2026-11-21T00:00:00.000Z",
+   "modified": "2026-11-21T00:00:00.000Z",
+   "created_by_ref": "identity--cfb32124-d0d1-5d3a-8537-b5b8d8c30a0d",
+   "name": "RedAmon user_agent: Mozilla/5.0 (compatible; RedAmon/4.7)",
+   "description": "RedAmon subdomain takeover checks, a module that is off by default (recon/main_recon_modules/subdomain_takeover.py:1183). Reported by ThreatDefence review of the RedAmon source code.",
+   "indicator_types": [
+    "malicious-activity"
+   ],
+   "pattern": "[network-traffic:extensions.'http-request-ext'.request_header.'User-Agent' = 'Mozilla/5.0 (compatible; RedAmon/4.7)']",
+   "pattern_type": "stix",
+   "valid_from": "2026-11-23T00:00:00Z",
+   "confidence": 85,
+   "labels": [
+    "redamon",
+    "high"
+   ],
+   "external_references": [
+    {
+     "source_name": "ThreatDefence review of the RedAmon source code",
+     "url": "https://github.com/samugit83/redamon"
+    }
+   ]
+  },
+  {
+   "type": "relationship",
+   "spec_version": "2.1",
+   "id": "relationship--2e86368e-a99c-5d96-aa36-9e5aca5b376b",
+   "created": "2026-11-21T00:00:00.000Z",
+   "modified": "2026-11-21T00:00:00.000Z",
+   "relationship_type": "indicates",
+   "source_ref": "indicator--13db9355-ebc3-5342-91c5-4f91b060dc5b",
+   "target_ref": "tool--00d83d06-c0bd-517f-bc48-74237d8115be"
+  },
+  {
+   "type": "indicator",
+   "spec_version": "2.1",
+   "id": "indicator--baf28607-03f1-5685-b3d8-6d357b73bd31",
+   "created": "2026-11-21T00:00:00.000Z",
+   "modified": "2026-11-21T00:00:00.000Z",
+   "created_by_ref": "identity--cfb32124-d0d1-5d3a-8537-b5b8d8c30a0d",
+   "name": "RedAmon user_agent: Mozilla/5.0 (compatible; RedAmon-JsRecon/1.0)",
+   "description": "RedAmon endpoint validation in its JavaScript recon module, off by default (recon/main_recon_modules/js_recon.py). Reported by ThreatDefence review of the RedAmon source code.",
+   "indicator_types": [
+    "malicious-activity"
+   ],
+   "pattern": "[network-traffic:extensions.'http-request-ext'.request_header.'User-Agent' = 'Mozilla/5.0 (compatible; RedAmon-JsRecon/1.0)']",
+   "pattern_type": "stix",
+   "valid_from": "2026-11-23T00:00:00Z",
+   "confidence": 85,
+   "labels": [
+    "redamon",
+    "high"
+   ],
+   "external_references": [
+    {
+     "source_name": "ThreatDefence review of the RedAmon source code",
+     "url": "https://github.com/samugit83/redamon"
+    }
+   ]
+  },
+  {
+   "type": "relationship",
+   "spec_version": "2.1",
+   "id": "relationship--9248a28c-89dd-50b5-9781-87439d79bf9d",
+   "created": "2026-11-21T00:00:00.000Z",
+   "modified": "2026-11-21T00:00:00.000Z",
+   "relationship_type": "indicates",
+   "source_ref": "indicator--baf28607-03f1-5685-b3d8-6d357b73bd31",
+   "target_ref": "tool--00d83d06-c0bd-517f-bc48-74237d8115be"
+  },
+  {
+   "type": "indicator",
+   "spec_version": "2.1",
+   "id": "indicator--5fd9c3d9-9427-5d9f-8970-d8055a66e434",
+   "created": "2026-11-21T00:00:00.000Z",
+   "modified": "2026-11-21T00:00:00.000Z",
+   "created_by_ref": "identity--cfb32124-d0d1-5d3a-8537-b5b8d8c30a0d",
+   "name": "RedAmon user_agent: RedAmon-CachePoison/1.0",
+   "description": "RedAmon web cache poisoning tests, off by default (recon/cache_scan/scanner.py:103). Reported by ThreatDefence review of the RedAmon source code.",
+   "indicator_types": [
+    "malicious-activity"
+   ],
+   "pattern": "[network-traffic:extensions.'http-request-ext'.request_header.'User-Agent' = 'RedAmon-CachePoison/1.0']",
+   "pattern_type": "stix",
+   "valid_from": "2026-11-23T00:00:00Z",
+   "confidence": 85,
+   "labels": [
+    "redamon",
+    "high"
+   ],
+   "external_references": [
+    {
+     "source_name": "ThreatDefence review of the RedAmon source code",
+     "url": "https://github.com/samugit83/redamon"
+    }
+   ]
+  },
+  {
+   "type": "relationship",
+   "spec_version": "2.1",
+   "id": "relationship--91aba29b-9628-58b6-ab15-198d09f9297c",
+   "created": "2026-11-21T00:00:00.000Z",
+   "modified": "2026-11-21T00:00:00.000Z",
+   "relationship_type": "indicates",
+   "source_ref": "indicator--5fd9c3d9-9427-5d9f-8970-d8055a66e434",
+   "target_ref": "tool--00d83d06-c0bd-517f-bc48-74237d8115be"
+  },
+  {
+   "type": "indicator",
+   "spec_version": "2.1",
+   "id": "indicator--7b607006-ece7-557b-be32-ba76a1255a16",
+   "created": "2026-11-21T00:00:00.000Z",
+   "modified": "2026-11-21T00:00:00.000Z",
+   "created_by_ref": "identity--cfb32124-d0d1-5d3a-8537-b5b8d8c30a0d",
+   "name": "RedAmon md5: 620b55364a1b370943ceeab58e1f49a3",
+   "description": "RedAmon console favicon.ico. Reported by ThreatDefence review of the RedAmon source code.",
+   "indicator_types": [
+    "malicious-activity"
+   ],
+   "pattern": "[file:hashes.MD5 = '620b55364a1b370943ceeab58e1f49a3']",
+   "pattern_type": "stix",
+   "valid_from": "2026-11-23T00:00:00Z",
+   "confidence": 60,
+   "labels": [
+    "redamon",
+    "medium"
+   ],
+   "external_references": [
+    {
+     "source_name": "ThreatDefence review of the RedAmon source code",
+     "url": "https://github.com/samugit83/redamon"
+    }
+   ]
+  },
+  {
+   "type": "relationship",
+   "spec_version": "2.1",
+   "id": "relationship--e3c0143f-aea0-5a70-b31c-f45c87c59e69",
+   "created": "2026-11-21T00:00:00.000Z",
+   "modified": "2026-11-21T00:00:00.000Z",
+   "relationship_type": "indicates",
+   "source_ref": "indicator--7b607006-ece7-557b-be32-ba76a1255a16",
+   "target_ref": "tool--00d83d06-c0bd-517f-bc48-74237d8115be"
+  },
+  {
+   "type": "indicator",
+   "spec_version": "2.1",
+   "id": "indicator--4d82dce2-736d-5f97-8602-0bfb54d30bb9",
+   "created": "2026-11-21T00:00:00.000Z",
+   "modified": "2026-11-21T00:00:00.000Z",
+   "created_by_ref": "identity--cfb32124-d0d1-5d3a-8537-b5b8d8c30a0d",
+   "name": "RedAmon md5: dca9c654ddce6aa63d1187c509a89345",
+   "description": "RedAmon console favicon.png. Reported by ThreatDefence review of the RedAmon source code.",
+   "indicator_types": [
+    "malicious-activity"
+   ],
+   "pattern": "[file:hashes.MD5 = 'dca9c654ddce6aa63d1187c509a89345']",
+   "pattern_type": "stix",
+   "valid_from": "2026-11-23T00:00:00Z",
+   "confidence": 60,
+   "labels": [
+    "redamon",
+    "medium"
+   ],
+   "external_references": [
+    {
+     "source_name": "ThreatDefence review of the RedAmon source code",
+     "url": "https://github.com/samugit83/redamon"
+    }
+   ]
+  },
+  {
+   "type": "relationship",
+   "spec_version": "2.1",
+   "id": "relationship--029ab87d-1969-551e-a447-c09487e2efa9",
+   "created": "2026-11-21T00:00:00.000Z",
+   "modified": "2026-11-21T00:00:00.000Z",
+   "relationship_type": "indicates",
+   "source_ref": "indicator--4d82dce2-736d-5f97-8602-0bfb54d30bb9",
+   "target_ref": "tool--00d83d06-c0bd-517f-bc48-74237d8115be"
+  },
+  {
+   "type": "indicator",
+   "spec_version": "2.1",
+   "id": "indicator--fb1a2a38-5350-5e77-9b58-cf5da7cbdaf8",
+   "created": "2026-11-21T00:00:00.000Z",
+   "modified": "2026-11-21T00:00:00.000Z",
+   "created_by_ref": "identity--cfb32124-d0d1-5d3a-8537-b5b8d8c30a0d",
+   "name": "RedAmon sha256: 94309d127e1669150c5fd002b4dfd5c7168ee654d4022f6ecb8ad376d92e8ac5",
+   "description": "RedAmon console favicon.ico. Reported by ThreatDefence review of the RedAmon source code.",
+   "indicator_types": [
+    "malicious-activity"
+   ],
+   "pattern": "[file:hashes.'SHA-256' = '94309d127e1669150c5fd002b4dfd5c7168ee654d4022f6ecb8ad376d92e8ac5']",
+   "pattern_type": "stix",
+   "valid_from": "2026-11-23T00:00:00Z",
+   "confidence": 60,
+   "labels": [
+    "redamon",
+    "medium"
+   ],
+   "external_references": [
+    {
+     "source_name": "ThreatDefence review of the RedAmon source code",
+     "url": "https://github.com/samugit83/redamon"
+    }
+   ]
+  },
+  {
+   "type": "relationship",
+   "spec_version": "2.1",
+   "id": "relationship--a73f255e-afe2-5cf6-8626-d96c75e5be85",
+   "created": "2026-11-21T00:00:00.000Z",
+   "modified": "2026-11-21T00:00:00.000Z",
+   "relationship_type": "indicates",
+   "source_ref": "indicator--fb1a2a38-5350-5e77-9b58-cf5da7cbdaf8",
+   "target_ref": "tool--00d83d06-c0bd-517f-bc48-74237d8115be"
+  },
+  {
+   "type": "indicator",
+   "spec_version": "2.1",
+   "id": "indicator--b6e50876-d2a1-51a9-9727-cf211d3f61b1",
+   "created": "2026-11-21T00:00:00.000Z",
+   "modified": "2026-11-21T00:00:00.000Z",
+   "created_by_ref": "identity--cfb32124-d0d1-5d3a-8537-b5b8d8c30a0d",
+   "name": "RedAmon sha256: ee50a0eb4fc75bda9e004889c2d3c43b0b4c15178aeea66e2eda52e338674201",
+   "description": "RedAmon console favicon.png. Reported by ThreatDefence review of the RedAmon source code.",
+   "indicator_types": [
+    "malicious-activity"
+   ],
+   "pattern": "[file:hashes.'SHA-256' = 'ee50a0eb4fc75bda9e004889c2d3c43b0b4c15178aeea66e2eda52e338674201']",
+   "pattern_type": "stix",
+   "valid_from": "2026-11-23T00:00:00Z",
+   "confidence": 60,
+   "labels": [
+    "redamon",
+    "medium"
+   ],
+   "external_references": [
+    {
+     "source_name": "ThreatDefence review of the RedAmon source code",
+     "url": "https://github.com/samugit83/redamon"
+    }
+   ]
+  },
+  {
+   "type": "relationship",
+   "spec_version": "2.1",
+   "id": "relationship--68e59315-c4d9-56e3-835b-b77cee04dae6",
+   "created": "2026-11-21T00:00:00.000Z",
+   "modified": "2026-11-21T00:00:00.000Z",
+   "relationship_type": "indicates",
+   "source_ref": "indicator--b6e50876-d2a1-51a9-9727-cf211d3f61b1",
+   "target_ref": "tool--00d83d06-c0bd-517f-bc48-74237d8115be"
+  },
+  {
+   "type": "indicator",
+   "spec_version": "2.1",
+   "id": "indicator--d1fcbf37-18b1-55d1-861a-09a859323ae9",
+   "created": "2026-11-21T00:00:00.000Z",
+   "modified": "2026-11-21T00:00:00.000Z",
+   "created_by_ref": "identity--cfb32124-d0d1-5d3a-8537-b5b8d8c30a0d",
+   "name": "Xalgorix user_agent: xalgorix-origin-calibration/1",
+   "description": "Xalgorix request that calibrates its callback service, with the header X-Xalgorix-Origin-Calibration (internal/oob/server.go). Reported by ThreatDefence review of the Xalgorix source code.",
+   "indicator_types": [
+    "malicious-activity"
+   ],
+   "pattern": "[network-traffic:extensions.'http-request-ext'.request_header.'User-Agent' = 'xalgorix-origin-calibration/1']",
+   "pattern_type": "stix",
+   "valid_from": "2026-11-23T00:00:00Z",
+   "confidence": 85,
+   "labels": [
+    "xalgorix",
+    "high"
+   ],
+   "external_references": [
+    {
+     "source_name": "ThreatDefence review of the Xalgorix source code",
+     "url": "https://github.com/xalgorix/xalgorix"
+    }
+   ]
+  },
+  {
+   "type": "relationship",
+   "spec_version": "2.1",
+   "id": "relationship--e8174414-58ea-5c20-807d-d70308e8e652",
+   "created": "2026-11-21T00:00:00.000Z",
+   "modified": "2026-11-21T00:00:00.000Z",
+   "relationship_type": "indicates",
+   "source_ref": "indicator--d1fcbf37-18b1-55d1-861a-09a859323ae9",
+   "target_ref": "tool--88e2a7c4-e228-5cfd-a8f9-03af87d10c9b"
+  },
+  {
+   "type": "indicator",
+   "spec_version": "2.1",
+   "id": "indicator--a343ca9e-f874-5c36-bfc2-c9db74f9b02b",
+   "created": "2026-11-21T00:00:00.000Z",
+   "modified": "2026-11-21T00:00:00.000Z",
+   "created_by_ref": "identity--cfb32124-d0d1-5d3a-8537-b5b8d8c30a0d",
+   "name": "Xalgorix md5: 7ce3d0eeae5c13ad1cf02ed0062c99b9",
+   "description": "Xalgorix dashboard icon logo.png. Reported by ThreatDefence review of the Xalgorix source code.",
+   "indicator_types": [
+    "malicious-activity"
+   ],
+   "pattern": "[file:hashes.MD5 = '7ce3d0eeae5c13ad1cf02ed0062c99b9']",
+   "pattern_type": "stix",
+   "valid_from": "2026-11-23T00:00:00Z",
+   "confidence": 60,
+   "labels": [
+    "xalgorix",
+    "medium"
+   ],
+   "external_references": [
+    {
+     "source_name": "ThreatDefence review of the Xalgorix source code",
+     "url": "https://github.com/xalgorix/xalgorix"
+    }
+   ]
+  },
+  {
+   "type": "relationship",
+   "spec_version": "2.1",
+   "id": "relationship--317d55c6-8d46-55db-aa87-9ac767eefb3c",
+   "created": "2026-11-21T00:00:00.000Z",
+   "modified": "2026-11-21T00:00:00.000Z",
+   "relationship_type": "indicates",
+   "source_ref": "indicator--a343ca9e-f874-5c36-bfc2-c9db74f9b02b",
+   "target_ref": "tool--88e2a7c4-e228-5cfd-a8f9-03af87d10c9b"
+  },
+  {
+   "type": "indicator",
+   "spec_version": "2.1",
+   "id": "indicator--2f26f600-f883-5b78-b525-43695072dc3d",
+   "created": "2026-11-21T00:00:00.000Z",
+   "modified": "2026-11-21T00:00:00.000Z",
+   "created_by_ref": "identity--cfb32124-d0d1-5d3a-8537-b5b8d8c30a0d",
+   "name": "Xalgorix sha256: 8925c407162e52796838ff5de5a246dc34c673f156c1a575d20b996c8f725903",
+   "description": "Xalgorix dashboard icon logo.png. Reported by ThreatDefence review of the Xalgorix source code.",
+   "indicator_types": [
+    "malicious-activity"
+   ],
+   "pattern": "[file:hashes.'SHA-256' = '8925c407162e52796838ff5de5a246dc34c673f156c1a575d20b996c8f725903']",
+   "pattern_type": "stix",
+   "valid_from": "2026-11-23T00:00:00Z",
+   "confidence": 60,
+   "labels": [
+    "xalgorix",
+    "medium"
+   ],
+   "external_references": [
+    {
+     "source_name": "ThreatDefence review of the Xalgorix source code",
+     "url": "https://github.com/xalgorix/xalgorix"
+    }
+   ]
+  },
+  {
+   "type": "relationship",
+   "spec_version": "2.1",
+   "id": "relationship--2ebed994-6408-52e9-9092-571e78864108",
+   "created": "2026-11-21T00:00:00.000Z",
+   "modified": "2026-11-21T00:00:00.000Z",
+   "relationship_type": "indicates",
+   "source_ref": "indicator--2f26f600-f883-5b78-b525-43695072dc3d",
+   "target_ref": "tool--88e2a7c4-e228-5cfd-a8f9-03af87d10c9b"
+  },
+  {
+   "type": "indicator",
+   "spec_version": "2.1",
+   "id": "indicator--9e5d326f-0ab8-5129-ad7a-31e22ef8214c",
+   "created": "2026-11-21T00:00:00.000Z",
+   "modified": "2026-11-21T00:00:00.000Z",
+   "created_by_ref": "identity--cfb32124-d0d1-5d3a-8537-b5b8d8c30a0d",
+   "name": "Xalgorix file_name: .xalgorix.env",
+   "description": "Xalgorix settings file in the home folder of the user who runs it; /etc/xalgorix.env for the systemd service. Reported by ThreatDefence review of the Xalgorix source code.",
+   "indicator_types": [
+    "malicious-activity"
+   ],
+   "pattern": "[file:name LIKE '.xalgorix.env%']",
+   "pattern_type": "stix",
+   "valid_from": "2026-11-23T00:00:00Z",
+   "confidence": 60,
+   "labels": [
+    "xalgorix",
+    "medium"
+   ],
+   "external_references": [
+    {
+     "source_name": "ThreatDefence review of the Xalgorix source code",
+     "url": "https://github.com/xalgorix/xalgorix"
+    }
+   ]
+  },
+  {
+   "type": "relationship",
+   "spec_version": "2.1",
+   "id": "relationship--7eef41a9-008b-5eba-a2e3-5a07c43b9e79",
+   "created": "2026-11-21T00:00:00.000Z",
+   "modified": "2026-11-21T00:00:00.000Z",
+   "relationship_type": "indicates",
+   "source_ref": "indicator--9e5d326f-0ab8-5129-ad7a-31e22ef8214c",
+   "target_ref": "tool--88e2a7c4-e228-5cfd-a8f9-03af87d10c9b"
+  },
+  {
+   "type": "indicator",
+   "spec_version": "2.1",
+   "id": "indicator--7d3f0ffc-e656-5aac-95bf-e36e6b2f69d3",
+   "created": "2026-11-21T00:00:00.000Z",
+   "modified": "2026-11-21T00:00:00.000Z",
+   "created_by_ref": "identity--cfb32124-d0d1-5d3a-8537-b5b8d8c30a0d",
+   "name": "Xalgorix file_path: /.xalgorix/data/",
+   "description": "Xalgorix scan data: <target>/<date>/<target>_<slug>/scan.json and events.jsonl under the home folder. Reported by ThreatDefence review of the Xalgorix source code.",
+   "indicator_types": [
+    "malicious-activity"
+   ],
+   "pattern": "[directory:path = '/.xalgorix/data/']",
+   "pattern_type": "stix",
+   "valid_from": "2026-11-23T00:00:00Z",
+   "confidence": 60,
+   "labels": [
+    "xalgorix",
+    "medium"
+   ],
+   "external_references": [
+    {
+     "source_name": "ThreatDefence review of the Xalgorix source code",
+     "url": "https://github.com/xalgorix/xalgorix"
+    }
+   ]
+  },
+  {
+   "type": "relationship",
+   "spec_version": "2.1",
+   "id": "relationship--85e1e55a-7f1d-59c3-8147-02b6c08ffd6e",
+   "created": "2026-11-21T00:00:00.000Z",
+   "modified": "2026-11-21T00:00:00.000Z",
+   "relationship_type": "indicates",
+   "source_ref": "indicator--7d3f0ffc-e656-5aac-95bf-e36e6b2f69d3",
+   "target_ref": "tool--88e2a7c4-e228-5cfd-a8f9-03af87d10c9b"
+  },
+  {
+   "type": "indicator",
+   "spec_version": "2.1",
+   "id": "indicator--3c5d611c-3a0f-533c-9dd7-8dc7be526acd",
+   "created": "2026-11-21T00:00:00.000Z",
+   "modified": "2026-11-21T00:00:00.000Z",
+   "created_by_ref": "identity--cfb32124-d0d1-5d3a-8537-b5b8d8c30a0d",
+   "name": "Pentest Swarm AI user_agent: pentestswarm-cli",
+   "description": "Pentest Swarm AI upgrade check, run by hand (cli/upgrade.go). Reported by ThreatDefence review of the Pentest Swarm AI source code.",
+   "indicator_types": [
+    "malicious-activity"
+   ],
+   "pattern": "[network-traffic:extensions.'http-request-ext'.request_header.'User-Agent' = 'pentestswarm-cli']",
+   "pattern_type": "stix",
+   "valid_from": "2026-11-23T00:00:00Z",
+   "confidence": 60,
+   "labels": [
+    "pentestswarm",
+    "medium"
+   ],
+   "external_references": [
+    {
+     "source_name": "ThreatDefence review of the Pentest Swarm AI source code",
+     "url": "https://github.com/Armur-Ai/Pentest-Swarm-AI"
+    }
+   ]
+  },
+  {
+   "type": "relationship",
+   "spec_version": "2.1",
+   "id": "relationship--e90ddbdc-9741-5496-b598-f322ae0c4950",
+   "created": "2026-11-21T00:00:00.000Z",
+   "modified": "2026-11-21T00:00:00.000Z",
+   "relationship_type": "indicates",
+   "source_ref": "indicator--3c5d611c-3a0f-533c-9dd7-8dc7be526acd",
+   "target_ref": "tool--666d3ef8-7359-5891-9d94-8ac80847885f"
+  },
+  {
+   "type": "indicator",
+   "spec_version": "2.1",
+   "id": "indicator--4ca1d066-abd1-505e-baba-589daf9409bb",
+   "created": "2026-11-21T00:00:00.000Z",
+   "modified": "2026-11-21T00:00:00.000Z",
+   "created_by_ref": "identity--cfb32124-d0d1-5d3a-8537-b5b8d8c30a0d",
+   "name": "Pentest Swarm AI user_agent: pentestswarm-webhook/1.0",
+   "description": "Pentest Swarm AI webhook deliveries, with X-PentestSwarm-Signature or X-Autopentest-Event (internal/integrations/webhook.go). Reported by ThreatDefence review of the Pentest Swarm AI source code.",
+   "indicator_types": [
+    "malicious-activity"
+   ],
+   "pattern": "[network-traffic:extensions.'http-request-ext'.request_header.'User-Agent' = 'pentestswarm-webhook/1.0']",
+   "pattern_type": "stix",
+   "valid_from": "2026-11-23T00:00:00Z",
+   "confidence": 60,
+   "labels": [
+    "pentestswarm",
+    "medium"
+   ],
+   "external_references": [
+    {
+     "source_name": "ThreatDefence review of the Pentest Swarm AI source code",
+     "url": "https://github.com/Armur-Ai/Pentest-Swarm-AI"
+    }
+   ]
+  },
+  {
+   "type": "relationship",
+   "spec_version": "2.1",
+   "id": "relationship--9a0e74bf-ddeb-5443-ba75-7bd5807ebde0",
+   "created": "2026-11-21T00:00:00.000Z",
+   "modified": "2026-11-21T00:00:00.000Z",
+   "relationship_type": "indicates",
+   "source_ref": "indicator--4ca1d066-abd1-505e-baba-589daf9409bb",
+   "target_ref": "tool--666d3ef8-7359-5891-9d94-8ac80847885f"
+  },
+  {
+   "type": "indicator",
+   "spec_version": "2.1",
+   "id": "indicator--97af5b23-530b-50c2-b935-1e18a551301c",
+   "created": "2026-11-21T00:00:00.000Z",
+   "modified": "2026-11-21T00:00:00.000Z",
+   "created_by_ref": "identity--cfb32124-d0d1-5d3a-8537-b5b8d8c30a0d",
+   "name": "Pentest Swarm AI file_path: /.pentestswarm/authorization.log",
+   "description": "Pentest Swarm AI consent log under the home folder: one JSON line per real target with time, target, scope, method and user (internal/authz/authz.go). Reported by ThreatDefence review of the Pentest Swarm AI source code.",
+   "indicator_types": [
+    "malicious-activity"
+   ],
+   "pattern": "[directory:path = '/.pentestswarm/authorization.log']",
+   "pattern_type": "stix",
+   "valid_from": "2026-11-23T00:00:00Z",
+   "confidence": 60,
+   "labels": [
+    "pentestswarm",
+    "medium"
+   ],
+   "external_references": [
+    {
+     "source_name": "ThreatDefence review of the Pentest Swarm AI source code",
+     "url": "https://github.com/Armur-Ai/Pentest-Swarm-AI"
+    }
+   ]
+  },
+  {
+   "type": "relationship",
+   "spec_version": "2.1",
+   "id": "relationship--55c478ad-c354-5295-822f-34e54f1b7bc8",
+   "created": "2026-11-21T00:00:00.000Z",
+   "modified": "2026-11-21T00:00:00.000Z",
+   "relationship_type": "indicates",
+   "source_ref": "indicator--97af5b23-530b-50c2-b935-1e18a551301c",
+   "target_ref": "tool--666d3ef8-7359-5891-9d94-8ac80847885f"
   }
  ]
 }
