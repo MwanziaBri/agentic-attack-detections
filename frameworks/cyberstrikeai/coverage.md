@@ -2,13 +2,13 @@
 
 | Behavior | Data source | Sigma | Sentinel / Defender | Suricata | Zeek | YARA |
 |---|---|---|---|---|---|---|
-| Webshell manager user agent | Web, WAF, proxy | S | N | N | I | Y |
-| Webshell OS probe `echo :OSPROBE_%OS%:END` | Web, EDR, network | S | N | N | | Y |
-| Console user agents (`CyberStrikeAI/<version>`) | Proxy | S | N | N | I | Y |
-| Console certificate `CN=CyberStrikeAI` | Network, internet scans | | | N | | |
-| Implant headers, check-in paths and default user agent | Proxy, network | S | N | N | | Y |
+| Webshell manager user agent | Web, WAF, proxy | S | N | N | N | Y |
+| Webshell OS probe `echo :OSPROBE_%OS%:END` | Web, EDR, network | S | N | N | N | Y |
+| Console user agents (`CyberStrikeAI/<version>`) | Proxy | S | N | N | N | Y |
+| Console certificate `CN=CyberStrikeAI` | Network, internet scans | | | N | N | |
+| Implant headers, check-in paths and default user agent | Proxy, network | S | N | N | N | Y |
 | Implant 5-second interval with no jitter | EDR | | N | | | |
-| TCP implant magic `CSB1` | Network | | | N | | |
+| TCP implant magic `CSB1` | Network | | | N | N | |
 | curl one-liner implant | EDR, disk | S | N | N | | Y |
 | Persistence: SystemUpdate Run value and task | EDR, registry | S | N | | | |
 | Persistence: @reboot cron and `.bashrc # cs` | EDR, disk | S | N | | | Y |

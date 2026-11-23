@@ -7,7 +7,7 @@ Detection rules, hunting queries and indicators for **CyberStrikeAI**, a Go oper
 | | |
 |---|---|
 | Tool | [AIPentest/CyberStrikeAI](https://github.com/AIPentest/CyberStrikeAI) (first published as Ed1s0nZ/CyberStrikeAI), reviewed at `af6cf750` |
-| Platforms | Microsoft Sentinel and Defender XDR, Sigma, Suricata, Zeek intel, YARA, STIX 2.1 |
+| Platforms | Microsoft Sentinel and Defender XDR, Sigma, Suricata, Zeek script and intel, YARA, STIX 2.1 |
 | Status | Experimental. Tested for syntax and conversion. YARA tested against implants compiled from the stock template for Windows, Linux and macOS, and against the CyberStrikeAI source. Baseline every rule on your own data before alerting |
 
 ## What is in this folder
@@ -18,7 +18,8 @@ Detection rules, hunting queries and indicators for **CyberStrikeAI**, a Go oper
 | [`sentinel/analytics/`](sentinel/analytics) | 2 scheduled analytics rules: webshell manager or OS probe, and implant persistence |
 | [`sigma/`](sigma) | 7 Sigma rules for web, proxy, process, registry and macOS file events |
 | [`suricata/`](suricata) | Rules for the webshell manager, the OS probe and its answer, console user agents and certificate, implant headers, task polls, default user agent and TCP magic |
-| [`zeek/`](zeek) | Intel framework file generated from the CSV |
+| [`zeek/`](zeek) | Zeek script with notices for the webshell manager and its OS probe and answer, implant check-ins over HTTP and TCP, the console user agent and certificate, and the Intel framework file generated from the CSV. Load the script with `@load /path/to/frameworks/cyberstrikeai/zeek/cyberstrikeai` |
+| [`tests/`](tests) | A sample capture and `run_zeek_tests.sh`, which runs the Zeek script against it |
 | [`yara/`](yara) | Rules for compiled implants, the console, the curl one-liner and persistence files |
 | Docs | [What CyberStrikeAI leaves behind](source-code-signals.md), [where to start](hunting-order.md) and the [coverage matrix](coverage.md) |
 

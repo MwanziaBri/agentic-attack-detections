@@ -7,7 +7,7 @@ Detection rules, hunting queries and indicators for **HexStrike AI**, an MCP too
 | | |
 |---|---|
 | Tool | [0x4m4/hexstrike-ai](https://github.com/0x4m4/hexstrike-ai), version 6.0, reviewed at `d689933` |
-| Platforms | Microsoft Sentinel and Defender XDR, Sigma, Suricata, Zeek intel, YARA, STIX 2.1 |
+| Platforms | Microsoft Sentinel and Defender XDR, Sigma, Suricata, Zeek script and intel, YARA, STIX 2.1 |
 | Status | Experimental. Tested for syntax and conversion, YARA tested against the HexStrike source. Baseline every rule on your own data before alerting |
 
 ## What is in this folder
@@ -18,7 +18,8 @@ Detection rules, hunting queries and indicators for **HexStrike AI**, an MCP too
 | [`sentinel/analytics/`](sentinel/analytics) | 2 scheduled analytics rules: user agent or XSS probe, and the server or MCP client on a host |
 | [`sigma/`](sigma) | 3 Sigma rules for web, process and proxy logs |
 | [`suricata/`](suricata) | Rules for its user agents, the XSS probe, the tool and command API on 8888 and the health response |
-| [`zeek/`](zeek) | Intel framework file generated from the CSV |
+| [`zeek/`](zeek) | Zeek script with notices for its user agents, the XSS probe, tool and command API requests and a HexStrike server answering its health check, and the Intel framework file generated from the CSV. Load the script with `@load /path/to/frameworks/hexstrike/zeek/hexstrike` |
+| [`tests/`](tests) | A sample capture and `run_zeek_tests.sh`, which runs the Zeek script against it |
 | [`yara/`](yara) | Rules for the server and client scripts, MCP client configurations that use HexStrike, and generated exploit scripts |
 | Docs | [What HexStrike leaves behind](source-code-signals.md), [where to start](hunting-order.md) and the [coverage matrix](coverage.md) |
 

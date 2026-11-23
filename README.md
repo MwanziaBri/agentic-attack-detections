@@ -46,7 +46,7 @@ The capture is test traffic written from the framework source code and published
 | Microsoft Sentinel | Upload `feeds/sentinel-watchlist.csv` as a watchlist with the alias `AGENTIC_IOCs` and the search key `value`. Import the analytics rules from `frameworks/*/sentinel/analytics/` and `behaviors/sentinel/analytics/`. Run the hunts in each folder's `hunting-order.md` order |
 | Defender XDR | Run the hunts from `frameworks/*/sentinel/hunting/` in advanced hunting. They work where the tables exist |
 | Suricata | Add the `.rules` files from `frameworks/*/suricata/` and `behaviors/suricata/`. HTTP rules need cleartext or decrypted traffic. DNS and TLS SNI rules work on encrypted traffic |
-| Zeek | Install the behaviors package with `zkg install https://github.com/ThreatDefence/agentic-attack-detections` (or load `behaviors/zeek/agentic-behaviors/` by path), set `server_nets` to your server ranges ([setup](behaviors/zeek/README.md)), load `frameworks/artex/zeek/artex/`, and feed `frameworks/*/zeek/intel/*.intel` to the Intel framework |
+| Zeek | Install the behaviors package with `zkg install https://github.com/ThreatDefence/agentic-attack-detections` (or load `behaviors/zeek/agentic-behaviors/` by path), set `server_nets` to your server ranges ([setup](behaviors/zeek/README.md)), load the framework scripts `frameworks/artex/zeek/artex/`, `frameworks/cyberstrikeai/zeek/cyberstrikeai/` and `frameworks/hexstrike/zeek/hexstrike/`, and feed `frameworks/*/zeek/intel/*.intel` to the Intel framework |
 | YARA | Scan container layers, home folders, `/tmp` and web roots with `frameworks/*/yara/` |
 | Any SIEM with Sigma | Convert `frameworks/*/sigma/` and `behaviors/sigma/` with `sigma convert`, or take the conversions in [`generated/`](generated) |
 | Splunk or Elastic | The ARTEX folder has a Splunk app and Elastic rules. For the other frameworks use [`generated/`](generated) |
@@ -60,8 +60,8 @@ The capture is test traffic written from the framework source code and published
 | [ARTEX](frameworks/artex) | 31 | 7 | 36 | 43 | 4 | script, intel | 247 |
 | [Cairn](frameworks/cairn) | 6 | 2 | 3 | 26 | 6 | intel | 73 |
 | [PentAGI](frameworks/pentagi) | 5 | 2 | 3 | 10 | 3 | intel | 39 |
-| [HexStrike](frameworks/hexstrike) | 4 | 2 | 3 | 7 | 3 | intel | 22 |
-| [CyberStrikeAI](frameworks/cyberstrikeai) | 5 | 2 | 7 | 11 | 4 | intel | 74 |
+| [HexStrike](frameworks/hexstrike) | 4 | 2 | 3 | 7 | 3 | script, intel | 22 |
+| [CyberStrikeAI](frameworks/cyberstrikeai) | 5 | 2 | 7 | 11 | 4 | script, intel | 74 |
 | [Strix](frameworks/strix) | 3 | 1 | 3 | 5 | 3 | intel | 49 |
 | [Hermes Agent](frameworks/hermes) | 4 | 2 | 3 | 7 | 4 | intel | 79 |
 | [Agent Zero](frameworks/agent-zero) | 2 | | 1 | 3 | 1 | intel | 8 |
@@ -208,6 +208,8 @@ python3 tools/build_release.py                         # build the release downl
 python3 tests/suricata/run_tests.py                    # one flow per Suricata rule; needs suricata and openssl
 bash frameworks/artex/tests/run_network_tests.sh       # needs zeek and suricata on the PATH
 bash behaviors/zeek/tests/run_tests.sh                 # needs zeek on the PATH
+bash frameworks/cyberstrikeai/tests/run_zeek_tests.sh  # needs zeek on the PATH
+bash frameworks/hexstrike/tests/run_zeek_tests.sh      # needs zeek on the PATH
 ```
 
 `validate.py` checks KQL with Microsoft's parser when `dotnet` is installed, and Zeek scripts when `zeek` is.
