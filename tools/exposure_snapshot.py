@@ -11,7 +11,8 @@ SHODAN_API_KEY environment variable; each page of 100 results costs one query cr
 
 Every run that writes consoles.csv also counts the hosts per framework, records the counts in exposure/history.csv
 under the snapshot date, and rewrites the table between the exposed-consoles markers in README.md. An active host
-is one seen in the seven days up to the snapshot date.
+is one seen in the seven days up to the snapshot date. A service the scan data tags as a honeypot gets honeypot=yes
+in consoles.csv and is left out of the counts.
 
 This is a record of what is exposed, not a detection feed: nothing here is read by tools/build_feeds.py.
 """
@@ -24,8 +25,8 @@ OUT = ROOT / "exposure" / "consoles.csv"
 HISTORY = ROOT / "exposure" / "history.csv"
 README = ROOT / "README.md"
 START, END = "<!-- exposed-consoles:start -->", "<!-- exposed-consoles:end -->"
-FIELDS = "ip_str,port,asn,location.country_code,timestamp,http.title"
-COLUMNS = ["address", "port", "framework", "matched_on", "page_title", "asn", "country", "last_seen"]
+FIELDS = "ip_str,port,asn,location.country_code,timestamp,http.title,tags"
+COLUMNS = ["address", "port", "framework", "matched_on", "page_title", "asn", "country", "last_seen", "honeypot"]
 
 
 def call(path, key, **params):
@@ -52,36 +53,40 @@ def track(rows, date, frameworks):
     sys.path.insert(0, str(Path(__file__).resolve().parent))
     from build_feeds import FRAMEWORKS
     cutoff = (date - dt.timedelta(days=6)).isoformat()
-    counts, seen, active = [], set(), set()
+    real = [r for r in rows if r.get("honeypot") != "yes"]
+    counts, seen, active, traps = [], set(), set(), set()
     for fw in frameworks:
-        hosts = {r["address"] for r in rows if r["framework"] == fw}
-        recent = {r["address"] for r in rows if r["framework"] == fw and r["last_seen"] >= cutoff}
+        hosts = {r["address"] for r in real if r["framework"] == fw}
+        recent = {r["address"] for r in real if r["framework"] == fw and r["last_seen"] >= cutoff}
+        flagged = {r["address"] for r in rows if r["framework"] == fw and r.get("honeypot") == "yes"} - hosts
         seen |= hosts
         active |= recent
-        counts.append((fw, len(recent), len(hosts)))
+        traps |= flagged
+        counts.append((fw, len(recent), len(hosts), len(flagged)))
+    traps -= seen
     counts.sort(key=lambda c: (-c[1], -c[2], c[0]))
     history = []
     if HISTORY.exists():
         history = [r for r in csv.DictReader(HISTORY.open(encoding="utf-8")) if r["date"] != date.isoformat()]
-    history += [{"date": date.isoformat(), "framework": fw, "active_hosts": a, "hosts": h} for fw, a, h in counts]
-    history.append({"date": date.isoformat(), "framework": "all", "active_hosts": len(active), "hosts": len(seen)})
+    history += [{"date": date.isoformat(), "framework": fw, "active_hosts": a, "hosts": h, "honeypots": t} for fw, a, h, t in counts]
+    history.append({"date": date.isoformat(), "framework": "all", "active_hosts": len(active), "hosts": len(seen), "honeypots": len(traps)})
     history.sort(key=lambda r: (r["date"], r["framework"] == "all", -int(r["active_hosts"]), r["framework"]))
     with HISTORY.open("w", newline="", encoding="utf-8") as f:
-        w = csv.DictWriter(f, fieldnames=["date", "framework", "active_hosts", "hosts"], lineterminator="\n")
+        w = csv.DictWriter(f, fieldnames=["date", "framework", "active_hosts", "hosts", "honeypots"], lineterminator="\n", restval=0)
         w.writeheader()
         w.writerows(history)
     day = f"{date:%B} {date.day}, {date.year}"
-    lines = [f"An active host is one seen in the seven days to {day}.", "",
-             "| Framework | Active hosts | Seen in 30 days |", "|---|---|---|"]
-    for fw, a, h in counts:
+    lines = [f"An active host is one seen in the seven days to {day}. Hosts the scan data flags as honeypots are left out of both counts.", "",
+             "| Framework | Active hosts | Seen in 30 days | Honeypots left out |", "|---|---|---|---|"]
+    for fw, a, h, t in counts:
         name = f"[{FRAMEWORKS[fw]['name']}](frameworks/{fw})" + (" and AntiFox" if fw == "artex" else "")
-        lines.append(f"| {name} | {a:,} | {h:,} |")
-    lines.append(f"| All, each host counted once | {len(active):,} | {len(seen):,} |")
+        lines.append(f"| {name} | {a:,} | {h:,} | {t:,} |")
+    lines.append(f"| All, each host counted once | {len(active):,} | {len(seen):,} | {len(traps):,} |")
     text = README.read_text(encoding="utf-8")
     if START in text and END in text:
         head, rest = text.split(START, 1)
         README.write_text(head + START + "\n" + "\n".join(lines) + "\n" + END + rest.split(END, 1)[1], encoding="utf-8")
-    print(f"{len(active):,} active hosts, {len(seen):,} in all, recorded for {date.isoformat()} in {HISTORY.relative_to(ROOT)}")
+    print(f"{len(active):,} active hosts, {len(seen):,} in all, {len(traps):,} honeypots left out, recorded for {date.isoformat()} in {HISTORY.relative_to(ROOT)}")
 
 
 def main():
@@ -110,7 +115,7 @@ def main():
         if not args.count and OUT.exists():
             for r in csv.DictReader(OUT.open(encoding="utf-8")):
                 if r["framework"] not in only:
-                    rows[(r["address"], int(r["port"]))] = dict(r, port=int(r["port"]))
+                    rows[(r["address"], int(r["port"]))] = dict(r, port=int(r["port"]), honeypot=r.get("honeypot", ""))
     for s in searches:
         label = f"{s['framework']}: {s['matched_on']}"
         if args.count:
@@ -134,7 +139,8 @@ def main():
                 rows[k] = {"address": m["ip_str"], "port": int(m["port"]), "framework": s["framework"],
                            "matched_on": s["matched_on"], "page_title": title, "asn": m.get("asn") or "",
                            "country": (m.get("location") or {}).get("country_code") or "",
-                           "last_seen": (m.get("timestamp") or "")[:10]}
+                           "last_seen": (m.get("timestamp") or "")[:10],
+                           "honeypot": "yes" if "honeypot" in (m.get("tags") or []) else ""}
                 kept += 1
             if not matches or page * 100 >= total:
                 break

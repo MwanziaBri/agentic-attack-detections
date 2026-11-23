@@ -95,26 +95,27 @@ Each folder has a README, the hunts and rules, and a `source-code-signals.md` th
 Hosts on the internet that serve the web console of each framework, found in internet-wide scan data with the fingerprints the rules here use: favicons, page titles, page text that survives a rename, and certificates.
 
 <!-- exposed-consoles:start -->
-An active host is one seen in the seven days to November 23, 2026.
+An active host is one seen in the seven days to November 23, 2026. Hosts the scan data flags as honeypots are left out of both counts.
 
-| Framework | Active hosts | Seen in 30 days |
-|---|---|---|
-| [ARTEX](frameworks/artex) and AntiFox | 2,117 | 2,816 |
-| [Hermes Agent](frameworks/hermes) | 1,016 | 2,192 |
-| [CyberStrikeAI](frameworks/cyberstrikeai) | 799 | 1,188 |
-| [PentAGI](frameworks/pentagi) | 329 | 500 |
-| [Agent Zero](frameworks/agent-zero) | 116 | 175 |
-| [HexStrike](frameworks/hexstrike) | 25 | 30 |
-| [RedAmon](frameworks/redamon) | 20 | 34 |
-| [Cairn](frameworks/cairn) | 17 | 30 |
-| [Xalgorix](frameworks/xalgorix) | 6 | 13 |
-| [Strix](frameworks/strix) | 5 | 12 |
-| [Pentest Swarm AI](frameworks/pentestswarm) | 0 | 0 |
-| All, each host counted once | 4,275 | 6,715 |
+| Framework | Active hosts | Seen in 30 days | Honeypots left out |
+|---|---|---|---|
+| [ARTEX](frameworks/artex) and AntiFox | 2,117 | 2,816 | 0 |
+| [Hermes Agent](frameworks/hermes) | 1,019 | 2,194 | 1 |
+| [CyberStrikeAI](frameworks/cyberstrikeai) | 489 | 671 | 506 |
+| [PentAGI](frameworks/pentagi) | 329 | 500 | 0 |
+| [Agent Zero](frameworks/agent-zero) | 116 | 175 | 0 |
+| [HexStrike](frameworks/hexstrike) | 25 | 30 | 0 |
+| [RedAmon](frameworks/redamon) | 20 | 34 | 0 |
+| [Cairn](frameworks/cairn) | 17 | 30 | 0 |
+| [Xalgorix](frameworks/xalgorix) | 6 | 13 | 0 |
+| [Strix](frameworks/strix) | 5 | 12 | 0 |
+| [Pentest Swarm AI](frameworks/pentestswarm) | 0 | 0 | 0 |
+| All, each host counted once | 3,968 | 6,200 | 507 |
 <!-- exposed-consoles:end -->
 
 - An exposed console is not proof of an attack. Researchers, students and security teams run these tools, and some hosts are decoys.
-- One network holds about a fifth of the CyberStrikeAI hosts and more than a third of the PentAGI hosts. That looks like one mass deployment or a set of decoys, not that many operators ([#21](https://github.com/ThreatDefence/agentic-attack-detections/issues/21)).
+- More than half of the pages titled CyberStrikeAI are flagged as honeypots, which is why that count is so much lower than a title search suggests. The flagged hosts stay in the list with `honeypot` set to `yes`.
+- One network that is not flagged holds more than a third of the remaining CyberStrikeAI hosts and of the PentAGI hosts. That looks like one mass deployment or a set of decoys, not that many operators ([#21](https://github.com/ThreatDefence/agentic-attack-detections/issues/21)).
 - Hermes Agent and Agent Zero are general-purpose agents, so their numbers count exposed agents, not attack consoles. Hermes is counted on its default port only.
 - Consoles served by host name only, or on a port that has not been scanned, are not counted.
 
