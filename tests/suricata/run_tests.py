@@ -214,6 +214,10 @@ def define_cases(work):
     # ---- Strix
     lookup("strix telemetry lookup", [3805001], "strix.gateway.scarf.sh")
     tls_sni("strix telemetry sni", [3805002], "strix.gateway.scarf.sh")
+    lookup("strix telemetry lookup, subdomain", [3805001], "eu.strix.gateway.scarf.sh")
+    lookup("near miss: another project on the same gateway", [], "mystrix.gateway.scarf.sh")
+    tls_sni("near miss: another project on the same gateway, sni", [], "mystrix.gateway.scarf.sh")
+    http("near miss: another project on the same gateway, finding path", [], post("/finding_reported/0.9.1?severity=low", host="mystrix.gateway.scarf.sh"), client="int", server="ext")
     http("strix telemetry finding (decrypted)", [3805003], post("/finding_reported/0.9.1?severity=critical&cwe=cwe-89", host="strix.gateway.scarf.sh"),
          client="int", server="ext")
     http("strix results viewer", [3805010], get("/"), client="int", response=ok("<html><head><title>Strix Results</title></head></html>"))
