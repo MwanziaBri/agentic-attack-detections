@@ -1,0 +1,11 @@
+{"name": "a push named after ARTEX with an issue id", "expected": true, "event": {"cs-method": "PUT", "cs-uri-stem": "/v2/artex-i127739/manifests/latest", "cs-uri-query": "", "cs-user-agent": "docker/27.0"}}
+{"name": "a Hermes write check", "expected": true, "event": {"cs-method": "PUT", "cs-uri-stem": "/v2/hermes-h23645-writecheck/manifests/latest", "cs-uri-query": "", "cs-user-agent": "docker/27.0"}}
+{"name": "a CyberStrikeAI push probe", "expected": true, "event": {"cs-method": "PUT", "cs-uri-stem": "/v2/csai-push-probe/manifests/latest", "cs-uri-query": "", "cs-user-agent": "docker/27.0"}}
+{"name": "a push into the gh0st namespace", "expected": true, "event": {"cs-method": "PUT", "cs-uri-stem": "/v2/gh0st/mydocker-kali/manifests/latest", "cs-uri-query": "", "cs-user-agent": "docker/27.0"}}
+{"name": "a Xalgorix proof image", "expected": true, "event": {"cs-method": "PUT", "cs-uri-stem": "/v2/xalgorix-finalproof/manifests/latest", "cs-uri-query": "", "cs-user-agent": "docker/27.0"}}
+{"name": "an unnamed write test", "expected": true, "event": {"cs-method": "PUT", "cs-uri-stem": "/v2/pwned-test-push2/manifests/latest", "cs-uri-query": "", "cs-user-agent": "docker/27.0"}}
+{"name": "an ordinary image push", "expected": false, "event": {"cs-method": "PUT", "cs-uri-stem": "/v2/backend/manifests/1.4.2", "cs-uri-query": "", "cs-user-agent": "docker/27.0"}}
+{"name": "the Hermes Agent image itself", "expected": false, "event": {"cs-method": "PUT", "cs-uri-stem": "/v2/nousresearch/hermes-agent/manifests/latest", "cs-uri-query": "", "cs-user-agent": "docker/27.0"}}
+{"name": "a company image named artex", "expected": false, "event": {"cs-method": "PUT", "cs-uri-stem": "/v2/artex/billing-api/manifests/latest", "cs-uri-query": "", "cs-user-agent": "docker/27.0"}}
+{"name": "pulling a write-test image", "expected": false, "event": {"cs-method": "GET", "cs-uri-stem": "/v2/pwned-test-push2/manifests/latest", "cs-uri-query": "", "cs-user-agent": "docker/27.0"}}
+{"name": "a blob upload, which comes before the manifest", "expected": false, "event": {"cs-method": "POST", "cs-uri-stem": "/v2/pwned-test-push2/blobs/uploads/", "cs-uri-query": "", "cs-user-agent": "docker/27.0"}}

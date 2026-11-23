@@ -12,7 +12,7 @@ Free to use under the MIT license. Fixes, false-positive reports and new indicat
 
 - **Framework folders.** ARTEX and its AntiFox fork, Cairn, PentAGI, HexStrike, CyberStrikeAI, Strix, Hermes Agent, Agent Zero, RedAmon, Xalgorix and Pentest Swarm AI. Each folder is built from a review of the framework's source code and the public reporting on its use.
 - **Shared behaviors.** Rules for what these frameworks have in common, whatever the tool or the model behind it.
-- **Indicators and feeds.** One CSV of 572 sourced indicators, and the feeds generated from it.
+- **Indicators and feeds.** One CSV of 580 sourced indicators, and the feeds generated from it.
 - **Exposed consoles.** A dated list of addresses where one of these consoles answers on the internet, in [`exposure/`](exposure), with a [count per framework](#exposed-consoles). It is a record of what is exposed, not a detection feed.
 
 Formats: KQL for Microsoft Sentinel and Defender XDR, Sigma, Suricata, Zeek, YARA and STIX 2.1, plus WAF rules for Cloudflare, AWS WAF and Azure WAF. Splunk and Elastic are covered by a Splunk app and Elastic rules for ARTEX, and by Sigma conversions for everything else.
@@ -57,18 +57,18 @@ The capture is test traffic written from the framework source code and published
 
 | | KQL hunts | Sentinel analytics | Sigma | Suricata | YARA | Zeek | Indicators |
 |---|---|---|---|---|---|---|---|
-| [ARTEX](frameworks/artex) | 31 | 7 | 36 | 43 | 4 | script, intel | 246 |
+| [ARTEX](frameworks/artex) | 31 | 7 | 36 | 43 | 4 | script, intel | 247 |
 | [Cairn](frameworks/cairn) | 6 | 2 | 3 | 26 | 6 | intel | 73 |
 | [PentAGI](frameworks/pentagi) | 5 | 2 | 3 | 10 | 3 | intel | 39 |
 | [HexStrike](frameworks/hexstrike) | 4 | 2 | 3 | 7 | 3 | intel | 22 |
-| [CyberStrikeAI](frameworks/cyberstrikeai) | 5 | 2 | 7 | 11 | 4 | intel | 73 |
+| [CyberStrikeAI](frameworks/cyberstrikeai) | 5 | 2 | 7 | 11 | 4 | intel | 74 |
 | [Strix](frameworks/strix) | 3 | 1 | 3 | 5 | 3 | intel | 49 |
-| [Hermes Agent](frameworks/hermes) | 4 | 2 | 3 | 7 | 4 | intel | 75 |
+| [Hermes Agent](frameworks/hermes) | 4 | 2 | 3 | 7 | 4 | intel | 79 |
 | [Agent Zero](frameworks/agent-zero) | 2 | | 1 | 3 | 1 | intel | 8 |
 | [RedAmon](frameworks/redamon) | 3 | | 3 | 10 | 1 | intel | 19 |
-| [Xalgorix](frameworks/xalgorix) | 3 | | 3 | 10 | 1 | intel | 22 |
+| [Xalgorix](frameworks/xalgorix) | 3 | | 3 | 10 | 1 | intel | 24 |
 | [Pentest Swarm AI](frameworks/pentestswarm) | 3 | | 3 | 11 | 1 | intel | 15 |
-| [Shared behaviors](behaviors) | 9 | 2 | 5 | 16 | | package | |
+| [Shared behaviors](behaviors) | 9 | 2 | 6 | 18 | | package | |
 
 Suricata counts are hand-written rules; each framework also has address rules generated from its indicators. Some indicators belong to more than one framework. ARTEX also has a Splunk app, Elastic rules and ES\|QL queries, and an osquery pack.
 
@@ -132,6 +132,7 @@ The addresses, with the port and the fingerprint that found each one, are in [`e
 | An AI agent's page reader on your application next to attack traffic from the same address | KQL hunt, Sigma, Suricata, Zeek |
 | One site probed through hundreds of rotating proxy addresses | KQL hunt, Zeek |
 | Configuration and backup file theft, and probes of WSUS administration services | KQL hunt, Sentinel analytics rule, Sigma, Suricata, Zeek |
+| An attack agent proving it can write to a container registry: a push to a repository named after the agent (`artex-i<id>`, `hermes-h<id>-writecheck`, `csai-push-probe`) or after a write test | Sigma, Suricata |
 | Kerberos user enumeration and SMB or WinRM fan-out from one address | KQL hunt, Zeek |
 | A server calling back to the address that was probing it | KQL hunt, Suricata (PentAGI worker ports), Zeek |
 | AWS credentials used at machine speed from one outside address | KQL hunt |
@@ -143,7 +144,7 @@ The ARTEX folder also carries behavior hunts that apply to every framework: user
 
 | Path | Contents |
 |---|---|
-| [`iocs/indicators.csv`](iocs/indicators.csv) | 572 indicators. Each row has its source, confidence, a review date for addresses and the framework it belongs to. This file is the single source for every feed |
+| [`iocs/indicators.csv`](iocs/indicators.csv) | 580 indicators. Each row has its source, confidence, a review date for addresses and the framework it belongs to. This file is the single source for every feed |
 | [`feeds/`](feeds) | Generated from the CSV: a STIX 2.1 bundle, a Sentinel watchlist, and plain lists of addresses, domains, URLs, user agents and hashes. The plain lists carry medium and high confidence rows only. Low confidence rows, which include legitimate services such as AI model APIs, need their context, so they stay in the CSV, the watchlist and the STIX bundle. [`feeds/by-framework/`](feeds/by-framework) has the lists per framework |
 | [`generated/`](generated) | Every Sigma rule converted to Splunk SPL, Sentinel and Defender XDR KQL, and Elastic ES\|QL and Lucene. [`SUMMARY.md`](generated/SUMMARY.md) shows which rule converted to which backend |
 | [`waf/`](waf) | Cloudflare, AWS WAF and Azure WAF rules built from [`waf/signatures.yaml`](waf/signatures.yaml) and the CSV. The [README](waf/README.md) covers when a WAF helps and how to deploy |

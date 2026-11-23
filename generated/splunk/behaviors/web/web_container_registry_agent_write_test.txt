@@ -1,0 +1,6 @@
+# Attack Agent Write Test on a Container Registry
+# Sigma id 5d869fd4-60e2-5f21-a676-2ddb7b511c66, pipeline splunk_windows
+
+| rex field=cs-uri-stem "(?<cs-uri-stemMatch>/(artex[-_](i\\d|probe|push|poc|rce|test|exploit|retest)|ptx-i\\d|hermes-h\\d))"
+| eval cs-uri-stemCondition=if(isnotnull(cs-uri-stemMatch), "true", "false")
+| search "cs-method"="PUT" "cs-uri-stem"="/v2/*" "cs-uri-stem"="*/manifests/*" "cs-uri-stem" IN ("*writecheck*", "*write-check*", "*push-probe*", "*push-poc*", "*push-test*", "*pwned*", "*hijack-canary*", "*regscan-probe*", "*probe-write-test*", "*/gh0st/*", "*/gh0st-*", "*/fsociety/*", "*/csai-*", "*/cyberstrike-probe*", "*/xalgorix-*") OR "cs-uri-stemCondition"="true"

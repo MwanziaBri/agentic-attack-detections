@@ -332,6 +332,21 @@ def define_cases(work):
     for sid, zone in enumerate(["oast.fun", "oast.pro", "oast.live", "oast.site", "oast.online", "oast.me", "interact.sh", "oastify.com",
                                 "burpcollaborator.net", "dnslog.cn"], start=3801050):
         lookup(f"out-of-band lookup {zone}", [sid], f"c9k2xq7a1b3d.{zone}")
+    def push(repo, tag="latest"):
+        body = '{"schemaVersion": 2}'
+        return (f"PUT /v2/{repo}/manifests/{tag} HTTP/1.1\r\nHost: 10.2.0.5:5000\r\nUser-Agent: docker/27.0\r\n"
+                f"Content-Type: application/vnd.docker.distribution.manifest.v2+json\r\nContent-Length: {len(body)}\r\n\r\n{body}").encode()
+    created = ok("", "201 Created")
+    http("registry push named after artex with an issue id", [3801041], push("artex-i127739"), created, port=5000)
+    http("registry push of a hermes write check", [3801041, 3801042], push("hermes-h23645-writecheck"), created, port=5000)
+    http("registry push of a cyberstrikeai push probe", [3801041, 3801042], push("csai-push-probe"), created, port=5000)
+    http("registry push into a gh0st namespace", [3801041], push("gh0st/mydocker-kali"), created, port=5000)
+    http("registry push of a xalgorix proof image", [3801041], push("xalgorix-finalproof"), created, port=5000)
+    http("registry push of an unnamed write test", [3801042], push("pwned-test-push2"), created, port=5000)
+    http("near miss: an ordinary image push", [], push("backend", "1.4.2"), created, port=5000)
+    http("near miss: the hermes agent image itself", [], push("nousresearch/hermes-agent"), created, port=5000)
+    http("near miss: a company image named artex", [], push("artex/billing-api"), created, port=5000)
+    http("near miss: pulling a write-test image is not a push", [], get("/v2/pwned-test-push2/manifests/latest", ua="docker/27.0", host="10.2.0.5:5000"), port=5000)
     lookup("near miss: Burp client polling oastify", [], "polling.oastify.com")
     lookup("near miss: Burp client polling burpcollaborator", [], "polling.burpcollaborator.net")
     lookup("payload name with a polling. label in front, oastify", [3801057], "polling.x7k2m9p4q1.oastify.com")

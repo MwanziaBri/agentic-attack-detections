@@ -1,0 +1,49 @@
+title: Attack Agent Write Test on a Container Registry
+id: 5d869fd4-60e2-5f21-a676-2ddb7b511c66
+status: experimental
+description: |
+    Detects an image pushed to a container registry under a repository named after an attack agent or a write test:
+    artex-i<issue id>, hermes-h<id>-writecheck, csai-push-probe, xalgorix-pwn, the gh0st/ and fsociety/ namespaces, or
+    names that hold writecheck, push-probe or pwned. Agents that find a registry open to pushes prove it by pushing a
+    small image, and they name it after themselves. Open registries on the internet carry these names by the hundred.
+    A push can be followed by a poisoned copy of one of your own images, so check what else that source pushed.
+references:
+    - https://github.com/ThreatDefence/agentic-attack-detections
+author: ThreatDefence
+date: 2026-11-23
+tags:
+    - attack.initial-access
+    - attack.t1190
+    - attack.persistence
+    - attack.t1525
+logsource:
+    category: webserver
+detection:
+    selection_push:
+        cs-method: 'PUT'
+        cs-uri-stem|startswith: '/v2/'
+        cs-uri-stem|contains: '/manifests/'
+    selection_names:
+        cs-uri-stem|contains:
+            - 'writecheck'
+            - 'write-check'
+            - 'push-probe'
+            - 'push-poc'
+            - 'push-test'
+            - 'pwned'
+            - 'hijack-canary'
+            - 'regscan-probe'
+            - 'probe-write-test'
+            - '/gh0st/'
+            - '/gh0st-'
+            - '/fsociety/'
+            - '/csai-'
+            - '/cyberstrike-probe'
+            - '/xalgorix-'
+    selection_ids:
+        cs-uri-stem|re: '/(artex[-_](i\d|probe|push|poc|rce|test|exploit|retest)|ptx-i\d|hermes-h\d)'
+    condition: selection_push and (selection_names or selection_ids)
+falsepositives:
+    - Security teams testing their own registry
+    - A project of your own with one of these words in its name
+level: high
