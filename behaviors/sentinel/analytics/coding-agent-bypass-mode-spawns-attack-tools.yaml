@@ -3,6 +3,8 @@ name: AI agent CLI starts attack tools
 description: |
   A scanner, a Kerberos or SMB attack tool or an exploit kit started under an AI agent CLI: Claude Code (through its
   shell-snapshots shell or its Windows shell launcher), Qwen Code, Kimi CLI, Codex, opencode, Hermes or Cairn's workers.
+  Tools written in Python, Ruby or Perl (sqlmap, NetExec, wpscan, nikto) run as their interpreter and are found by the
+  script in the command line.
   The agent is found from the process tree or its command line, not from an auto-approve flag: staff use those flags
   too, and an agent can run an attack tool without one. Tools are read from the last hour, agent processes from the
   last day. Whatever model is behind it, this is agentic AI running an attack tool: check who ran it and the target.
@@ -31,10 +33,13 @@ query: |
   let AgentBinaries = dynamic(["claude", "codex", "qwen", "kimi", "opencode", "hermes"]);
   let AgentCommandLine = @'(?i)(@anthropic-ai[/\\]claude-code|@qwen-code[/\\]|@openai[/\\]codex|kimi[-_]cli|opencode-ai|(^"?|[/\\])(claude|codex|qwen|kimi|opencode)(\.exe|\.cmd|\.js)?"?(\s|$)|--provider cairn|model_provider="cairn"|/tmp/cairn-pi/)';
   let AutoApproveFlag = @'(--dangerously-skip-permissions|--dangerously-bypass-approvals-and-sandbox|\s--yolo\b|\s--auto-approve\b|--approval-mode[\s=]+yolo)';
+  let ScriptTool = @'(?i)/(sqlmap|nikto|wpscan|netexec|nxc|crackmapexec|bloodyad|coercer|evil-winrm|msfconsole|dirsearch|enum4linux-ng|pwncat|pwncat-cs|responder)(\s|$)|[/\\ ]((sqlmap|bloodyad|dirsearch|enum4linux-ng)\.py|nikto\.pl)|(coercer[/\\]coercer|responder[/\\]responder)\.py';
   let Tools = DeviceProcessEvents
       | where TimeGenerated > ago(1h)
       | extend Tool = replace_string(tolower(FileName), ".exe", "")
-      | where Tool in (AttackTools) or ProcessCommandLine has_any ("impacket-", "ysoserial", "jwt_tool", "PayloadsAllTheThings", "/home/kali/pocs/");
+      | extend ScriptName = iff(FileName matches regex @'(?i)^(python|ruby|perl)', tolower(extract(ScriptTool, 0, ProcessCommandLine)), "")
+      | where Tool in (AttackTools) or isnotempty(ScriptName) or ProcessCommandLine has_any ("impacket-", "ysoserial", "jwt_tool", "PayloadsAllTheThings", "/home/kali/pocs/")
+      | extend Tool = iff(isnotempty(ScriptName), trim(@'[/\\\s]+', ScriptName), Tool);
   let ByTree = Tools
       | extend Via = case(
           InitiatingProcessCommandLine contains "shell-snapshots" or InitiatingProcessCommandLine contains "CLAUDE_CODE_SHELL_LAUNCHER_SCRIPT", "Claude Code shell is the parent",
@@ -50,12 +55,12 @@ query: |
   let ByAgentProcess = Tools
       | join kind=inner Agents on DeviceId
       | where TimeGenerated between (AgentTime .. (AgentTime + 7d)) and (InitiatingProcessParentId == AgentPid or InitiatingProcessId == AgentPid)
-      | summarize arg_max(AgentTime, AgentCmd) by DeviceId, DeviceName, AccountName, TimeGenerated, FileName, ProcessCommandLine, ProcessId
+      | summarize arg_max(AgentTime, AgentCmd) by DeviceId, DeviceName, AccountName, TimeGenerated, FileName, Tool, ProcessCommandLine, ProcessId
       | extend Via = "agent found by its command line";
   union ByTree, ByAgentProcess
-  | summarize Tools=make_set(FileName, 20), Commands=make_set(substring(ProcessCommandLine, 0, 200), 15),
+  | summarize Tools=make_set(Tool, 20), Commands=make_set(substring(ProcessCommandLine, 0, 200), 15),
       FirstTool=min(TimeGenerated), LastTool=max(TimeGenerated), Via=make_set(Via, 5), AgentCmds=make_set(substring(AgentCmd, 0, 300), 5)
       by DeviceName, AccountName
   | extend AutoApprove = tostring(AgentCmds) matches regex AutoApproveFlag, CairnMarker = tostring(AgentCmds) contains "cairn"
-version: 2.0.0
+version: 2.1.0
 kind: Scheduled
