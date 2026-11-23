@@ -1,0 +1,12 @@
+{"name": "a unique payload name under an interactsh server", "expected": true, "event": {"QueryName": "c8a1f0d2e4b6a7c9d1e3.oast.fun"}}
+{"name": "a payload name under Burp Collaborator", "expected": true, "event": {"QueryName": "x7k2m9p4q1.oastify.com"}}
+{"name": "the same lookup in a log that writes a dot at the end", "expected": true, "event": {"QueryName": "c8a1f0d2e4b6a7c9d1e3.oast.fun."}}
+{"name": "a payload name with a polling. label put in front of it", "expected": true, "event": {"QueryName": "polling.c8a1f0d2e4b6a7c9d1e3.oast.fun"}}
+{"name": "a Burp payload name with a polling. label put in front of it", "expected": true, "event": {"QueryName": "polling.x7k2m9p4q1.oastify.com"}}
+{"name": "names are matched without regard to case", "expected": true, "event": {"QueryName": "C8A1F0D2.OAST.PRO"}}
+{"name": "Burp Suite polling for results", "expected": false, "event": {"QueryName": "polling.oastify.com"}}
+{"name": "Burp Suite polling the older service name", "expected": false, "event": {"QueryName": "polling.burpcollaborator.net"}}
+{"name": "Burp Suite polling, in a log that writes a dot at the end", "expected": false, "event": {"QueryName": "polling.oastify.com."}}
+{"name": "a different domain whose name ends with a listed one, with no dot between", "expected": false, "event": {"QueryName": "www.toast.fun"}}
+{"name": "a listed name used as a label under another domain", "expected": false, "event": {"QueryName": "oast.fun.example.com"}}
+{"name": "an ordinary lookup", "expected": false, "event": {"QueryName": "www.example.com"}}

@@ -1,0 +1,11 @@
+{"name": "an agent client calling a listed model API", "expected": true, "event": {"c-useragent": "claude-cli/2.0.1 (external, cli)", "cs-host": "api.deepseek.com"}}
+{"name": "another agent client calling another listed API", "expected": true, "event": {"c-useragent": "QwenCode/0.1.0 (linux; x64)", "cs-host": "dashscope.aliyuncs.com"}}
+{"name": "an agent client calling a model gateway", "expected": true, "event": {"c-useragent": "opencode/1.0.0", "cs-host": "openrouter.ai"}}
+{"name": "a subdomain of a listed host", "expected": true, "event": {"c-useragent": "KimiCLI/1.2.0", "cs-host": "eu.api.moonshot.ai"}}
+{"name": "host names are matched without regard to case", "expected": true, "event": {"c-useragent": "codex_cli_rs/0.40.0", "cs-host": "API.DeepSeek.com"}}
+{"name": "a look-alike domain that only ends with a listed name", "expected": false, "event": {"c-useragent": "claude-cli/2.0.1 (external, cli)", "cs-host": "notopenrouter.ai"}}
+{"name": "a different host whose name ends with a listed one, with no dot between", "expected": false, "event": {"c-useragent": "claude-cli/2.0.1 (external, cli)", "cs-host": "xapi.z.ai"}}
+{"name": "a listed name used as a label under another domain", "expected": false, "event": {"c-useragent": "claude-cli/2.0.1 (external, cli)", "cs-host": "openrouter.ai.example.com"}}
+{"name": "an agent client calling a host that is not listed", "expected": false, "event": {"c-useragent": "claude-cli/2.0.1 (external, cli)", "cs-host": "api.example.com"}}
+{"name": "a browser calling a listed host", "expected": false, "event": {"c-useragent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36", "cs-host": "api.deepseek.com"}}
+{"name": "a client whose name only contains an agent's, not at the start", "expected": false, "event": {"c-useragent": "python-requests/2.32.3 opencode/1.0.0", "cs-host": "openrouter.ai"}}

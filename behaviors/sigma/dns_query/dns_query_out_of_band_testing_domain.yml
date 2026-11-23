@@ -10,6 +10,7 @@ references:
     - https://github.com/ThreatDefence/agentic-attack-detections
 author: ThreatDefence
 date: 2026-11-21
+modified: 2026-11-23
 tags:
     - attack.initial-access
     - attack.t1190
@@ -17,6 +18,7 @@ logsource:
     category: dns_query
 detection:
     selection:
+        # Some DNS logs write names fully qualified, with a dot at the end
         QueryName|endswith:
             - '.oast.fun'
             - '.oast.pro'
@@ -30,9 +32,26 @@ detection:
             - '.dnslog.cn'
             - '.ceye.io'
             - '.requestrepo.com'
+            - '.oast.fun.'
+            - '.oast.pro.'
+            - '.oast.live.'
+            - '.oast.site.'
+            - '.oast.online.'
+            - '.oast.me.'
+            - '.interact.sh.'
+            - '.oastify.com.'
+            - '.burpcollaborator.net.'
+            - '.dnslog.cn.'
+            - '.ceye.io.'
+            - '.requestrepo.com.'
     filter_burp_polling:
-        # Burp Suite's own client polling for results, not a payload firing on a server
-        QueryName|startswith: 'polling.'
+        # Burp Suite's own client polling for results, not a payload firing on a server. Only these exact names:
+        # any payload name can be given a polling. label in front, so a prefix match would hide real hits
+        QueryName:
+            - 'polling.oastify.com'
+            - 'polling.oastify.com.'
+            - 'polling.burpcollaborator.net'
+            - 'polling.burpcollaborator.net.'
     condition: selection and not filter_burp_polling
 falsepositives:
     - Authorized penetration tests and bug bounty research against your servers
