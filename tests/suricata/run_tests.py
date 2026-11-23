@@ -256,6 +256,8 @@ def define_cases(work):
         lookup(f"out-of-band lookup {zone}", [sid], f"c9k2xq7a1b3d.{zone}")
     lookup("near miss: Burp client polling oastify", [], "polling.oastify.com")
     lookup("near miss: Burp client polling burpcollaborator", [], "polling.burpcollaborator.net")
+    lookup("payload name with a polling. label in front, oastify", [3801057], "polling.x7k2m9p4q1.oastify.com")
+    lookup("payload name with a polling. label in front, burpcollaborator", [3801058], "polling.x7k2m9p4q1.burpcollaborator.net")
     http("near miss: wsus service from inside", [], post("/ApiRemoting30/WebService.asmx", "<soap/>", ctype="text/xml"), client="int", port=8530)
 
 

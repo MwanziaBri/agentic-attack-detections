@@ -196,8 +196,10 @@ pause(2)
 session(WEB, "198.51.100.50", nxt(), 443, client_hello("assets.cdn.example.net"))
 
 # 8. Out-of-band lookups (Out_Of_Band_Lookup). Burp's own polling name comes first and must stay quiet. The server
-# then looks up two interactsh names: one notice, not two. A laptop outside server_nets raises nothing.
+# then looks up a payload name with a polling. label in front, which must not be skipped, and two more interactsh
+# names: one notice, not three. A laptop outside server_nets raises nothing.
 dns(WEB, "polling.oastify.com", 1)
+dns(WEB, "polling.b8j1wp6z0a2c.oast.fun", 6)
 dns(WEB, "c9k2xq7a1b3d.oast.fun", 2)
 dns(WEB, "d0m3zr8b2c4e.oast.fun", 3)
 dns(LAPTOP, "e1n4as9c3d5f.oast.fun", 4)

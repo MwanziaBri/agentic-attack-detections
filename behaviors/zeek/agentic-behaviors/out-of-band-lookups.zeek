@@ -4,8 +4,10 @@
 ##! Strix's sandbox ships interactsh-client and its skills use *.oast.fun; nuclei uses the same interactsh servers;
 ##! CyberStrikeAI operators used dnslog.cn. When one of your servers looks up one of these names, a payload ran on it.
 ##!
-##! A testing client polls its own service for results (Burp asks for polling.oastify.com all day), so names that
-##! start with "polling." are skipped. One notice per source per suppress_for (an hour), whatever names it looks up.
+##! A testing client polls its own service for results (Burp asks for polling.oastify.com or
+##! polling.burpcollaborator.net all day), so those two names are skipped. Only the exact names: a payload name can
+##! carry a "polling." label in front and still reach the callback service. One notice per source per suppress_for
+##! (an hour), whatever names it looks up.
 ##!
 ##! Cluster: each lookup is judged on its own, and the Notice framework shares suppression between workers.
 
@@ -27,7 +29,7 @@ export {
     } &redef;
 
     ## Names a testing client looks up itself, not ones a payload makes a target look up.
-    const oob_ignore_names: pattern = /^polling\./ &redef;
+    const oob_ignore_names: pattern = /^polling\.(oastify\.com|burpcollaborator\.net)$/ &redef;
 }
 
 event dns_request(c: connection, msg: dns_msg, query: string, qtype: count, qclass: count)

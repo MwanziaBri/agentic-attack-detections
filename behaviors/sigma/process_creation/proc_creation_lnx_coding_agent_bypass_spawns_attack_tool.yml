@@ -9,7 +9,8 @@ description: |
     agent one level above the parent, so this rule only sees them when they start the tool directly; the KQL hunt in
     behaviors/sentinel/hunting covers the grandparent. The model behind the agent does not matter.
     Tools written in Python, Ruby or Perl (sqlmap, NetExec, Metasploit, nikto and others) run under their interpreter,
-    so the image is python3, ruby or perl and the tool is named in the command line; the script selections cover them.
+    so the image is python3, ruby or perl and the tool is the script in the command line; the script selections cover
+    them. A tool started as a module (python3 -m) is not covered.
     Agents installed with npm or pip run under node or python and are found by their package path in the parent
     command line.
 references:
@@ -102,28 +103,59 @@ detection:
             - '/perl'
             - '\perl'
     selection_script_tool:
-        CommandLine|contains:
-            - '/sqlmap'
-            - 'sqlmap.py'
-            - '/nikto'
-            - 'nikto.pl'
-            - '/wpscan'
-            - '/netexec'
-            - '/nxc'
-            - '/crackmapexec'
-            - '/bloodyAD'
-            - 'bloodyAD.py'
-            - '/coercer'
-            - 'Coercer.py'
-            - '/evil-winrm'
-            - '/msfconsole'
-            - '/dirsearch'
-            - 'dirsearch.py'
-            - '/enum4linux-ng'
-            - 'enum4linux-ng.py'
-            - '/pwncat'
-            - '/responder'
-            - 'Responder.py'
+        # The tool as the script that is run: its path followed by an argument, or at the end of the command line.
+        # A folder or file that only has a tool name in it (src/responder/handler.py, /srv/nxcloud) does not match
+        - CommandLine|contains:
+              - '/sqlmap '
+              - '/nikto '
+              - '/wpscan '
+              - '/netexec '
+              - '/nxc '
+              - '/crackmapexec '
+              - '/bloodyAD '
+              - '/coercer '
+              - '/evil-winrm '
+              - '/msfconsole '
+              - '/dirsearch '
+              - '/enum4linux-ng '
+              - '/pwncat '
+              - '/pwncat-cs '
+              - '/responder '
+              - '/sqlmap.py'
+              - '\sqlmap.py'
+              - ' sqlmap.py'
+              - '/nikto.pl'
+              - '\nikto.pl'
+              - ' nikto.pl'
+              - '/bloodyAD.py'
+              - '\bloodyAD.py'
+              - ' bloodyAD.py'
+              - '/dirsearch.py'
+              - '\dirsearch.py'
+              - ' dirsearch.py'
+              - '/enum4linux-ng.py'
+              - '\enum4linux-ng.py'
+              - ' enum4linux-ng.py'
+              - 'Coercer/Coercer.py'
+              - 'Coercer\Coercer.py'
+              - 'Responder/Responder.py'
+              - 'Responder\Responder.py'
+        - CommandLine|endswith:
+              - '/sqlmap'
+              - '/nikto'
+              - '/wpscan'
+              - '/netexec'
+              - '/nxc'
+              - '/crackmapexec'
+              - '/bloodyAD'
+              - '/coercer'
+              - '/evil-winrm'
+              - '/msfconsole'
+              - '/dirsearch'
+              - '/enum4linux-ng'
+              - '/pwncat'
+              - '/pwncat-cs'
+              - '/responder'
     selection_agent_shell:
         ParentCommandLine|contains:
             - 'shell-snapshots'
@@ -159,5 +191,4 @@ detection:
     condition: (selection_tool or (selection_script_interpreter and selection_script_tool)) and 1 of selection_agent_*
 falsepositives:
     - Staff who use an AI agent for authorized security testing or network troubleshooting
-    - A script run under an agent from a folder whose path holds a tool name, such as a project checked out in a directory called sqlmap
 level: medium

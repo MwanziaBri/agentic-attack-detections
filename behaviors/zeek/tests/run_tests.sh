@@ -47,8 +47,10 @@ quiet "a SYN scan raised SMB_WinRM_Fan_Out" SMB_WinRM_Fan_Out "10.0.0.67"
 quiet "a connect scan raised SMB_WinRM_Fan_Out" SMB_WinRM_Fan_Out "10.0.0.68"
 quiet "an ordinary visitor raised Callback_To_Prober" Callback_To_Prober "203.0.113.41"
 quiet "a CDN edge raised Callback_To_Prober" Callback_To_Prober "198.51.100.50"
-quiet "Burp's polling name raised Out_Of_Band_Lookup" Out_Of_Band_Lookup "polling."
-# Two interactsh names from one server inside the hour: one notice.
+quiet "Burp's polling name raised Out_Of_Band_Lookup" Out_Of_Band_Lookup "looked up polling.oastify.com"
+# A payload name with a polling. label in front is not Burp's client: it must raise the notice.
+[ "$(count Out_Of_Band_Lookup 'looked up polling.b8j1wp6z0a2c.oast.fun')" = 1 ] || { echo "MISSING: Out_Of_Band_Lookup for a payload name that starts with polling."; fail=1; }
+# Three interactsh names from one server inside the hour: one notice.
 [ "$(count Out_Of_Band_Lookup)" = 1 ] || { echo "UNEXPECTED: $(count Out_Of_Band_Lookup) Out_Of_Band_Lookup notices, want 1"; fail=1; }
 
 # With server_nets left empty the server checks stay off and Zeek says so once.

@@ -6,26 +6,29 @@
 // interactsh-client and its skills tell the agent to use *.oast.fun; nuclei uses the same interactsh servers; CyberStrikeAI's
 // operators used dnslog.cn; Burp uses oastify.com. When one of YOUR servers resolves or contacts one of these names, a
 // payload ran on it, and the process that did it is the vulnerable one. Pentests and bug bounty hunters do this too.
-// Burp Suite polls polling.oastify.com for results from the tester's own machine. That is not a payload firing, so it is left out.
+// Burp Suite polls polling.oastify.com and polling.burpcollaborator.net for results from the tester's own machine. That is
+// not a payload firing, so those two names are left out. Only the exact names: a payload name can carry a polling. label
+// in front and still reach the callback service.
 
 let Window = 14d;
+let BurpPolling = dynamic(["polling.oastify.com", "polling.burpcollaborator.net"]);
 let OOB = dynamic(["oast.fun", "oast.pro", "oast.live", "oast.site", "oast.online", "oast.me", "interact.sh", "oastify.com", "burpcollaborator.net", "dnslog.cn", "ceye.io", "requestrepo.com"]);
 union isfuzzy=true
     (DeviceNetworkEvents
         | where Timestamp > ago(Window)
-        | where RemoteUrl has_any (OOB) and RemoteUrl !startswith "polling."
+        | where RemoteUrl has_any (OOB) and trim_end(@"\.", tolower(RemoteUrl)) !in (BurpPolling)
         | project Timestamp, DeviceName, Source="DeviceNetworkEvents", Name=RemoteUrl,
             Process=strcat(InitiatingProcessFileName, " ", substring(InitiatingProcessCommandLine, 0, 200))),
     (DeviceEvents
         | where Timestamp > ago(Window)
         | where ActionType == "DnsQueryResponse"
         | extend Name = tostring(parse_json(AdditionalFields).DnsQueryString)
-        | where Name has_any (OOB) and Name !startswith "polling."
+        | where Name has_any (OOB) and trim_end(@"\.", tolower(Name)) !in (BurpPolling)
         | project Timestamp, DeviceName, Source="DeviceEvents DNS", Name,
             Process=strcat(InitiatingProcessFileName, " ", substring(InitiatingProcessCommandLine, 0, 200))),
     (DnsEvents
         | where TimeGenerated > ago(Window)
-        | where Name has_any (OOB) and Name !startswith "polling."
+        | where Name has_any (OOB) and trim_end(@"\.", tolower(Name)) !in (BurpPolling)
         | project Timestamp=TimeGenerated, DeviceName=Computer, Source="DnsEvents", Name, Process=ClientIP)
 // The unique label in front of the service name ties a lookup to one payload
 | extend Service = extract(@"([a-z0-9-]+\.[a-z]+)$", 1, tolower(Name))
