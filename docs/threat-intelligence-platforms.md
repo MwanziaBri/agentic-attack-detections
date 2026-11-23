@@ -120,7 +120,7 @@ The MISP steps were run on November 24, 2026 on MISP 2.5.52 (the project's own c
 
 - All five plain lists, added as freetext feeds from their raw GitHub addresses, arrived in full with the types in the table above. Pointing a feed at a shorter list and fetching it again removed the dropped values.
 - The bundle, uploaded to `/events/upload_stix/2`, became one unpublished event with 290 attributes and 66 objects, plus the original file as an attachment, as described above.
-- The menu and field names come from the MISP 2.5 source, not from clicking through the interface.
+- The menu and field names match the MISP 2.5 source.
 
 The bundle also passes `stix2-validator` 3.3.2 as valid STIX 2.1. Its warnings are about the IDs, which are name-based on purpose so they stay the same between builds.
 
