@@ -12,7 +12,7 @@ There are no dates. This page is updated with each release.
 ## Next
 
 - **More log sources.** Google Cloud, Okta, Kubernetes and build pipelines.
-- **Tripwires.** Bait that an agent takes and a person doesn't. It builds on canary tokens.
+- **Tripwires.** Bait that an agent takes and a person doesn't.
 - **Easier setup.** One-step deployment for Microsoft Sentinel, Splunk and Elastic content for every framework, and a MITRE ATT&CK mapping.
 
 ## Later
