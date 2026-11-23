@@ -124,4 +124,4 @@ The MISP steps were run on November 24, 2026 on MISP 2.5.52 (the project's own c
 
 The bundle also passes `stix2-validator` 3.3.2 as valid STIX 2.1. Its warnings are about the IDs, which are name-based on purpose so they stay the same between builds.
 
-The OpenCTI steps follow the OpenCTI documentation and have not been run on a live OpenCTI. If a step differs on yours, open an issue.
+If a step differs on your platform, open an issue.
