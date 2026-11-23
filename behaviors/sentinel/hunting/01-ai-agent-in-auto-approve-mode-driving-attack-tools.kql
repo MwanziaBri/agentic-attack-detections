@@ -25,7 +25,7 @@ let AutoApproveFlag = @'(--dangerously-skip-permissions|--dangerously-bypass-app
 // script that runs: its path followed by an argument or at the end of the command line, or its .py or .pl file. A folder
 // or file that only has a tool name in it (src/responder/handler.py, /srv/nxcloud) does not match. The Tools column
 // shows the tool name, not the interpreter.
-let ScriptTool = @'(?i)/(sqlmap|nikto|wpscan|netexec|nxc|crackmapexec|bloodyad|coercer|evil-winrm|msfconsole|dirsearch|enum4linux-ng|pwncat|pwncat-cs|responder)(\s|$)|[/\\ ]((sqlmap|bloodyad|dirsearch|enum4linux-ng)\.py|nikto\.pl)|(coercer[/\\]coercer|responder[/\\]responder)\.py';
+let ScriptTool = @'(?i)/(sqlmap|nikto|wpscan|netexec|nxc|crackmapexec|bloodyad|coercer|evil-winrm|msfconsole|dirsearch|enum4linux-ng|pwncat|pwncat-cs|responder)(\s|$)|[/\\ ]((sqlmap|bloodyad|dirsearch|enum4linux-ng)\.py|nikto\.pl)|(^|[/\\ ])(coercer[/\\]coercer|responder[/\\]responder)\.py';
 let Tools = DeviceProcessEvents
     | where Timestamp > ago(Window)
     | extend Tool = replace_string(tolower(FileName), ".exe", "")

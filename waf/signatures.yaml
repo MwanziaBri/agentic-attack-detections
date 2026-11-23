@@ -21,7 +21,7 @@
 #   ip              addresses from iocs/indicators.csv (type ipv4/ipv6), dropping rows past review_by on `as_of`
 # op: contains or starts_with. nocase: values are compared lowercased (write them lowercase here).
 
-as_of: "2026-11-22"   # date used to drop expired addresses; bump it with each release
+as_of: "2026-11-23"   # date used to drop expired addresses; bump it with each release
 
 groups:
   - id: framework-user-agents

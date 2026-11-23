@@ -31,7 +31,7 @@ SRC = ROOT / "iocs" / "indicators.csv"
 NOW = "2026-11-21T00:00:00.000Z"
 # Stable release cutoff, synchronized with waf/signatures.yaml.
 # Wall-clock time must not make feed regeneration non-reproducible.
-ACTIVE_AS_OF = "2026-11-22"
+ACTIVE_AS_OF = "2026-11-23"
 CONFIDENCE_RANK = {"low": 0, "medium": 1, "high": 2}
 NS = uuid.UUID("5b2d4b5e-6c3a-4f0e-9a1e-7d8c2f3a4b10")  # fixed namespace so STIX ids stay stable between builds
 

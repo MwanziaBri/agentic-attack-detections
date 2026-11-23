@@ -33,7 +33,7 @@ query: |
   let AgentBinaries = dynamic(["claude", "codex", "qwen", "kimi", "opencode", "hermes"]);
   let AgentCommandLine = @'(?i)(@anthropic-ai[/\\]claude-code|@qwen-code[/\\]|@openai[/\\]codex|kimi[-_]cli|opencode-ai|(^"?|[/\\])(claude|codex|qwen|kimi|opencode)(\.exe|\.cmd|\.js)?"?(\s|$)|--provider cairn|model_provider="cairn"|/tmp/cairn-pi/)';
   let AutoApproveFlag = @'(--dangerously-skip-permissions|--dangerously-bypass-approvals-and-sandbox|\s--yolo\b|\s--auto-approve\b|--approval-mode[\s=]+yolo)';
-  let ScriptTool = @'(?i)/(sqlmap|nikto|wpscan|netexec|nxc|crackmapexec|bloodyad|coercer|evil-winrm|msfconsole|dirsearch|enum4linux-ng|pwncat|pwncat-cs|responder)(\s|$)|[/\\ ]((sqlmap|bloodyad|dirsearch|enum4linux-ng)\.py|nikto\.pl)|(coercer[/\\]coercer|responder[/\\]responder)\.py';
+  let ScriptTool = @'(?i)/(sqlmap|nikto|wpscan|netexec|nxc|crackmapexec|bloodyad|coercer|evil-winrm|msfconsole|dirsearch|enum4linux-ng|pwncat|pwncat-cs|responder)(\s|$)|[/\\ ]((sqlmap|bloodyad|dirsearch|enum4linux-ng)\.py|nikto\.pl)|(^|[/\\ ])(coercer[/\\]coercer|responder[/\\]responder)\.py';
   let Tools = DeviceProcessEvents
       | where TimeGenerated > ago(1h)
       | extend Tool = replace_string(tolower(FileName), ".exe", "")
