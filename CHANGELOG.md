@@ -7,6 +7,7 @@ No detection changes. Sigma rules can now be tested against sample events.
 - `tests/sigma/run_tests.py` evaluates a Sigma rule against test events in `tests/sigma/fixtures/<rule name>.jsonl` and fails when a rule matches an event it should not, or misses one it should match. It also evaluates every Sigma rule once, so a rule the test cannot handle fails the run. Until now Sigma rules were checked for syntax and conversion only.
 - First test events: "AI Agent CLI Starts an Attack Tool", with two matches and four near misses. Four of them are adapted from test cases by @blitzcrieg1, who suggested this in #13. [`tests/sigma/README.md`](tests/sigma/README.md) has the format for adding more.
 - CI runs the test on every push.
+- A [roadmap](ROADMAP.md): more work on rules for what attacking agents do, whatever the framework, and on proof that each rule works.
 
 ## 2.9.2, November 23, 2026
 

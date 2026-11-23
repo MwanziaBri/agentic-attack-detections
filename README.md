@@ -175,6 +175,8 @@ bash behaviors/zeek/tests/run_tests.sh                 # needs zeek on the PATH
 
 Pull requests are welcome. The most useful contributions are false-positive reports, missed detections and new indicators with a source. See [CONTRIBUTING.md](CONTRIBUTING.md) for the checks to run, and [docs/adding-a-framework.md](docs/adding-a-framework.md) to add a framework.
 
+Where the project is going is in the [roadmap](ROADMAP.md).
+
 ## Getting help
 
 Open an [issue](https://github.com/ThreatDefence/agentic-attack-detections/issues). There are forms for a false positive, a missed detection, a new indicator and a new framework. Describe the shape of the event; never paste customer data. For a security problem in the repository itself, see [SECURITY.md](SECURITY.md).
