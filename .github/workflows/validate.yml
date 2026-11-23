@@ -15,8 +15,11 @@ jobs:
       - name: Install tools
         run: |
           pip install -r tools/requirements.txt
+          echo "deb https://download.opensuse.org/repositories/security:/zeek/xUbuntu_24.04/ /" | sudo tee /etc/apt/sources.list.d/zeek.list
+          curl -fsSL https://download.opensuse.org/repositories/security:/zeek/xUbuntu_24.04/Release.key | gpg --dearmor | sudo tee /etc/apt/trusted.gpg.d/zeek.gpg > /dev/null
           sudo apt-get update
-          sudo apt-get install -y suricata
+          sudo apt-get install -y suricata zeek-9.0-core
+          echo /opt/zeek/bin >> "$GITHUB_PATH"
       - name: Test IOC confidence, expiry and SID policy
         run: python3 -m unittest discover -s tests/feeds -p 'test_*.py' -v
       - name: Validate rules, queries and feeds
@@ -29,6 +32,13 @@ jobs:
         run: python tests/kql/run_tests.py --require --wait 180
       - name: Replay test flows through Suricata
         run: python tests/suricata/run_tests.py
+      - name: Run the Zeek tests
+        run: |
+          zeek --version
+          bash behaviors/zeek/tests/run_tests.sh
+          bash frameworks/artex/tests/run_network_tests.sh
+          bash frameworks/cyberstrikeai/tests/run_zeek_tests.sh
+          bash frameworks/hexstrike/tests/run_zeek_tests.sh
       - name: Convert Sigma to Splunk, Sentinel and Elastic
         run: python tools/convert.py
       - name: Check generated conversions are committed

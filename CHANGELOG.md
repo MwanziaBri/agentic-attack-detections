@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- CI installs Zeek 9.0 and runs the Zeek tests: the behaviors package, ARTEX, CyberStrikeAI and HexStrike (#3). The validator now parses every Zeek package on each push and pull request.
 - Zeek scripts for CyberStrikeAI and HexStrike (#6). CyberStrikeAI: the webshell manager, the OS probe and a server answering it, implant check-ins with `X-Implant-Token` and `X-Session-Token`, the implant's cut-short Chrome user agent, the TCP implant's `CSB1` greeting, the console user agent and the console's `CN=CyberStrikeAI` certificate. HexStrike: its user agents, the generated-exploit user agent, the XSS probe, requests to `/api/command` and `/api/tools/` on 8888, and a server answering its health check. Each has a sample capture with near misses and `tests/run_zeek_tests.sh`.
 - New page: [docs/threat-intelligence-platforms.md](docs/threat-intelligence-platforms.md) has the steps for loading the plain lists and the STIX bundle into MISP and OpenCTI, and says which fields arrive and which are dropped (#5).
 - New shared behavior: an attack agent proving it can write to a container registry. Agents that find a registry open to pushes push a small image named after themselves, such as `artex-i127739`, `hermes-h23645-writecheck`, `csai-push-probe` or `xalgorix-pwn`; one open registry carried test images from at least five tools. A Sigma rule with test events and Suricata rules 3801041 and 3801042 match the push. Eight repository names are added as indicators, including the `gh0st/` and `fsociety/` images that match Carbonato's naming.
