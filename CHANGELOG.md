@@ -2,7 +2,7 @@
 
 ## 2.9.3, November 23, 2026
 
-Sigma rules can now be tested against sample events, and three behavior rules are corrected. The rule fixes were contributed by @nerdyhacks in #15, #16, #17 and #18.
+Sigma rules can now be tested against sample events, and rules that missed real activity or matched look-alike names are corrected. The rule fixes were contributed by @nerdyhacks in #15, #16, #17 and #18.
 
 - `tests/sigma/run_tests.py` evaluates a Sigma rule against test events in `tests/sigma/fixtures/<rule name>.jsonl` and fails when a rule matches an event it should not, or misses one it should match. It also evaluates every Sigma rule once, so a rule the test cannot handle fails the run. Until now Sigma rules were checked for syntax and conversion only.
 - First test events: "AI Agent CLI Starts an Attack Tool", with two matches and four near misses. Four of them are adapted from test cases by @blitzcrieg1, who suggested this in #13. [`tests/sigma/README.md`](tests/sigma/README.md) has the format for adding more.
