@@ -13,7 +13,7 @@ Free to use under the MIT license. Fixes, false-positive reports and new indicat
 - **Framework folders.** ARTEX and its AntiFox fork, Cairn, PentAGI, HexStrike, CyberStrikeAI, Strix, Hermes Agent, Agent Zero, RedAmon, Xalgorix and Pentest Swarm AI. Each folder is built from a review of the framework's source code and the public reporting on its use.
 - **Shared behaviors.** Rules for what these frameworks have in common, whatever the tool or the model behind it.
 - **Indicators and feeds.** One CSV of 572 sourced indicators, and the feeds generated from it.
-- **Exposed consoles.** A dated list of addresses where Shodan has seen one of these consoles, in [`exposure/`](exposure). It is a record of what is exposed, not a detection feed.
+- **Exposed consoles.** A dated list of addresses where one of these consoles answers on the internet, in [`exposure/`](exposure), with a [count per framework](#exposed-consoles). It is a record of what is exposed, not a detection feed.
 
 Formats: KQL for Microsoft Sentinel and Defender XDR, Sigma, Suricata, Zeek, YARA and STIX 2.1, plus WAF rules for Cloudflare, AWS WAF and Azure WAF. Splunk and Elastic are covered by a Splunk app and Elastic rules for ARTEX, and by Sigma conversions for everything else.
 
@@ -90,6 +90,32 @@ Suricata counts are hand-written rules; each framework also has address rules ge
 
 Each folder has a README, the hunts and rules, and a `source-code-signals.md` that explains what the framework leaves behind and where in its code each signal comes from.
 
+## Exposed consoles
+
+Hosts on the internet that serve the web console of each framework, found in internet-wide scan data with the fingerprints the rules here use: favicons, page titles, page text that survives a rename, and certificates. An active host is one seen in the seven days to November 23, 2026.
+
+| Framework | Active hosts | Seen in 30 days |
+|---|---|---|
+| [ARTEX](frameworks/artex) and AntiFox | 2,117 | 2,816 |
+| [Hermes Agent](frameworks/hermes) | 1,016 | 2,192 |
+| [CyberStrikeAI](frameworks/cyberstrikeai) | 799 | 1,188 |
+| [PentAGI](frameworks/pentagi) | 329 | 500 |
+| [Agent Zero](frameworks/agent-zero) | 116 | 175 |
+| [HexStrike](frameworks/hexstrike) | 25 | 30 |
+| [RedAmon](frameworks/redamon) | 20 | 34 |
+| [Cairn](frameworks/cairn) | 17 | 30 |
+| [Xalgorix](frameworks/xalgorix) | 6 | 13 |
+| [Strix](frameworks/strix) | 5 | 12 |
+| [Pentest Swarm AI](frameworks/pentestswarm) | 0 | 0 |
+| All, each host counted once | 4,275 | 6,715 |
+
+- An exposed console is not proof of an attack. Researchers, students and security teams run these tools, and some hosts are decoys.
+- One network holds 235 of the active CyberStrikeAI hosts and 119 of the active PentAGI hosts. That looks like one mass deployment or a set of decoys, not that many operators.
+- Hermes Agent and Agent Zero are general-purpose agents, so their numbers count exposed agents, not attack consoles. Hermes is counted on its default port only.
+- Consoles served by host name only, or on a port that has not been scanned, are not counted.
+
+The addresses, with the port and the fingerprint that found each one, are in [`exposure/consoles.csv`](exposure/consoles.csv).
+
 ## Behaviors shared by agentic frameworks
 
 [`behaviors/`](behaviors) holds rules that do not depend on any one framework.
@@ -116,7 +142,7 @@ The ARTEX folder also carries behavior hunts that apply to every framework: user
 | [`feeds/`](feeds) | Generated from the CSV: a STIX 2.1 bundle, a Sentinel watchlist, and plain lists of addresses, domains, URLs, user agents and hashes. The plain lists carry medium and high confidence rows only. Low confidence rows, which include legitimate services such as AI model APIs, need their context, so they stay in the CSV, the watchlist and the STIX bundle. [`feeds/by-framework/`](feeds/by-framework) has the lists per framework |
 | [`generated/`](generated) | Every Sigma rule converted to Splunk SPL, Sentinel and Defender XDR KQL, and Elastic ES\|QL and Lucene. [`SUMMARY.md`](generated/SUMMARY.md) shows which rule converted to which backend |
 | [`waf/`](waf) | Cloudflare, AWS WAF and Azure WAF rules built from [`waf/signatures.yaml`](waf/signatures.yaml) and the CSV. The [README](waf/README.md) covers when a WAF helps and how to deploy |
-| [`exposure/`](exposure) | Addresses where Shodan has seen one of these consoles, with the fingerprint that found each one. A record of what is exposed, kept out of the feeds above. `tools/exposure_snapshot.py` rebuilds it |
+| [`exposure/`](exposure) | Addresses where one of these consoles answers on the internet, with the fingerprint that found each one. A record of what is exposed, kept out of the feeds above. `tools/exposure_snapshot.py` rebuilds it |
 | [`tools/`](tools) | Feed builder, WAF builder, release file builder, Sigma converter and validator |
 | [`docs/`](docs) | [Adding a framework](docs/adding-a-framework.md) |
 
