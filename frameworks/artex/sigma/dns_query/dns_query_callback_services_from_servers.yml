@@ -10,6 +10,7 @@ references:
     - https://cloud.google.com/blog/topics/threat-intelligence/artex-and-friends-enter-agentic-offensive-frameworks
 author: ThreatDefence
 date: 2026-11-20
+modified: 2026-11-23
 tags:
     - attack.exfiltration
     - attack.t1567
@@ -19,13 +20,16 @@ logsource:
     category: dns_query
 detection:
     selection:
-        QueryName|endswith:
-            - 'webhook.site'
-            - '.dnslog.cn'
-            - '.interact.sh'
-            - '.oast.fun'
-            - '.requestcatcher.com'
-            - '.pipedream.net'
+        # The name itself or a subdomain of it. A bare suffix match would also take other domains that end the same way
+        - QueryName:
+              - 'webhook.site'
+        - QueryName|endswith:
+              - '.webhook.site'
+              - '.dnslog.cn'
+              - '.interact.sh'
+              - '.oast.fun'
+              - '.requestcatcher.com'
+              - '.pipedream.net'
     condition: selection
 falsepositives:
     - Developers testing webhooks from workstations. Scope to servers

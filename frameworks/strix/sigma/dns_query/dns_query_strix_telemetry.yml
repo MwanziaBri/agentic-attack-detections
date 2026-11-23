@@ -10,6 +10,7 @@ references:
     - https://github.com/ThreatDefence/agentic-attack-detections
 author: ThreatDefence
 date: 2026-11-21
+modified: 2026-11-23
 tags:
     - attack.reconnaissance
     - attack.t1595.002
@@ -17,7 +18,11 @@ logsource:
     category: dns_query
 detection:
     selection:
-        QueryName|endswith: 'strix.gateway.scarf.sh'
+        # The name itself or a subdomain of it. A bare suffix match would also take other domains that end the same way
+        - QueryName:
+              - 'strix.gateway.scarf.sh'
+        - QueryName|endswith:
+              - '.strix.gateway.scarf.sh'
     condition: selection
 falsepositives:
     - Authorized tests with Strix

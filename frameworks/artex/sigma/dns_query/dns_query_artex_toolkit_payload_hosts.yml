@@ -9,6 +9,7 @@ references:
     - https://www.fortinet.com/blog/threat-research/t-sql-being-abused-to-deliver-malware-on-compromised-ms-sql-servers
 author: ThreatDefence
 date: 2026-11-20
+modified: 2026-11-23
 tags:
     - attack.command-and-control
     - attack.t1105
@@ -16,10 +17,15 @@ logsource:
     category: dns_query
 detection:
     selection:
-        QueryName|endswith:
-            - 'vietnam852.com'
-            - 'zhzy999.net'
-            - 'jiancai008.com'
+        # The name itself or a subdomain of it. A bare suffix match would also take other domains that end the same way
+        - QueryName:
+              - 'vietnam852.com'
+              - 'zhzy999.net'
+              - 'jiancai008.com'
+        - QueryName|endswith:
+              - '.vietnam852.com'
+              - '.zhzy999.net'
+              - '.jiancai008.com'
     condition: selection
 falsepositives:
     - Unknown

@@ -9,6 +9,7 @@ references:
     - https://github.com/ThreatDefence/agentic-attack-detections
 author: ThreatDefence
 date: 2026-11-21
+modified: 2026-11-23
 tags:
     - attack.command-and-control
     - attack.t1071.004
@@ -18,17 +19,29 @@ logsource:
     category: dns_query
 detection:
     selection:
-        QueryName|endswith:
-            - 'medbooksource.com'
-            - 'traffic-analyzer.net'
-            - 'b8t.shop'
-            - 'netlfjs.com'
-            - 'x1opay.co'
-            - 'static-js.com'
-            - 'js-static.com'
-            - 'jsnetlify.com'
-            - 'netlifyjs.com'
-            - 'newssjs.com'
+        # The name itself or a subdomain of it. A bare suffix match would also take other domains that end the same way
+        - QueryName:
+              - 'medbooksource.com'
+              - 'traffic-analyzer.net'
+              - 'b8t.shop'
+              - 'netlfjs.com'
+              - 'x1opay.co'
+              - 'static-js.com'
+              - 'js-static.com'
+              - 'jsnetlify.com'
+              - 'netlifyjs.com'
+              - 'newssjs.com'
+        - QueryName|endswith:
+              - '.medbooksource.com'
+              - '.traffic-analyzer.net'
+              - '.b8t.shop'
+              - '.netlfjs.com'
+              - '.x1opay.co'
+              - '.static-js.com'
+              - '.js-static.com'
+              - '.jsnetlify.com'
+              - '.netlifyjs.com'
+              - '.newssjs.com'
     condition: selection
 falsepositives:
     - None expected

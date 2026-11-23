@@ -1,0 +1,7 @@
+{"name": "a payload host", "expected": true, "event": {"QueryName": "ftp.vietnam852.com"}}
+{"name": "another payload host", "expected": true, "event": {"QueryName": "down.zhzy999.net"}}
+{"name": "the mirror", "expected": true, "event": {"QueryName": "site.jiancai008.com"}}
+{"name": "the registered domain itself", "expected": true, "event": {"QueryName": "zhzy999.net"}}
+{"name": "a different domain that only ends with a listed name", "expected": false, "event": {"QueryName": "newvietnam852.com"}}
+{"name": "a listed name used as a label under another domain", "expected": false, "event": {"QueryName": "zhzy999.net.example.com"}}
+{"name": "an ordinary lookup", "expected": false, "event": {"QueryName": "www.example.com"}}

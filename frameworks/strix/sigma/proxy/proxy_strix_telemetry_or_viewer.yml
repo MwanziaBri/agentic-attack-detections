@@ -10,6 +10,7 @@ references:
     - https://github.com/ThreatDefence/agentic-attack-detections
 author: ThreatDefence
 date: 2026-11-21
+modified: 2026-11-23
 tags:
     - attack.reconnaissance
     - attack.t1595.002
@@ -17,7 +18,11 @@ logsource:
     category: proxy
 detection:
     selection_telemetry:
-        cs-host|endswith: 'strix.gateway.scarf.sh'
+        # The name itself or a subdomain of it. A bare suffix match would also take other domains that end the same way
+        - cs-host:
+              - 'strix.gateway.scarf.sh'
+        - cs-host|endswith:
+              - '.strix.gateway.scarf.sh'
     selection_viewer:
         c-uri|contains: '/api/agents/steer'
     condition: 1 of selection_*

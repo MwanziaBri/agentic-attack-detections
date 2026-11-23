@@ -1,0 +1,6 @@
+{"name": "a request to the telemetry host", "expected": true, "event": {"cs-host": "strix.gateway.scarf.sh", "c-uri": "/strix-agent"}}
+{"name": "the viewer's steering call on any host", "expected": true, "event": {"cs-host": "localhost:8080", "c-uri": "/api/agents/steer"}}
+{"name": "a subdomain of the telemetry host", "expected": true, "event": {"cs-host": "eu.strix.gateway.scarf.sh", "c-uri": "/strix-agent"}}
+{"name": "another project's gateway that ends with the same letters", "expected": false, "event": {"cs-host": "mystrix.gateway.scarf.sh", "c-uri": "/package"}}
+{"name": "the gateway service without the project name", "expected": false, "event": {"cs-host": "gateway.scarf.sh", "c-uri": "/package"}}
+{"name": "an ordinary request", "expected": false, "event": {"cs-host": "www.example.com", "c-uri": "/api/agents/list"}}

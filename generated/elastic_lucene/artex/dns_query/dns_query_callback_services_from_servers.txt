@@ -1,3 +1,3 @@
 # DNS Query to Request Collection or DNS Callback Services
 # Sigma id 68a5326b-3c56-5371-bfd7-2cd1bda49314, pipeline ecs
-dns.question.name:(*webhook.site OR *.dnslog.cn OR *.interact.sh OR *.oast.fun OR *.requestcatcher.com OR *.pipedream.net)
+dns.question.name:webhook.site OR (dns.question.name:(*.webhook.site OR *.dnslog.cn OR *.interact.sh OR *.oast.fun OR *.requestcatcher.com OR *.pipedream.net))

@@ -1,0 +1,8 @@
+{"name": "the request-collection service itself", "expected": true, "event": {"QueryName": "webhook.site"}}
+{"name": "a subdomain of the request-collection service", "expected": true, "event": {"QueryName": "a1b2c3d4.webhook.site"}}
+{"name": "a unique name under an interactsh server", "expected": true, "event": {"QueryName": "c8a1f0d2e4b6.oast.fun"}}
+{"name": "a unique name under another callback service", "expected": true, "event": {"QueryName": "x7k2m9.requestcatcher.com"}}
+{"name": "a different domain that only ends with the service name", "expected": false, "event": {"QueryName": "mywebhook.site"}}
+{"name": "a different domain that ends with a listed name, with no dot between", "expected": false, "event": {"QueryName": "www.toast.fun"}}
+{"name": "a listed name used as a label under another domain", "expected": false, "event": {"QueryName": "webhook.site.example.com"}}
+{"name": "an ordinary lookup", "expected": false, "event": {"QueryName": "www.example.com"}}

@@ -1,0 +1,9 @@
+{"name": "a listed command and control name", "expected": true, "event": {"QueryName": "nginxmysql.com"}}
+{"name": "an ARTEX name itself", "expected": true, "event": {"QueryName": "artex.lol"}}
+{"name": "a subdomain of an ARTEX name", "expected": true, "event": {"QueryName": "staging.artex.lol"}}
+{"name": "another ARTEX name, matched without regard to case", "expected": true, "event": {"QueryName": "ARTEX.tokena2b.top"}}
+{"name": "a different domain that only ends with an ARTEX name", "expected": false, "event": {"QueryName": "smartex.lol"}}
+{"name": "a different label that ends the same way under the same parent", "expected": false, "event": {"QueryName": "xartex.tokena2b.top"}}
+{"name": "the parent domain alone", "expected": false, "event": {"QueryName": "tokena2b.top"}}
+{"name": "an ARTEX name used as a label under another domain", "expected": false, "event": {"QueryName": "artex.lol.example.com"}}
+{"name": "a subdomain of a name that is listed for an exact match only", "expected": false, "event": {"QueryName": "cdn.nginxmysql.com"}}

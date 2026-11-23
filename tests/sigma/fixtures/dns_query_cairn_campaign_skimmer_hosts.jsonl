@@ -1,0 +1,9 @@
+{"name": "a skimmer host", "expected": true, "event": {"QueryName": "static-js.com"}}
+{"name": "a subdomain of a skimmer host", "expected": true, "event": {"QueryName": "cdn.js-static.com"}}
+{"name": "the operator console domain", "expected": true, "event": {"QueryName": "medbooksource.com"}}
+{"name": "a short listed name", "expected": true, "event": {"QueryName": "b8t.shop"}}
+{"name": "a different domain that only ends with a listed name", "expected": false, "event": {"QueryName": "cdn.my-static-js.com"}}
+{"name": "another domain that ends with a short listed name", "expected": false, "event": {"QueryName": "web8t.shop"}}
+{"name": "a domain that ends with a listed name after other letters", "expected": false, "event": {"QueryName": "fastnetlifyjs.com"}}
+{"name": "a listed name used as a label under another domain", "expected": false, "event": {"QueryName": "static-js.com.example.com"}}
+{"name": "an ordinary lookup", "expected": false, "event": {"QueryName": "www.example.com"}}

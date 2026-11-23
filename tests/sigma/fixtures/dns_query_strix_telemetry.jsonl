@@ -1,0 +1,5 @@
+{"name": "the telemetry host", "expected": true, "event": {"QueryName": "strix.gateway.scarf.sh"}}
+{"name": "a subdomain of the telemetry host", "expected": true, "event": {"QueryName": "eu.strix.gateway.scarf.sh"}}
+{"name": "another project's gateway that ends with the same letters", "expected": false, "event": {"QueryName": "mystrix.gateway.scarf.sh"}}
+{"name": "the gateway service without the project name", "expected": false, "event": {"QueryName": "gateway.scarf.sh"}}
+{"name": "the host name used as a label under another domain", "expected": false, "event": {"QueryName": "strix.gateway.scarf.sh.example.com"}}
