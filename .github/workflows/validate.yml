@@ -23,6 +23,10 @@ jobs:
         run: python tools/validate.py
       - name: Check Sigma rules against test events
         run: python tests/sigma/run_tests.py
+      - name: Start the Kusto emulator
+        run: docker run -d --name kusto -e ACCEPT_EULA=Y -p 8080:8080 mcr.microsoft.com/azuredataexplorer/kustainer-linux:latest
+      - name: Run hunts and analytics against sample rows
+        run: python tests/kql/run_tests.py --require --wait 180
       - name: Replay test flows through Suricata
         run: python tests/suricata/run_tests.py
       - name: Convert Sigma to Splunk, Sentinel and Elastic
