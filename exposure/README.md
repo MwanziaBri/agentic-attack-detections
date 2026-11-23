@@ -15,6 +15,7 @@ Use it to check whether one of your own addresses is on it, to see where console
 | File | Contents |
 |---|---|
 | [`consoles.csv`](consoles.csv) | One row per address and port: `address`, `port`, `framework`, `matched_on` (the fingerprint that found it), `page_title`, `asn`, `country`, `last_seen` |
+| [`history.csv`](history.csv) | Hosts per framework at each snapshot: `date`, `framework`, `active_hosts` (seen in the seven days to that date) and `hosts` (every host in the snapshot). The row `all` counts each host once |
 | [`shodan-queries.csv`](shodan-queries.csv) | The Shodan searches, in the order they run. A service found by an earlier search is not listed again |
 
 ## Snapshot of November 23, 2026
@@ -35,7 +36,7 @@ Use it to check whether one of your own addresses is on it, to see where console
 | All | 7,659 | 6,715 | |
 
 - A service is one address and port. 4,868 of the 7,659 were seen in the seven days before the snapshot.
-- One network, AS398823, holds 423 of the services: 236 pages titled CyberStrikeAI on port 8444 and 186 titled PentAGI on port 8666, on addresses that also serve a write-up of PentAGI's prompts. That looks like one mass deployment or a set of decoys, not that many operators. Leave it out before quoting a count.
+- One network, AS398823, holds 423 of the services: 236 pages titled CyberStrikeAI on port 8444 and 186 titled PentAGI on port 8666, on addresses that also serve a write-up of PentAGI's prompts. That looks like one mass deployment or a set of decoys, not that many operators. Leave it out before quoting a count. See [#21](https://github.com/ThreatDefence/agentic-attack-detections/issues/21).
 - 431 ARTEX services were found by title or page text and not by favicon: builds with another icon or another name that kept the title, its ending or the description.
 - Renamed builds show up for the newer frameworks too: a RedAmon console titled `Anvigil` and Xalgorix dashboards titled `VulnHawk — Security Scanner` and `MindSOC - VAPT`, found by icon or by the theme script.
 - 57 addresses are also in [`iocs/indicators.csv`](../iocs/indicators.csv), where a named report ties them to attacks.
@@ -46,7 +47,10 @@ Use it to check whether one of your own addresses is on it, to see where console
 ```bash
 SHODAN_API_KEY=... python3 tools/exposure_snapshot.py --count   # totals only, no query credits
 SHODAN_API_KEY=... python3 tools/exposure_snapshot.py           # one query credit per 100 results
+python3 tools/exposure_snapshot.py --summary                    # recount from consoles.csv, no key needed
 ```
+
+Every run that writes `consoles.csv` adds the day's counts to `history.csv` and rewrites the table in the root README.
 
 The searches run against Shodan only. Nothing connects to a listed address.
 

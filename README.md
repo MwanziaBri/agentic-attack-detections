@@ -92,7 +92,10 @@ Each folder has a README, the hunts and rules, and a `source-code-signals.md` th
 
 ## Exposed consoles
 
-Hosts on the internet that serve the web console of each framework, found in internet-wide scan data with the fingerprints the rules here use: favicons, page titles, page text that survives a rename, and certificates. An active host is one seen in the seven days to November 23, 2026.
+Hosts on the internet that serve the web console of each framework, found in internet-wide scan data with the fingerprints the rules here use: favicons, page titles, page text that survives a rename, and certificates.
+
+<!-- exposed-consoles:start -->
+An active host is one seen in the seven days to November 23, 2026.
 
 | Framework | Active hosts | Seen in 30 days |
 |---|---|---|
@@ -108,13 +111,14 @@ Hosts on the internet that serve the web console of each framework, found in int
 | [Strix](frameworks/strix) | 5 | 12 |
 | [Pentest Swarm AI](frameworks/pentestswarm) | 0 | 0 |
 | All, each host counted once | 4,275 | 6,715 |
+<!-- exposed-consoles:end -->
 
 - An exposed console is not proof of an attack. Researchers, students and security teams run these tools, and some hosts are decoys.
-- One network holds 235 of the active CyberStrikeAI hosts and 119 of the active PentAGI hosts. That looks like one mass deployment or a set of decoys, not that many operators.
+- One network holds about a fifth of the CyberStrikeAI hosts and more than a third of the PentAGI hosts. That looks like one mass deployment or a set of decoys, not that many operators ([#21](https://github.com/ThreatDefence/agentic-attack-detections/issues/21)).
 - Hermes Agent and Agent Zero are general-purpose agents, so their numbers count exposed agents, not attack consoles. Hermes is counted on its default port only.
 - Consoles served by host name only, or on a port that has not been scanned, are not counted.
 
-The addresses, with the port and the fingerprint that found each one, are in [`exposure/consoles.csv`](exposure/consoles.csv).
+The addresses, with the port and the fingerprint that found each one, are in [`exposure/consoles.csv`](exposure/consoles.csv). The counts of every snapshot are kept in [`exposure/history.csv`](exposure/history.csv), so the numbers can be followed over time.
 
 ## Behaviors shared by agentic frameworks
 

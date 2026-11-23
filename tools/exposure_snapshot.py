@@ -7,6 +7,11 @@ SHODAN_API_KEY environment variable; each page of 100 results costs one query cr
     SHODAN_API_KEY=... python3 tools/exposure_snapshot.py            # full run
     SHODAN_API_KEY=... python3 tools/exposure_snapshot.py --count    # totals only, costs no credits
     SHODAN_API_KEY=... python3 tools/exposure_snapshot.py --only cairn,strix   # refresh some frameworks, keep the rest
+    python3 tools/exposure_snapshot.py --summary                     # recount from consoles.csv, no key needed
+
+Every run that writes consoles.csv also counts the hosts per framework, records the counts in exposure/history.csv
+under the snapshot date, and rewrites the table between the exposed-consoles markers in README.md. An active host
+is one seen in the seven days up to the snapshot date.
 
 This is a record of what is exposed, not a detection feed: nothing here is read by tools/build_feeds.py.
 """
@@ -16,6 +21,9 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 QUERIES = ROOT / "exposure" / "shodan-queries.csv"
 OUT = ROOT / "exposure" / "consoles.csv"
+HISTORY = ROOT / "exposure" / "history.csv"
+README = ROOT / "README.md"
+START, END = "<!-- exposed-consoles:start -->", "<!-- exposed-consoles:end -->"
 FIELDS = "ip_str,port,asn,location.country_code,timestamp,http.title"
 COLUMNS = ["address", "port", "framework", "matched_on", "page_title", "asn", "country", "last_seen"]
 
@@ -39,16 +47,59 @@ def call(path, key, **params):
             raise SystemExit(f"Shodan did not answer for {path}: {type(e).__name__}")
 
 
+def track(rows, date, frameworks):
+    """Count hosts per framework as of `date`, record them in history.csv and rewrite the README table."""
+    sys.path.insert(0, str(Path(__file__).resolve().parent))
+    from build_feeds import FRAMEWORKS
+    cutoff = (date - dt.timedelta(days=6)).isoformat()
+    counts, seen, active = [], set(), set()
+    for fw in frameworks:
+        hosts = {r["address"] for r in rows if r["framework"] == fw}
+        recent = {r["address"] for r in rows if r["framework"] == fw and r["last_seen"] >= cutoff}
+        seen |= hosts
+        active |= recent
+        counts.append((fw, len(recent), len(hosts)))
+    counts.sort(key=lambda c: (-c[1], -c[2], c[0]))
+    history = []
+    if HISTORY.exists():
+        history = [r for r in csv.DictReader(HISTORY.open(encoding="utf-8")) if r["date"] != date.isoformat()]
+    history += [{"date": date.isoformat(), "framework": fw, "active_hosts": a, "hosts": h} for fw, a, h in counts]
+    history.append({"date": date.isoformat(), "framework": "all", "active_hosts": len(active), "hosts": len(seen)})
+    history.sort(key=lambda r: (r["date"], r["framework"] == "all", -int(r["active_hosts"]), r["framework"]))
+    with HISTORY.open("w", newline="", encoding="utf-8") as f:
+        w = csv.DictWriter(f, fieldnames=["date", "framework", "active_hosts", "hosts"], lineterminator="\n")
+        w.writeheader()
+        w.writerows(history)
+    day = f"{date:%B} {date.day}, {date.year}"
+    lines = [f"An active host is one seen in the seven days to {day}.", "",
+             "| Framework | Active hosts | Seen in 30 days |", "|---|---|---|"]
+    for fw, a, h in counts:
+        name = f"[{FRAMEWORKS[fw]['name']}](frameworks/{fw})" + (" and AntiFox" if fw == "artex" else "")
+        lines.append(f"| {name} | {a:,} | {h:,} |")
+    lines.append(f"| All, each host counted once | {len(active):,} | {len(seen):,} |")
+    text = README.read_text(encoding="utf-8")
+    if START in text and END in text:
+        head, rest = text.split(START, 1)
+        README.write_text(head + START + "\n" + "\n".join(lines) + "\n" + END + rest.split(END, 1)[1], encoding="utf-8")
+    print(f"{len(active):,} active hosts, {len(seen):,} in all, recorded for {date.isoformat()} in {HISTORY.relative_to(ROOT)}")
+
+
 def main():
     ap = argparse.ArgumentParser(description=__doc__.split("\n")[0])
     ap.add_argument("--count", action="store_true", help="print the total for each search and stop (no query credits)")
     ap.add_argument("--max-pages", type=int, default=60, help="stop a search after this many pages of 100 (default 60)")
+    ap.add_argument("--summary", action="store_true", help="recount from consoles.csv and update history.csv and the README table; no key needed")
     ap.add_argument("--only", default="", metavar="FRAMEWORKS", help="comma-separated frameworks to refresh; rows of the others are kept as they are")
     args = ap.parse_args()
+    searches = list(csv.DictReader(QUERIES.open(encoding="utf-8")))
+    frameworks = list(dict.fromkeys(s["framework"] for s in searches))
+    if args.summary:
+        existing = list(csv.DictReader(OUT.open(encoding="utf-8")))
+        track(existing, dt.date.fromisoformat(max(r["last_seen"] for r in existing)), frameworks)
+        return
     key = os.environ.get("SHODAN_API_KEY", "").strip()
     if not key:
         raise SystemExit("Set SHODAN_API_KEY first.")
-    searches = list(csv.DictReader(QUERIES.open(encoding="utf-8")))
     rows, pages = {}, 0
     only = {f.strip() for f in args.only.split(",") if f.strip()}
     if only:
@@ -107,6 +158,7 @@ def main():
         by[r["framework"]][0].add(r["address"]); by[r["framework"]][1] += 1
     for fw, (addrs, n) in sorted(by.items(), key=lambda x: -x[1][1]):
         print(f"  {fw:16} {n:>5} services, {len(addrs):>5} addresses")
+    track(ordered, dt.date.today(), frameworks)
 
 
 if __name__ == "__main__":
