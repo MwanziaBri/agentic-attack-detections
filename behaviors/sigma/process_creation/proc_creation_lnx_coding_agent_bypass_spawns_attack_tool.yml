@@ -8,6 +8,10 @@ description: |
     attack tool without one. Qwen Code, Kimi CLI, Codex and opencode start tools through a plain shell, which puts the
     agent one level above the parent, so this rule only sees them when they start the tool directly; the KQL hunt in
     behaviors/sentinel/hunting covers the grandparent. The model behind the agent does not matter.
+    Tools written in Python, Ruby or Perl (sqlmap, NetExec, Metasploit, nikto and others) run under their interpreter,
+    so the image is python3, ruby or perl and the tool is named in the command line; the script selections cover them.
+    Agents installed with npm or pip run under node or python and are found by their package path in the parent
+    command line.
 references:
     - https://github.com/oritera/Cairn
     - https://github.com/QwenLM/qwen-code
@@ -15,7 +19,7 @@ references:
     - https://github.com/ThreatDefence/agentic-attack-detections
 author: ThreatDefence
 date: 2026-11-21
-modified: 2026-11-22
+modified: 2026-11-23
 tags:
     - attack.execution
     - attack.t1059
@@ -72,6 +76,54 @@ detection:
             - '\cloudfox.exe'
             - '/msfconsole'
             - '\msfconsole.exe'
+            - '/dirsearch'
+            - '\dirsearch.exe'
+            - '/medusa'
+            - '\medusa.exe'
+            - '/enum4linux-ng'
+            - '\enum4linux-ng.exe'
+            - '/pwncat'
+            - '\pwncat.exe'
+            - '/pwncat-cs'
+            - '\pwncat-cs.exe'
+            - '/responder'
+            - '\responder.exe'
+            - '/searchsploit'
+            - '\searchsploit.exe'
+            - '/hashcat'
+            - '\hashcat.exe'
+    selection_script_interpreter:
+        # A script tool started by name runs as its interpreter: python3.12, ruby3.3, perl
+        Image|contains:
+            - '/python'
+            - '\python'
+            - '/ruby'
+            - '\ruby'
+            - '/perl'
+            - '\perl'
+    selection_script_tool:
+        CommandLine|contains:
+            - '/sqlmap'
+            - 'sqlmap.py'
+            - '/nikto'
+            - 'nikto.pl'
+            - '/wpscan'
+            - '/netexec'
+            - '/nxc'
+            - '/crackmapexec'
+            - '/bloodyAD'
+            - 'bloodyAD.py'
+            - '/coercer'
+            - 'Coercer.py'
+            - '/evil-winrm'
+            - '/msfconsole'
+            - '/dirsearch'
+            - 'dirsearch.py'
+            - '/enum4linux-ng'
+            - 'enum4linux-ng.py'
+            - '/pwncat'
+            - '/responder'
+            - 'Responder.py'
     selection_agent_shell:
         ParentCommandLine|contains:
             - 'shell-snapshots'
@@ -92,7 +144,20 @@ detection:
             - '\opencode.exe'
             - '/hermes'
             - '\hermes.exe'
-    condition: selection_tool and (selection_agent_shell or selection_agent_parent)
+    selection_agent_package:
+        # The agent runs under node, bun or python: the parent image is the runtime, the package path names the agent
+        ParentCommandLine|contains:
+            - '@anthropic-ai/claude-code'
+            - '@anthropic-ai\claude-code'
+            - '@qwen-code/'
+            - '@qwen-code\'
+            - '@openai/codex'
+            - '@openai\codex'
+            - 'opencode-ai'
+            - 'kimi-cli'
+            - 'kimi_cli'
+    condition: (selection_tool or (selection_script_interpreter and selection_script_tool)) and 1 of selection_agent_*
 falsepositives:
     - Staff who use an AI agent for authorized security testing or network troubleshooting
+    - A script run under an agent from a folder whose path holds a tool name, such as a project checked out in a directory called sqlmap
 level: medium
