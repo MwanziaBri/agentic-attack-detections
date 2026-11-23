@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- The README has a table of exposed consoles per framework: hosts seen in the last seven days and in the last 30. `tools/exposure_snapshot.py` rewrites it on every snapshot and records the counts in `exposure/history.csv`, so the numbers can be followed over time. `--summary` recounts from `consoles.csv` without a key.
+- One network holds about a fifth of the listed CyberStrikeAI hosts and more than a third of the PentAGI hosts; the README says so next to the counts (#21).
 - "AI Agent CLI Starts an Attack Tool" gains four test events, 48 in all: a Pi parent started with `--provider cairn` next to the same parent without it, and the Windows PowerShell launcher starting `nmap.exe` next to the same launcher starting a harmless tool. Contributed by @blitzcrieg1 in #20.
 
 ## 2.10.0, November 23, 2026
