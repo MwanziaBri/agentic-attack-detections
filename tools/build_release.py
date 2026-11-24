@@ -10,6 +10,8 @@ Writes:
     agentic-attack-detections-stix2.1.json       the STIX 2.1 bundle
     agentic-attack-detections-indicators.zip     iocs/indicators.csv and everything under feeds/
     agentic-attack-detections-waf.zip            everything under waf/
+    agentic-attack-detections-sentinel.json      the Microsoft Sentinel ARM template with everything (deploy/sentinel/)
+    agentic-attack-detections-sentinel.zip       every Microsoft Sentinel template: everything, and one per framework
     SHA256SUMS.txt                               SHA-256 of each file above
 
 The names carry no version, so https://github.com/<owner>/<repo>/releases/latest/download/<name> always points at
@@ -98,6 +100,11 @@ def main():
     print(f"{NAME}-indicators.zip: {write_zip(out / f'{NAME}-indicators.zip', indicators, version)} files")
 
     print(f"{NAME}-waf.zip: {write_zip(out / f'{NAME}-waf.zip', tree(ROOT / 'waf'), version)} files")
+
+    sentinel = ROOT / "deploy" / "sentinel"
+    (out / f"{NAME}-sentinel.json").write_bytes((sentinel / f"{NAME}.json").read_bytes())
+    print(f"{NAME}-sentinel.json: copied from deploy/sentinel/{NAME}.json")
+    print(f"{NAME}-sentinel.zip: {write_zip(out / f'{NAME}-sentinel.zip', tree(sentinel), version)} files")
 
     built = sorted(p for p in out.glob(f"{NAME}*") if p.is_file())
     sums = "".join(f"{hashlib.sha256(p.read_bytes()).hexdigest()}  {p.name}\n" for p in built)

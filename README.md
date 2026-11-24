@@ -43,7 +43,7 @@ The capture is test traffic written from the framework source code and published
 
 | You have | Do this |
 |---|---|
-| Microsoft Sentinel | Upload `feeds/sentinel-watchlist.csv` as a watchlist with the alias `AGENTIC_IOCs` and the search key `value`. Import the analytics rules from `frameworks/*/sentinel/analytics/` and `behaviors/sentinel/analytics/`. Run the hunts in each folder's `hunting-order.md` order |
+| Microsoft Sentinel | [![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FThreatDefence%2Fagentic-attack-detections%2Fmain%2Fdeploy%2Fsentinel%2Fagentic-attack-detections.json) One deployment creates every analytics rule (disabled until you enable them), every hunting query and the `AGENTIC_IOCs` watchlist. Give it the workspace name. [`deploy/sentinel/`](deploy/sentinel) has one template per framework too. Run the hunts in each folder's `hunting-order.md` order |
 | Defender XDR | Run the hunts from `frameworks/*/sentinel/hunting/` in advanced hunting. They work where the tables exist |
 | Suricata | Add the `.rules` files from `frameworks/*/suricata/` and `behaviors/suricata/`. HTTP rules need cleartext or decrypted traffic. DNS and TLS SNI rules work on encrypted traffic |
 | Zeek | Install the behaviors package with `zkg install https://github.com/ThreatDefence/agentic-attack-detections` (or load `behaviors/zeek/agentic-behaviors/` by path), set `server_nets` to your server ranges ([setup](behaviors/zeek/README.md)), load the framework scripts `frameworks/artex/zeek/artex/`, `frameworks/cyberstrikeai/zeek/cyberstrikeai/` and `frameworks/hexstrike/zeek/hexstrike/`, and feed `frameworks/*/zeek/intel/*.intel` to the Intel framework |

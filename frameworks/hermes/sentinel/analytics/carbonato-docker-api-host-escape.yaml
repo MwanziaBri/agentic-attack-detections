@@ -17,6 +17,7 @@ triggerThreshold: 0
 tactics:
   - PrivilegeEscalation
   - Persistence
+  - DefenseEvasion
 relevantTechniques:
   - T1611
   - T1053.003

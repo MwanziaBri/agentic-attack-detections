@@ -13,8 +13,8 @@ let Window = 30d;
 let PaymentTables = dynamic(["sales_flat_order_payment", "sales_flat_quote_payment", "sales_order_payment", "quote_payment"]);
 AzureDiagnostics
 | where TimeGenerated > ago(Window)
-| where Category in ("MySqlAuditLogs", "MySqlSlowLogs") and isnotempty(sql_text_s)
-| extend Sql = tostring(sql_text_s)
+| where Category in ("MySqlAuditLogs", "MySqlSlowLogs") and isnotempty(column_ifexists("sql_text_s", ""))
+| extend Sql = tostring(column_ifexists("sql_text_s", ""))
 | extend Kind = case(
     Sql matches regex @"(?i)\b(create|drop)\s+table\s+(if\s+(not\s+)?exists\s+)?`?zq", "ZQ staging table created or dropped",
     Sql matches regex @"(?i)\bdrop\s+table\b" and Sql matches regex @"(?i)(zq|backup)", "bulk drop of ZQ or backup tables",
@@ -24,5 +24,5 @@ AzureDiagnostics
     "")
 | where isnotempty(Kind)
 | summarize Statements=count(), Kinds=make_set(Kind), Samples=make_set(substring(Sql, 0, 200), 10),
-    FirstSeen=min(TimeGenerated), LastSeen=max(TimeGenerated) by Resource, User=tostring(user_s), Host=tostring(host_s)
+    FirstSeen=min(TimeGenerated), LastSeen=max(TimeGenerated) by Resource, User=tostring(column_ifexists("user_s", "")), Host=tostring(column_ifexists("host_s", ""))
 | order by array_length(Kinds) desc, Statements desc
