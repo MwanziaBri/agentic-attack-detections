@@ -113,7 +113,7 @@ def check_elastic():
 
 
 def check_splunk():
-    for p in sorted(ROOT.glob("frameworks/*/splunk/default/*.conf")):
+    for p in sorted(ROOT.glob("frameworks/*/splunk/default/*.conf")) + sorted(ROOT.glob("deploy/splunk/*/default/*.conf")):
         cp = configparser.RawConfigParser(strict=False, interpolation=None)
         cp.optionxform = str
         cp.read_string(re.sub(r"\\\n", " ", p.read_text(encoding="utf-8")))
@@ -121,7 +121,7 @@ def check_splunk():
             for s in cp.sections():
                 if cp.get(s, "disabled", fallback="0").strip() != "1":
                     err(f"saved search not disabled: {s}")
-            print(f"splunk: {len(cp.sections())} saved searches")
+            print(f"splunk: {len(cp.sections())} saved searches in {p.relative_to(ROOT).parts[0]}/")
 
 
 def check_suricata():

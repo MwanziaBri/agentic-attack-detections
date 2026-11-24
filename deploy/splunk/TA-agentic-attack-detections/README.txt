@@ -1,0 +1,31 @@
+Agentic Attack Detections for Splunk, version 2.10.0
+
+https://github.com/ThreatDefence/agentic-attack-detections
+
+88 saved searches, all disabled, and the Agentic Attack Activity dashboard.
+
+Searches per framework:
+  ARTEX: 46
+  CyberStrikeAI: 7
+  PentAGI: 3
+  Cairn: 3
+  Hermes Agent: 3
+  Strix: 3
+  HexStrike: 3
+  Agent Zero: 1
+  RedAmon: 3
+  Xalgorix: 3
+  Pentest Swarm AI: 3
+  Shared behaviors: 6
+  Indicator searches: 4 (addresses, domains, file hashes, user agents)
+
+Lookups: aad_indicators.csv has all 580 rows of iocs/indicators.csv. aad_ioc_ip, aad_ioc_domain,
+aad_ioc_hash and aad_ioc_user_agent hold the rows the indicator searches match on.
+
+Set up:
+  1. Install the app (Apps > Manage Apps > Install app from file).
+  2. Settings > Advanced search > Search macros: point aad_indexes at your indexes. The data source macros
+     (aad_process, aad_file, aad_registry, aad_dns, aad_proxy, aad_web, aad_aws_cloudtrail, aad_azure_*,
+     aad_okta) use CIM tags and sourcetypes; change one if your data is tagged differently.
+  3. Run a search over 30 days to baseline it, then enable it.
+  4. Enabled searches write their results to the summary index; the dashboard reads them from there.

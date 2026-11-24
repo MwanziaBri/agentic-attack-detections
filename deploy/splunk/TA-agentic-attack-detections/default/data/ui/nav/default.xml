@@ -1,0 +1,7 @@
+<nav search_view="search" color="#1A1C20">
+  <view name="agentic_attack_activity" default="true" />
+  <collection label="Searches">
+    <saved source="unclassified" match="" />
+  </collection>
+  <view name="search" />
+</nav>

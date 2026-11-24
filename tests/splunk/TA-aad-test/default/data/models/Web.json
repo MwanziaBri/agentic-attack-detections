@@ -1,0 +1,171 @@
+{
+ "modelName": "Web",
+ "displayName": "Web",
+ "description": "Test stand-in for the CIM data model",
+ "editable": true,
+ "objectNameList": [
+  "Web"
+ ],
+ "objects": [
+  {
+   "objectName": "Web",
+   "displayName": "Web",
+   "parentName": "BaseEvent",
+   "comment": "",
+   "fields": [
+    {
+     "fieldName": "_time",
+     "owner": "BaseEvent",
+     "type": "timestamp",
+     "fieldSearch": "",
+     "required": false,
+     "multivalue": false,
+     "hidden": false,
+     "editable": true,
+     "displayName": "_time",
+     "comment": ""
+    },
+    {
+     "fieldName": "host",
+     "owner": "BaseEvent",
+     "type": "string",
+     "fieldSearch": "",
+     "required": false,
+     "multivalue": false,
+     "hidden": false,
+     "editable": true,
+     "displayName": "host",
+     "comment": ""
+    },
+    {
+     "fieldName": "source",
+     "owner": "BaseEvent",
+     "type": "string",
+     "fieldSearch": "",
+     "required": false,
+     "multivalue": false,
+     "hidden": false,
+     "editable": true,
+     "displayName": "source",
+     "comment": ""
+    },
+    {
+     "fieldName": "sourcetype",
+     "owner": "BaseEvent",
+     "type": "string",
+     "fieldSearch": "",
+     "required": false,
+     "multivalue": false,
+     "hidden": false,
+     "editable": true,
+     "displayName": "sourcetype",
+     "comment": ""
+    },
+    {
+     "fieldName": "src",
+     "owner": "Web",
+     "type": "string",
+     "fieldSearch": "",
+     "required": false,
+     "multivalue": false,
+     "hidden": false,
+     "editable": true,
+     "displayName": "src",
+     "comment": ""
+    },
+    {
+     "fieldName": "dest",
+     "owner": "Web",
+     "type": "string",
+     "fieldSearch": "",
+     "required": false,
+     "multivalue": false,
+     "hidden": false,
+     "editable": true,
+     "displayName": "dest",
+     "comment": ""
+    },
+    {
+     "fieldName": "url",
+     "owner": "Web",
+     "type": "string",
+     "fieldSearch": "",
+     "required": false,
+     "multivalue": false,
+     "hidden": false,
+     "editable": true,
+     "displayName": "url",
+     "comment": ""
+    },
+    {
+     "fieldName": "uri_path",
+     "owner": "Web",
+     "type": "string",
+     "fieldSearch": "",
+     "required": false,
+     "multivalue": false,
+     "hidden": false,
+     "editable": true,
+     "displayName": "uri_path",
+     "comment": ""
+    },
+    {
+     "fieldName": "uri_query",
+     "owner": "Web",
+     "type": "string",
+     "fieldSearch": "",
+     "required": false,
+     "multivalue": false,
+     "hidden": false,
+     "editable": true,
+     "displayName": "uri_query",
+     "comment": ""
+    },
+    {
+     "fieldName": "http_user_agent",
+     "owner": "Web",
+     "type": "string",
+     "fieldSearch": "",
+     "required": false,
+     "multivalue": false,
+     "hidden": false,
+     "editable": true,
+     "displayName": "http_user_agent",
+     "comment": ""
+    },
+    {
+     "fieldName": "http_method",
+     "owner": "Web",
+     "type": "string",
+     "fieldSearch": "",
+     "required": false,
+     "multivalue": false,
+     "hidden": false,
+     "editable": true,
+     "displayName": "http_method",
+     "comment": ""
+    },
+    {
+     "fieldName": "status",
+     "owner": "Web",
+     "type": "string",
+     "fieldSearch": "",
+     "required": false,
+     "multivalue": false,
+     "hidden": false,
+     "editable": true,
+     "displayName": "status",
+     "comment": ""
+    }
+   ],
+   "calculations": [],
+   "constraints": [
+    {
+     "search": "tag=web",
+     "owner": "Web"
+    }
+   ],
+   "lineage": "Web"
+  }
+ ]
+}

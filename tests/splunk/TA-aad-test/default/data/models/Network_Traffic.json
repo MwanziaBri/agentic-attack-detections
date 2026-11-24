@@ -1,0 +1,123 @@
+{
+ "modelName": "Network_Traffic",
+ "displayName": "Network_Traffic",
+ "description": "Test stand-in for the CIM data model",
+ "editable": true,
+ "objectNameList": [
+  "All_Traffic"
+ ],
+ "objects": [
+  {
+   "objectName": "All_Traffic",
+   "displayName": "All_Traffic",
+   "parentName": "BaseEvent",
+   "comment": "",
+   "fields": [
+    {
+     "fieldName": "_time",
+     "owner": "BaseEvent",
+     "type": "timestamp",
+     "fieldSearch": "",
+     "required": false,
+     "multivalue": false,
+     "hidden": false,
+     "editable": true,
+     "displayName": "_time",
+     "comment": ""
+    },
+    {
+     "fieldName": "host",
+     "owner": "BaseEvent",
+     "type": "string",
+     "fieldSearch": "",
+     "required": false,
+     "multivalue": false,
+     "hidden": false,
+     "editable": true,
+     "displayName": "host",
+     "comment": ""
+    },
+    {
+     "fieldName": "source",
+     "owner": "BaseEvent",
+     "type": "string",
+     "fieldSearch": "",
+     "required": false,
+     "multivalue": false,
+     "hidden": false,
+     "editable": true,
+     "displayName": "source",
+     "comment": ""
+    },
+    {
+     "fieldName": "sourcetype",
+     "owner": "BaseEvent",
+     "type": "string",
+     "fieldSearch": "",
+     "required": false,
+     "multivalue": false,
+     "hidden": false,
+     "editable": true,
+     "displayName": "sourcetype",
+     "comment": ""
+    },
+    {
+     "fieldName": "src",
+     "owner": "All_Traffic",
+     "type": "string",
+     "fieldSearch": "",
+     "required": false,
+     "multivalue": false,
+     "hidden": false,
+     "editable": true,
+     "displayName": "src",
+     "comment": ""
+    },
+    {
+     "fieldName": "dest",
+     "owner": "All_Traffic",
+     "type": "string",
+     "fieldSearch": "",
+     "required": false,
+     "multivalue": false,
+     "hidden": false,
+     "editable": true,
+     "displayName": "dest",
+     "comment": ""
+    },
+    {
+     "fieldName": "dest_port",
+     "owner": "All_Traffic",
+     "type": "string",
+     "fieldSearch": "",
+     "required": false,
+     "multivalue": false,
+     "hidden": false,
+     "editable": true,
+     "displayName": "dest_port",
+     "comment": ""
+    },
+    {
+     "fieldName": "action",
+     "owner": "All_Traffic",
+     "type": "string",
+     "fieldSearch": "",
+     "required": false,
+     "multivalue": false,
+     "hidden": false,
+     "editable": true,
+     "displayName": "action",
+     "comment": ""
+    }
+   ],
+   "calculations": [],
+   "constraints": [
+    {
+     "search": "tag=network tag=communicate",
+     "owner": "All_Traffic"
+    }
+   ],
+   "lineage": "All_Traffic"
+  }
+ ]
+}

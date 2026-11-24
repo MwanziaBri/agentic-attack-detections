@@ -1,0 +1,3078 @@
+<dashboard version="2" theme="dark">
+  <label>Agentic Attack Activity</label>
+  <description></description>
+  <definition><![CDATA[
+{
+  "title": "Agentic Attack Activity",
+  "description": "",
+  "inputs": {
+    "time": {
+      "type": "input.timerange",
+      "title": "Time range",
+      "options": {
+        "token": "global_time",
+        "defaultValue": "-30d@d,now"
+      }
+    }
+  },
+  "defaults": {
+    "dataSources": {
+      "ds.search": {
+        "options": {
+          "queryParameters": {
+            "earliest": "$global_time.earliest$",
+            "latest": "$global_time.latest$"
+          }
+        }
+      }
+    }
+  },
+  "visualizations": {
+    "bg_artex": {
+      "type": "splunk.rectangle",
+      "options": {
+        "fillColor": "#1A1C20",
+        "strokeColor": "#2A2E35",
+        "rx": 8
+      }
+    },
+    "bar_artex": {
+      "type": "splunk.rectangle",
+      "options": {
+        "fillColor": "#4C8DF6",
+        "strokeColor": "#4C8DF6"
+      }
+    },
+    "dot_artex": {
+      "type": "splunk.rectangle",
+      "options": {
+        "fillColor": "#4C8DF6",
+        "strokeColor": "#4C8DF6",
+        "rx": 2
+      }
+    },
+    "name_artex": {
+      "type": "splunk.markdown",
+      "options": {
+        "markdown": "**ARTEX**",
+        "fontColor": "#E8EAED",
+        "fontSize": "large"
+      }
+    },
+    "desc_artex": {
+      "type": "splunk.markdown",
+      "options": {
+        "markdown": "Go planner and worker agents with a web console. AntiFox is the same code renamed.",
+        "fontColor": "#9AA0A6",
+        "fontSize": "small"
+      }
+    },
+    "big_artex": {
+      "type": "splunk.singlevalue",
+      "dataSources": {
+        "primary": "t_artex"
+      },
+      "options": {
+        "majorValue": "> primary | seriesByName('sources') | lastPoint()",
+        "sparklineValues": "> primary | seriesByName('hits')",
+        "trendDisplay": "off",
+        "sparklineDisplay": "below",
+        "showSparklineAreaGraph": true,
+        "sparklineStrokeColor": "#4C8DF6",
+        "sparklineAreaColor": "#4C8DF6",
+        "majorColor": "#E8EAED",
+        "underLabel": "hosts and addresses",
+        "underLabelFontSize": 12,
+        "backgroundColor": "#1A1C20",
+        "majorFontSize": 40
+      }
+    },
+    "rule_artex": {
+      "type": "splunk.rectangle",
+      "options": {
+        "fillColor": "#2A2E35",
+        "strokeColor": "#2A2E35"
+      }
+    },
+    "hits_artex": {
+      "type": "splunk.singlevalue",
+      "dataSources": {
+        "primary": "t_artex"
+      },
+      "options": {
+        "majorValue": "> primary | seriesByName('total_hits') | lastPoint()",
+        "trendDisplay": "off",
+        "sparklineDisplay": "off",
+        "majorColor": "#E8EAED",
+        "majorFontSize": 18,
+        "backgroundColor": "#1A1C20",
+        "underLabel": "results",
+        "underLabelFontSize": 12
+      }
+    },
+    "new_artex": {
+      "type": "splunk.singlevalue",
+      "dataSources": {
+        "primary": "a_artex"
+      },
+      "options": {
+        "majorValue": "> primary | seriesByName('new') | lastPoint()",
+        "trendDisplay": "off",
+        "sparklineDisplay": "off",
+        "majorColor": "#E8EAED",
+        "majorFontSize": 18,
+        "backgroundColor": "#1A1C20",
+        "underLabel": "new, 7 days",
+        "underLabelFontSize": 12
+      }
+    },
+    "all_artex": {
+      "type": "splunk.singlevalue",
+      "dataSources": {
+        "primary": "a_artex"
+      },
+      "options": {
+        "majorValue": "> primary | seriesByName('all_time') | lastPoint()",
+        "trendDisplay": "off",
+        "sparklineDisplay": "off",
+        "majorColor": "#E8EAED",
+        "majorFontSize": 18,
+        "backgroundColor": "#1A1C20",
+        "underLabel": "all time",
+        "underLabelFontSize": 12
+      }
+    },
+    "port_artex": {
+      "type": "splunk.markdown",
+      "options": {
+        "markdown": "**8787**  \nconsole port",
+        "fontColor": "#9AA0A6",
+        "fontSize": "small"
+      }
+    },
+    "bg_cyberstrikeai": {
+      "type": "splunk.rectangle",
+      "options": {
+        "fillColor": "#1A1C20",
+        "strokeColor": "#2A2E35",
+        "rx": 8
+      }
+    },
+    "bar_cyberstrikeai": {
+      "type": "splunk.rectangle",
+      "options": {
+        "fillColor": "#F0703A",
+        "strokeColor": "#F0703A"
+      }
+    },
+    "dot_cyberstrikeai": {
+      "type": "splunk.rectangle",
+      "options": {
+        "fillColor": "#F0703A",
+        "strokeColor": "#F0703A",
+        "rx": 2
+      }
+    },
+    "name_cyberstrikeai": {
+      "type": "splunk.markdown",
+      "options": {
+        "markdown": "**CyberStrikeAI**",
+        "fontColor": "#E8EAED",
+        "fontSize": "large"
+      }
+    },
+    "desc_cyberstrikeai": {
+      "type": "splunk.markdown",
+      "options": {
+        "markdown": "Go operator console with its own implants, C2 listeners and webshell manager.",
+        "fontColor": "#9AA0A6",
+        "fontSize": "small"
+      }
+    },
+    "big_cyberstrikeai": {
+      "type": "splunk.singlevalue",
+      "dataSources": {
+        "primary": "t_cyberstrikeai"
+      },
+      "options": {
+        "majorValue": "> primary | seriesByName('sources') | lastPoint()",
+        "sparklineValues": "> primary | seriesByName('hits')",
+        "trendDisplay": "off",
+        "sparklineDisplay": "below",
+        "showSparklineAreaGraph": true,
+        "sparklineStrokeColor": "#F0703A",
+        "sparklineAreaColor": "#F0703A",
+        "majorColor": "#E8EAED",
+        "underLabel": "hosts and addresses",
+        "underLabelFontSize": 12,
+        "backgroundColor": "#1A1C20",
+        "majorFontSize": 40
+      }
+    },
+    "rule_cyberstrikeai": {
+      "type": "splunk.rectangle",
+      "options": {
+        "fillColor": "#2A2E35",
+        "strokeColor": "#2A2E35"
+      }
+    },
+    "hits_cyberstrikeai": {
+      "type": "splunk.singlevalue",
+      "dataSources": {
+        "primary": "t_cyberstrikeai"
+      },
+      "options": {
+        "majorValue": "> primary | seriesByName('total_hits') | lastPoint()",
+        "trendDisplay": "off",
+        "sparklineDisplay": "off",
+        "majorColor": "#E8EAED",
+        "majorFontSize": 18,
+        "backgroundColor": "#1A1C20",
+        "underLabel": "results",
+        "underLabelFontSize": 12
+      }
+    },
+    "new_cyberstrikeai": {
+      "type": "splunk.singlevalue",
+      "dataSources": {
+        "primary": "a_cyberstrikeai"
+      },
+      "options": {
+        "majorValue": "> primary | seriesByName('new') | lastPoint()",
+        "trendDisplay": "off",
+        "sparklineDisplay": "off",
+        "majorColor": "#E8EAED",
+        "majorFontSize": 18,
+        "backgroundColor": "#1A1C20",
+        "underLabel": "new, 7 days",
+        "underLabelFontSize": 12
+      }
+    },
+    "all_cyberstrikeai": {
+      "type": "splunk.singlevalue",
+      "dataSources": {
+        "primary": "a_cyberstrikeai"
+      },
+      "options": {
+        "majorValue": "> primary | seriesByName('all_time') | lastPoint()",
+        "trendDisplay": "off",
+        "sparklineDisplay": "off",
+        "majorColor": "#E8EAED",
+        "majorFontSize": 18,
+        "backgroundColor": "#1A1C20",
+        "underLabel": "all time",
+        "underLabelFontSize": 12
+      }
+    },
+    "port_cyberstrikeai": {
+      "type": "splunk.markdown",
+      "options": {
+        "markdown": "**8080**  \nconsole port",
+        "fontColor": "#9AA0A6",
+        "fontSize": "small"
+      }
+    },
+    "bg_pentagi": {
+      "type": "splunk.rectangle",
+      "options": {
+        "fillColor": "#1A1C20",
+        "strokeColor": "#2A2E35",
+        "rx": 8
+      }
+    },
+    "bar_pentagi": {
+      "type": "splunk.rectangle",
+      "options": {
+        "fillColor": "#2EBD85",
+        "strokeColor": "#2EBD85"
+      }
+    },
+    "dot_pentagi": {
+      "type": "splunk.rectangle",
+      "options": {
+        "fillColor": "#2EBD85",
+        "strokeColor": "#2EBD85",
+        "rx": 2
+      }
+    },
+    "name_pentagi": {
+      "type": "splunk.markdown",
+      "options": {
+        "markdown": "**PentAGI**",
+        "fontColor": "#E8EAED",
+        "fontSize": "large"
+      }
+    },
+    "desc_pentagi": {
+      "type": "splunk.markdown",
+      "options": {
+        "markdown": "Go multi-agent platform that runs Kali tools in a container per engagement.",
+        "fontColor": "#9AA0A6",
+        "fontSize": "small"
+      }
+    },
+    "big_pentagi": {
+      "type": "splunk.singlevalue",
+      "dataSources": {
+        "primary": "t_pentagi"
+      },
+      "options": {
+        "majorValue": "> primary | seriesByName('sources') | lastPoint()",
+        "sparklineValues": "> primary | seriesByName('hits')",
+        "trendDisplay": "off",
+        "sparklineDisplay": "below",
+        "showSparklineAreaGraph": true,
+        "sparklineStrokeColor": "#2EBD85",
+        "sparklineAreaColor": "#2EBD85",
+        "majorColor": "#E8EAED",
+        "underLabel": "hosts and addresses",
+        "underLabelFontSize": 12,
+        "backgroundColor": "#1A1C20",
+        "majorFontSize": 40
+      }
+    },
+    "rule_pentagi": {
+      "type": "splunk.rectangle",
+      "options": {
+        "fillColor": "#2A2E35",
+        "strokeColor": "#2A2E35"
+      }
+    },
+    "hits_pentagi": {
+      "type": "splunk.singlevalue",
+      "dataSources": {
+        "primary": "t_pentagi"
+      },
+      "options": {
+        "majorValue": "> primary | seriesByName('total_hits') | lastPoint()",
+        "trendDisplay": "off",
+        "sparklineDisplay": "off",
+        "majorColor": "#E8EAED",
+        "majorFontSize": 18,
+        "backgroundColor": "#1A1C20",
+        "underLabel": "results",
+        "underLabelFontSize": 12
+      }
+    },
+    "new_pentagi": {
+      "type": "splunk.singlevalue",
+      "dataSources": {
+        "primary": "a_pentagi"
+      },
+      "options": {
+        "majorValue": "> primary | seriesByName('new') | lastPoint()",
+        "trendDisplay": "off",
+        "sparklineDisplay": "off",
+        "majorColor": "#E8EAED",
+        "majorFontSize": 18,
+        "backgroundColor": "#1A1C20",
+        "underLabel": "new, 7 days",
+        "underLabelFontSize": 12
+      }
+    },
+    "all_pentagi": {
+      "type": "splunk.singlevalue",
+      "dataSources": {
+        "primary": "a_pentagi"
+      },
+      "options": {
+        "majorValue": "> primary | seriesByName('all_time') | lastPoint()",
+        "trendDisplay": "off",
+        "sparklineDisplay": "off",
+        "majorColor": "#E8EAED",
+        "majorFontSize": 18,
+        "backgroundColor": "#1A1C20",
+        "underLabel": "all time",
+        "underLabelFontSize": 12
+      }
+    },
+    "port_pentagi": {
+      "type": "splunk.markdown",
+      "options": {
+        "markdown": "**8443**  \nconsole port",
+        "fontColor": "#9AA0A6",
+        "fontSize": "small"
+      }
+    },
+    "bg_cairn": {
+      "type": "splunk.rectangle",
+      "options": {
+        "fillColor": "#1A1C20",
+        "strokeColor": "#2A2E35",
+        "rx": 8
+      }
+    },
+    "bar_cairn": {
+      "type": "splunk.rectangle",
+      "options": {
+        "fillColor": "#E6A817",
+        "strokeColor": "#E6A817"
+      }
+    },
+    "dot_cairn": {
+      "type": "splunk.rectangle",
+      "options": {
+        "fillColor": "#E6A817",
+        "strokeColor": "#E6A817",
+        "rx": 2
+      }
+    },
+    "name_cairn": {
+      "type": "splunk.markdown",
+      "options": {
+        "markdown": "**Cairn**",
+        "fontColor": "#E8EAED",
+        "fontSize": "large"
+      }
+    },
+    "desc_cairn": {
+      "type": "splunk.markdown",
+      "options": {
+        "markdown": "Python engine that drives coding agents in Kali containers.",
+        "fontColor": "#9AA0A6",
+        "fontSize": "small"
+      }
+    },
+    "big_cairn": {
+      "type": "splunk.singlevalue",
+      "dataSources": {
+        "primary": "t_cairn"
+      },
+      "options": {
+        "majorValue": "> primary | seriesByName('sources') | lastPoint()",
+        "sparklineValues": "> primary | seriesByName('hits')",
+        "trendDisplay": "off",
+        "sparklineDisplay": "below",
+        "showSparklineAreaGraph": true,
+        "sparklineStrokeColor": "#E6A817",
+        "sparklineAreaColor": "#E6A817",
+        "majorColor": "#E8EAED",
+        "underLabel": "hosts and addresses",
+        "underLabelFontSize": 12,
+        "backgroundColor": "#1A1C20",
+        "majorFontSize": 40
+      }
+    },
+    "rule_cairn": {
+      "type": "splunk.rectangle",
+      "options": {
+        "fillColor": "#2A2E35",
+        "strokeColor": "#2A2E35"
+      }
+    },
+    "hits_cairn": {
+      "type": "splunk.singlevalue",
+      "dataSources": {
+        "primary": "t_cairn"
+      },
+      "options": {
+        "majorValue": "> primary | seriesByName('total_hits') | lastPoint()",
+        "trendDisplay": "off",
+        "sparklineDisplay": "off",
+        "majorColor": "#E8EAED",
+        "majorFontSize": 18,
+        "backgroundColor": "#1A1C20",
+        "underLabel": "results",
+        "underLabelFontSize": 12
+      }
+    },
+    "new_cairn": {
+      "type": "splunk.singlevalue",
+      "dataSources": {
+        "primary": "a_cairn"
+      },
+      "options": {
+        "majorValue": "> primary | seriesByName('new') | lastPoint()",
+        "trendDisplay": "off",
+        "sparklineDisplay": "off",
+        "majorColor": "#E8EAED",
+        "majorFontSize": 18,
+        "backgroundColor": "#1A1C20",
+        "underLabel": "new, 7 days",
+        "underLabelFontSize": 12
+      }
+    },
+    "all_cairn": {
+      "type": "splunk.singlevalue",
+      "dataSources": {
+        "primary": "a_cairn"
+      },
+      "options": {
+        "majorValue": "> primary | seriesByName('all_time') | lastPoint()",
+        "trendDisplay": "off",
+        "sparklineDisplay": "off",
+        "majorColor": "#E8EAED",
+        "majorFontSize": 18,
+        "backgroundColor": "#1A1C20",
+        "underLabel": "all time",
+        "underLabelFontSize": 12
+      }
+    },
+    "port_cairn": {
+      "type": "splunk.markdown",
+      "options": {
+        "markdown": "**8000**  \nconsole port",
+        "fontColor": "#9AA0A6",
+        "fontSize": "small"
+      }
+    },
+    "bg_hermes": {
+      "type": "splunk.rectangle",
+      "options": {
+        "fillColor": "#1A1C20",
+        "strokeColor": "#2A2E35",
+        "rx": 8
+      }
+    },
+    "bar_hermes": {
+      "type": "splunk.rectangle",
+      "options": {
+        "fillColor": "#E5508A",
+        "strokeColor": "#E5508A"
+      }
+    },
+    "dot_hermes": {
+      "type": "splunk.rectangle",
+      "options": {
+        "fillColor": "#E5508A",
+        "strokeColor": "#E5508A",
+        "rx": 2
+      }
+    },
+    "name_hermes": {
+      "type": "splunk.markdown",
+      "options": {
+        "markdown": "**Hermes Agent**",
+        "fontColor": "#E8EAED",
+        "fontSize": "large"
+      }
+    },
+    "desc_hermes": {
+      "type": "splunk.markdown",
+      "options": {
+        "markdown": "General-purpose agent turned attack console: approvals off, jailbreak skill, red-team personas.",
+        "fontColor": "#9AA0A6",
+        "fontSize": "small"
+      }
+    },
+    "big_hermes": {
+      "type": "splunk.singlevalue",
+      "dataSources": {
+        "primary": "t_hermes"
+      },
+      "options": {
+        "majorValue": "> primary | seriesByName('sources') | lastPoint()",
+        "sparklineValues": "> primary | seriesByName('hits')",
+        "trendDisplay": "off",
+        "sparklineDisplay": "below",
+        "showSparklineAreaGraph": true,
+        "sparklineStrokeColor": "#E5508A",
+        "sparklineAreaColor": "#E5508A",
+        "majorColor": "#E8EAED",
+        "underLabel": "hosts and addresses",
+        "underLabelFontSize": 12,
+        "backgroundColor": "#1A1C20",
+        "majorFontSize": 40
+      }
+    },
+    "rule_hermes": {
+      "type": "splunk.rectangle",
+      "options": {
+        "fillColor": "#2A2E35",
+        "strokeColor": "#2A2E35"
+      }
+    },
+    "hits_hermes": {
+      "type": "splunk.singlevalue",
+      "dataSources": {
+        "primary": "t_hermes"
+      },
+      "options": {
+        "majorValue": "> primary | seriesByName('total_hits') | lastPoint()",
+        "trendDisplay": "off",
+        "sparklineDisplay": "off",
+        "majorColor": "#E8EAED",
+        "majorFontSize": 18,
+        "backgroundColor": "#1A1C20",
+        "underLabel": "results",
+        "underLabelFontSize": 12
+      }
+    },
+    "new_hermes": {
+      "type": "splunk.singlevalue",
+      "dataSources": {
+        "primary": "a_hermes"
+      },
+      "options": {
+        "majorValue": "> primary | seriesByName('new') | lastPoint()",
+        "trendDisplay": "off",
+        "sparklineDisplay": "off",
+        "majorColor": "#E8EAED",
+        "majorFontSize": 18,
+        "backgroundColor": "#1A1C20",
+        "underLabel": "new, 7 days",
+        "underLabelFontSize": 12
+      }
+    },
+    "all_hermes": {
+      "type": "splunk.singlevalue",
+      "dataSources": {
+        "primary": "a_hermes"
+      },
+      "options": {
+        "majorValue": "> primary | seriesByName('all_time') | lastPoint()",
+        "trendDisplay": "off",
+        "sparklineDisplay": "off",
+        "majorColor": "#E8EAED",
+        "majorFontSize": 18,
+        "backgroundColor": "#1A1C20",
+        "underLabel": "all time",
+        "underLabelFontSize": 12
+      }
+    },
+    "port_hermes": {
+      "type": "splunk.markdown",
+      "options": {
+        "markdown": "**9119**  \nconsole port",
+        "fontColor": "#9AA0A6",
+        "fontSize": "small"
+      }
+    },
+    "bg_strix": {
+      "type": "splunk.rectangle",
+      "options": {
+        "fillColor": "#1A1C20",
+        "strokeColor": "#2A2E35",
+        "rx": 8
+      }
+    },
+    "bar_strix": {
+      "type": "splunk.rectangle",
+      "options": {
+        "fillColor": "#3FBF3F",
+        "strokeColor": "#3FBF3F"
+      }
+    },
+    "dot_strix": {
+      "type": "splunk.rectangle",
+      "options": {
+        "fillColor": "#3FBF3F",
+        "strokeColor": "#3FBF3F",
+        "rx": 2
+      }
+    },
+    "name_strix": {
+      "type": "splunk.markdown",
+      "options": {
+        "markdown": "**Strix**",
+        "fontColor": "#E8EAED",
+        "fontSize": "large"
+      }
+    },
+    "desc_strix": {
+      "type": "splunk.markdown",
+      "options": {
+        "markdown": "Python AI pentest agent that runs teams of agents in a Kali sandbox.",
+        "fontColor": "#9AA0A6",
+        "fontSize": "small"
+      }
+    },
+    "big_strix": {
+      "type": "splunk.singlevalue",
+      "dataSources": {
+        "primary": "t_strix"
+      },
+      "options": {
+        "majorValue": "> primary | seriesByName('sources') | lastPoint()",
+        "sparklineValues": "> primary | seriesByName('hits')",
+        "trendDisplay": "off",
+        "sparklineDisplay": "below",
+        "showSparklineAreaGraph": true,
+        "sparklineStrokeColor": "#3FBF3F",
+        "sparklineAreaColor": "#3FBF3F",
+        "majorColor": "#E8EAED",
+        "underLabel": "hosts and addresses",
+        "underLabelFontSize": 12,
+        "backgroundColor": "#1A1C20",
+        "majorFontSize": 40
+      }
+    },
+    "rule_strix": {
+      "type": "splunk.rectangle",
+      "options": {
+        "fillColor": "#2A2E35",
+        "strokeColor": "#2A2E35"
+      }
+    },
+    "hits_strix": {
+      "type": "splunk.singlevalue",
+      "dataSources": {
+        "primary": "t_strix"
+      },
+      "options": {
+        "majorValue": "> primary | seriesByName('total_hits') | lastPoint()",
+        "trendDisplay": "off",
+        "sparklineDisplay": "off",
+        "majorColor": "#E8EAED",
+        "majorFontSize": 18,
+        "backgroundColor": "#1A1C20",
+        "underLabel": "results",
+        "underLabelFontSize": 12
+      }
+    },
+    "new_strix": {
+      "type": "splunk.singlevalue",
+      "dataSources": {
+        "primary": "a_strix"
+      },
+      "options": {
+        "majorValue": "> primary | seriesByName('new') | lastPoint()",
+        "trendDisplay": "off",
+        "sparklineDisplay": "off",
+        "majorColor": "#E8EAED",
+        "majorFontSize": 18,
+        "backgroundColor": "#1A1C20",
+        "underLabel": "new, 7 days",
+        "underLabelFontSize": 12
+      }
+    },
+    "all_strix": {
+      "type": "splunk.singlevalue",
+      "dataSources": {
+        "primary": "a_strix"
+      },
+      "options": {
+        "majorValue": "> primary | seriesByName('all_time') | lastPoint()",
+        "trendDisplay": "off",
+        "sparklineDisplay": "off",
+        "majorColor": "#E8EAED",
+        "majorFontSize": 18,
+        "backgroundColor": "#1A1C20",
+        "underLabel": "all time",
+        "underLabelFontSize": 12
+      }
+    },
+    "port_strix": {
+      "type": "splunk.markdown",
+      "options": {
+        "markdown": "**8080**  \nconsole port",
+        "fontColor": "#9AA0A6",
+        "fontSize": "small"
+      }
+    },
+    "bg_hexstrike": {
+      "type": "splunk.rectangle",
+      "options": {
+        "fillColor": "#1A1C20",
+        "strokeColor": "#2A2E35",
+        "rx": 8
+      }
+    },
+    "bar_hexstrike": {
+      "type": "splunk.rectangle",
+      "options": {
+        "fillColor": "#8E7CF0",
+        "strokeColor": "#8E7CF0"
+      }
+    },
+    "dot_hexstrike": {
+      "type": "splunk.rectangle",
+      "options": {
+        "fillColor": "#8E7CF0",
+        "strokeColor": "#8E7CF0",
+        "rx": 2
+      }
+    },
+    "name_hexstrike": {
+      "type": "splunk.markdown",
+      "options": {
+        "markdown": "**HexStrike**",
+        "fontColor": "#E8EAED",
+        "fontSize": "large"
+      }
+    },
+    "desc_hexstrike": {
+      "type": "splunk.markdown",
+      "options": {
+        "markdown": "Python MCP server that gives any AI assistant about 150 security tools.",
+        "fontColor": "#9AA0A6",
+        "fontSize": "small"
+      }
+    },
+    "big_hexstrike": {
+      "type": "splunk.singlevalue",
+      "dataSources": {
+        "primary": "t_hexstrike"
+      },
+      "options": {
+        "majorValue": "> primary | seriesByName('sources') | lastPoint()",
+        "sparklineValues": "> primary | seriesByName('hits')",
+        "trendDisplay": "off",
+        "sparklineDisplay": "below",
+        "showSparklineAreaGraph": true,
+        "sparklineStrokeColor": "#8E7CF0",
+        "sparklineAreaColor": "#8E7CF0",
+        "majorColor": "#E8EAED",
+        "underLabel": "hosts and addresses",
+        "underLabelFontSize": 12,
+        "backgroundColor": "#1A1C20",
+        "majorFontSize": 40
+      }
+    },
+    "rule_hexstrike": {
+      "type": "splunk.rectangle",
+      "options": {
+        "fillColor": "#2A2E35",
+        "strokeColor": "#2A2E35"
+      }
+    },
+    "hits_hexstrike": {
+      "type": "splunk.singlevalue",
+      "dataSources": {
+        "primary": "t_hexstrike"
+      },
+      "options": {
+        "majorValue": "> primary | seriesByName('total_hits') | lastPoint()",
+        "trendDisplay": "off",
+        "sparklineDisplay": "off",
+        "majorColor": "#E8EAED",
+        "majorFontSize": 18,
+        "backgroundColor": "#1A1C20",
+        "underLabel": "results",
+        "underLabelFontSize": 12
+      }
+    },
+    "new_hexstrike": {
+      "type": "splunk.singlevalue",
+      "dataSources": {
+        "primary": "a_hexstrike"
+      },
+      "options": {
+        "majorValue": "> primary | seriesByName('new') | lastPoint()",
+        "trendDisplay": "off",
+        "sparklineDisplay": "off",
+        "majorColor": "#E8EAED",
+        "majorFontSize": 18,
+        "backgroundColor": "#1A1C20",
+        "underLabel": "new, 7 days",
+        "underLabelFontSize": 12
+      }
+    },
+    "all_hexstrike": {
+      "type": "splunk.singlevalue",
+      "dataSources": {
+        "primary": "a_hexstrike"
+      },
+      "options": {
+        "majorValue": "> primary | seriesByName('all_time') | lastPoint()",
+        "trendDisplay": "off",
+        "sparklineDisplay": "off",
+        "majorColor": "#E8EAED",
+        "majorFontSize": 18,
+        "backgroundColor": "#1A1C20",
+        "underLabel": "all time",
+        "underLabelFontSize": 12
+      }
+    },
+    "port_hexstrike": {
+      "type": "splunk.markdown",
+      "options": {
+        "markdown": "**8888**  \nconsole port",
+        "fontColor": "#9AA0A6",
+        "fontSize": "small"
+      }
+    },
+    "bg_agent_zero": {
+      "type": "splunk.rectangle",
+      "options": {
+        "fillColor": "#1A1C20",
+        "strokeColor": "#2A2E35",
+        "rx": 8
+      }
+    },
+    "bar_agent_zero": {
+      "type": "splunk.rectangle",
+      "options": {
+        "fillColor": "#2BB5C8",
+        "strokeColor": "#2BB5C8"
+      }
+    },
+    "dot_agent_zero": {
+      "type": "splunk.rectangle",
+      "options": {
+        "fillColor": "#2BB5C8",
+        "strokeColor": "#2BB5C8",
+        "rx": 2
+      }
+    },
+    "name_agent_zero": {
+      "type": "splunk.markdown",
+      "options": {
+        "markdown": "**Agent Zero**",
+        "fontColor": "#E8EAED",
+        "fontSize": "large"
+      }
+    },
+    "desc_agent_zero": {
+      "type": "splunk.markdown",
+      "options": {
+        "markdown": "General-purpose agent in a Kali container with a hacker profile and an open web UI.",
+        "fontColor": "#9AA0A6",
+        "fontSize": "small"
+      }
+    },
+    "big_agent_zero": {
+      "type": "splunk.singlevalue",
+      "dataSources": {
+        "primary": "t_agent_zero"
+      },
+      "options": {
+        "majorValue": "> primary | seriesByName('sources') | lastPoint()",
+        "sparklineValues": "> primary | seriesByName('hits')",
+        "trendDisplay": "off",
+        "sparklineDisplay": "below",
+        "showSparklineAreaGraph": true,
+        "sparklineStrokeColor": "#2BB5C8",
+        "sparklineAreaColor": "#2BB5C8",
+        "majorColor": "#E8EAED",
+        "underLabel": "hosts and addresses",
+        "underLabelFontSize": 12,
+        "backgroundColor": "#1A1C20",
+        "majorFontSize": 40
+      }
+    },
+    "rule_agent_zero": {
+      "type": "splunk.rectangle",
+      "options": {
+        "fillColor": "#2A2E35",
+        "strokeColor": "#2A2E35"
+      }
+    },
+    "hits_agent_zero": {
+      "type": "splunk.singlevalue",
+      "dataSources": {
+        "primary": "t_agent_zero"
+      },
+      "options": {
+        "majorValue": "> primary | seriesByName('total_hits') | lastPoint()",
+        "trendDisplay": "off",
+        "sparklineDisplay": "off",
+        "majorColor": "#E8EAED",
+        "majorFontSize": 18,
+        "backgroundColor": "#1A1C20",
+        "underLabel": "results",
+        "underLabelFontSize": 12
+      }
+    },
+    "new_agent_zero": {
+      "type": "splunk.singlevalue",
+      "dataSources": {
+        "primary": "a_agent_zero"
+      },
+      "options": {
+        "majorValue": "> primary | seriesByName('new') | lastPoint()",
+        "trendDisplay": "off",
+        "sparklineDisplay": "off",
+        "majorColor": "#E8EAED",
+        "majorFontSize": 18,
+        "backgroundColor": "#1A1C20",
+        "underLabel": "new, 7 days",
+        "underLabelFontSize": 12
+      }
+    },
+    "all_agent_zero": {
+      "type": "splunk.singlevalue",
+      "dataSources": {
+        "primary": "a_agent_zero"
+      },
+      "options": {
+        "majorValue": "> primary | seriesByName('all_time') | lastPoint()",
+        "trendDisplay": "off",
+        "sparklineDisplay": "off",
+        "majorColor": "#E8EAED",
+        "majorFontSize": 18,
+        "backgroundColor": "#1A1C20",
+        "underLabel": "all time",
+        "underLabelFontSize": 12
+      }
+    },
+    "port_agent_zero": {
+      "type": "splunk.markdown",
+      "options": {
+        "markdown": "**50080**  \nconsole port",
+        "fontColor": "#9AA0A6",
+        "fontSize": "small"
+      }
+    },
+    "bg_redamon": {
+      "type": "splunk.rectangle",
+      "options": {
+        "fillColor": "#1A1C20",
+        "strokeColor": "#2A2E35",
+        "rx": 8
+      }
+    },
+    "bar_redamon": {
+      "type": "splunk.rectangle",
+      "options": {
+        "fillColor": "#EF5A5A",
+        "strokeColor": "#EF5A5A"
+      }
+    },
+    "dot_redamon": {
+      "type": "splunk.rectangle",
+      "options": {
+        "fillColor": "#EF5A5A",
+        "strokeColor": "#EF5A5A",
+        "rx": 2
+      }
+    },
+    "name_redamon": {
+      "type": "splunk.markdown",
+      "options": {
+        "markdown": "**RedAmon**",
+        "fontColor": "#E8EAED",
+        "fontSize": "large"
+      }
+    },
+    "desc_redamon": {
+      "type": "splunk.markdown",
+      "options": {
+        "markdown": "Self-hosted pentest platform: web console, recon pipeline and a Metasploit agent.",
+        "fontColor": "#9AA0A6",
+        "fontSize": "small"
+      }
+    },
+    "big_redamon": {
+      "type": "splunk.singlevalue",
+      "dataSources": {
+        "primary": "t_redamon"
+      },
+      "options": {
+        "majorValue": "> primary | seriesByName('sources') | lastPoint()",
+        "sparklineValues": "> primary | seriesByName('hits')",
+        "trendDisplay": "off",
+        "sparklineDisplay": "below",
+        "showSparklineAreaGraph": true,
+        "sparklineStrokeColor": "#EF5A5A",
+        "sparklineAreaColor": "#EF5A5A",
+        "majorColor": "#E8EAED",
+        "underLabel": "hosts and addresses",
+        "underLabelFontSize": 12,
+        "backgroundColor": "#1A1C20",
+        "majorFontSize": 40
+      }
+    },
+    "rule_redamon": {
+      "type": "splunk.rectangle",
+      "options": {
+        "fillColor": "#2A2E35",
+        "strokeColor": "#2A2E35"
+      }
+    },
+    "hits_redamon": {
+      "type": "splunk.singlevalue",
+      "dataSources": {
+        "primary": "t_redamon"
+      },
+      "options": {
+        "majorValue": "> primary | seriesByName('total_hits') | lastPoint()",
+        "trendDisplay": "off",
+        "sparklineDisplay": "off",
+        "majorColor": "#E8EAED",
+        "majorFontSize": 18,
+        "backgroundColor": "#1A1C20",
+        "underLabel": "results",
+        "underLabelFontSize": 12
+      }
+    },
+    "new_redamon": {
+      "type": "splunk.singlevalue",
+      "dataSources": {
+        "primary": "a_redamon"
+      },
+      "options": {
+        "majorValue": "> primary | seriesByName('new') | lastPoint()",
+        "trendDisplay": "off",
+        "sparklineDisplay": "off",
+        "majorColor": "#E8EAED",
+        "majorFontSize": 18,
+        "backgroundColor": "#1A1C20",
+        "underLabel": "new, 7 days",
+        "underLabelFontSize": 12
+      }
+    },
+    "all_redamon": {
+      "type": "splunk.singlevalue",
+      "dataSources": {
+        "primary": "a_redamon"
+      },
+      "options": {
+        "majorValue": "> primary | seriesByName('all_time') | lastPoint()",
+        "trendDisplay": "off",
+        "sparklineDisplay": "off",
+        "majorColor": "#E8EAED",
+        "majorFontSize": 18,
+        "backgroundColor": "#1A1C20",
+        "underLabel": "all time",
+        "underLabelFontSize": 12
+      }
+    },
+    "port_redamon": {
+      "type": "splunk.markdown",
+      "options": {
+        "markdown": "**3000**  \nconsole port",
+        "fontColor": "#9AA0A6",
+        "fontSize": "small"
+      }
+    },
+    "bg_xalgorix": {
+      "type": "splunk.rectangle",
+      "options": {
+        "fillColor": "#1A1C20",
+        "strokeColor": "#2A2E35",
+        "rx": 8
+      }
+    },
+    "bar_xalgorix": {
+      "type": "splunk.rectangle",
+      "options": {
+        "fillColor": "#C9A0FF",
+        "strokeColor": "#C9A0FF"
+      }
+    },
+    "dot_xalgorix": {
+      "type": "splunk.rectangle",
+      "options": {
+        "fillColor": "#C9A0FF",
+        "strokeColor": "#C9A0FF",
+        "rx": 2
+      }
+    },
+    "name_xalgorix": {
+      "type": "splunk.markdown",
+      "options": {
+        "markdown": "**Xalgorix**",
+        "fontColor": "#E8EAED",
+        "fontSize": "large"
+      }
+    },
+    "desc_xalgorix": {
+      "type": "splunk.markdown",
+      "options": {
+        "markdown": "Go binary with a web dashboard whose agent tests web apps and re-exploits findings.",
+        "fontColor": "#9AA0A6",
+        "fontSize": "small"
+      }
+    },
+    "big_xalgorix": {
+      "type": "splunk.singlevalue",
+      "dataSources": {
+        "primary": "t_xalgorix"
+      },
+      "options": {
+        "majorValue": "> primary | seriesByName('sources') | lastPoint()",
+        "sparklineValues": "> primary | seriesByName('hits')",
+        "trendDisplay": "off",
+        "sparklineDisplay": "below",
+        "showSparklineAreaGraph": true,
+        "sparklineStrokeColor": "#C9A0FF",
+        "sparklineAreaColor": "#C9A0FF",
+        "majorColor": "#E8EAED",
+        "underLabel": "hosts and addresses",
+        "underLabelFontSize": 12,
+        "backgroundColor": "#1A1C20",
+        "majorFontSize": 40
+      }
+    },
+    "rule_xalgorix": {
+      "type": "splunk.rectangle",
+      "options": {
+        "fillColor": "#2A2E35",
+        "strokeColor": "#2A2E35"
+      }
+    },
+    "hits_xalgorix": {
+      "type": "splunk.singlevalue",
+      "dataSources": {
+        "primary": "t_xalgorix"
+      },
+      "options": {
+        "majorValue": "> primary | seriesByName('total_hits') | lastPoint()",
+        "trendDisplay": "off",
+        "sparklineDisplay": "off",
+        "majorColor": "#E8EAED",
+        "majorFontSize": 18,
+        "backgroundColor": "#1A1C20",
+        "underLabel": "results",
+        "underLabelFontSize": 12
+      }
+    },
+    "new_xalgorix": {
+      "type": "splunk.singlevalue",
+      "dataSources": {
+        "primary": "a_xalgorix"
+      },
+      "options": {
+        "majorValue": "> primary | seriesByName('new') | lastPoint()",
+        "trendDisplay": "off",
+        "sparklineDisplay": "off",
+        "majorColor": "#E8EAED",
+        "majorFontSize": 18,
+        "backgroundColor": "#1A1C20",
+        "underLabel": "new, 7 days",
+        "underLabelFontSize": 12
+      }
+    },
+    "all_xalgorix": {
+      "type": "splunk.singlevalue",
+      "dataSources": {
+        "primary": "a_xalgorix"
+      },
+      "options": {
+        "majorValue": "> primary | seriesByName('all_time') | lastPoint()",
+        "trendDisplay": "off",
+        "sparklineDisplay": "off",
+        "majorColor": "#E8EAED",
+        "majorFontSize": 18,
+        "backgroundColor": "#1A1C20",
+        "underLabel": "all time",
+        "underLabelFontSize": 12
+      }
+    },
+    "port_xalgorix": {
+      "type": "splunk.markdown",
+      "options": {
+        "markdown": "**9137**  \nconsole port",
+        "fontColor": "#9AA0A6",
+        "fontSize": "small"
+      }
+    },
+    "bg_pentestswarm": {
+      "type": "splunk.rectangle",
+      "options": {
+        "fillColor": "#1A1C20",
+        "strokeColor": "#2A2E35",
+        "rx": 8
+      }
+    },
+    "bar_pentestswarm": {
+      "type": "splunk.rectangle",
+      "options": {
+        "fillColor": "#9AA4B2",
+        "strokeColor": "#9AA4B2"
+      }
+    },
+    "dot_pentestswarm": {
+      "type": "splunk.rectangle",
+      "options": {
+        "fillColor": "#9AA4B2",
+        "strokeColor": "#9AA4B2",
+        "rx": 2
+      }
+    },
+    "name_pentestswarm": {
+      "type": "splunk.markdown",
+      "options": {
+        "markdown": "**Pentest Swarm AI**",
+        "fontColor": "#E8EAED",
+        "fontSize": "large"
+      }
+    },
+    "desc_pentestswarm": {
+      "type": "splunk.markdown",
+      "options": {
+        "markdown": "Go command-line tool that runs recon, exploit and report agents.",
+        "fontColor": "#9AA0A6",
+        "fontSize": "small"
+      }
+    },
+    "big_pentestswarm": {
+      "type": "splunk.singlevalue",
+      "dataSources": {
+        "primary": "t_pentestswarm"
+      },
+      "options": {
+        "majorValue": "> primary | seriesByName('sources') | lastPoint()",
+        "sparklineValues": "> primary | seriesByName('hits')",
+        "trendDisplay": "off",
+        "sparklineDisplay": "below",
+        "showSparklineAreaGraph": true,
+        "sparklineStrokeColor": "#9AA4B2",
+        "sparklineAreaColor": "#9AA4B2",
+        "majorColor": "#E8EAED",
+        "underLabel": "hosts and addresses",
+        "underLabelFontSize": 12,
+        "backgroundColor": "#1A1C20",
+        "majorFontSize": 40
+      }
+    },
+    "rule_pentestswarm": {
+      "type": "splunk.rectangle",
+      "options": {
+        "fillColor": "#2A2E35",
+        "strokeColor": "#2A2E35"
+      }
+    },
+    "hits_pentestswarm": {
+      "type": "splunk.singlevalue",
+      "dataSources": {
+        "primary": "t_pentestswarm"
+      },
+      "options": {
+        "majorValue": "> primary | seriesByName('total_hits') | lastPoint()",
+        "trendDisplay": "off",
+        "sparklineDisplay": "off",
+        "majorColor": "#E8EAED",
+        "majorFontSize": 18,
+        "backgroundColor": "#1A1C20",
+        "underLabel": "results",
+        "underLabelFontSize": 12
+      }
+    },
+    "new_pentestswarm": {
+      "type": "splunk.singlevalue",
+      "dataSources": {
+        "primary": "a_pentestswarm"
+      },
+      "options": {
+        "majorValue": "> primary | seriesByName('new') | lastPoint()",
+        "trendDisplay": "off",
+        "sparklineDisplay": "off",
+        "majorColor": "#E8EAED",
+        "majorFontSize": 18,
+        "backgroundColor": "#1A1C20",
+        "underLabel": "new, 7 days",
+        "underLabelFontSize": 12
+      }
+    },
+    "all_pentestswarm": {
+      "type": "splunk.singlevalue",
+      "dataSources": {
+        "primary": "a_pentestswarm"
+      },
+      "options": {
+        "majorValue": "> primary | seriesByName('all_time') | lastPoint()",
+        "trendDisplay": "off",
+        "sparklineDisplay": "off",
+        "majorColor": "#E8EAED",
+        "majorFontSize": 18,
+        "backgroundColor": "#1A1C20",
+        "underLabel": "all time",
+        "underLabelFontSize": 12
+      }
+    },
+    "port_pentestswarm": {
+      "type": "splunk.markdown",
+      "options": {
+        "markdown": "**8080**  \nconsole port",
+        "fontColor": "#9AA0A6",
+        "fontSize": "small"
+      }
+    },
+    "bg_behaviors": {
+      "type": "splunk.rectangle",
+      "options": {
+        "fillColor": "#1A1C20",
+        "strokeColor": "#2A2E35",
+        "rx": 8
+      }
+    },
+    "bar_behaviors": {
+      "type": "splunk.rectangle",
+      "options": {
+        "fillColor": "#D9DEE5",
+        "strokeColor": "#D9DEE5"
+      }
+    },
+    "dot_behaviors": {
+      "type": "splunk.rectangle",
+      "options": {
+        "fillColor": "#D9DEE5",
+        "strokeColor": "#D9DEE5",
+        "rx": 2
+      }
+    },
+    "name_behaviors": {
+      "type": "splunk.markdown",
+      "options": {
+        "markdown": "**Shared behaviors**",
+        "fontColor": "#E8EAED",
+        "fontSize": "large"
+      }
+    },
+    "desc_behaviors": {
+      "type": "splunk.markdown",
+      "options": {
+        "markdown": "What every agentic framework does: coding agents with approvals off, agent tooling, callbacks.",
+        "fontColor": "#9AA0A6",
+        "fontSize": "small"
+      }
+    },
+    "big_behaviors": {
+      "type": "splunk.singlevalue",
+      "dataSources": {
+        "primary": "t_behaviors"
+      },
+      "options": {
+        "majorValue": "> primary | seriesByName('sources') | lastPoint()",
+        "sparklineValues": "> primary | seriesByName('hits')",
+        "trendDisplay": "off",
+        "sparklineDisplay": "below",
+        "showSparklineAreaGraph": true,
+        "sparklineStrokeColor": "#D9DEE5",
+        "sparklineAreaColor": "#D9DEE5",
+        "majorColor": "#E8EAED",
+        "underLabel": "hosts and addresses",
+        "underLabelFontSize": 12,
+        "backgroundColor": "#1A1C20",
+        "majorFontSize": 40
+      }
+    },
+    "rule_behaviors": {
+      "type": "splunk.rectangle",
+      "options": {
+        "fillColor": "#2A2E35",
+        "strokeColor": "#2A2E35"
+      }
+    },
+    "hits_behaviors": {
+      "type": "splunk.singlevalue",
+      "dataSources": {
+        "primary": "t_behaviors"
+      },
+      "options": {
+        "majorValue": "> primary | seriesByName('total_hits') | lastPoint()",
+        "trendDisplay": "off",
+        "sparklineDisplay": "off",
+        "majorColor": "#E8EAED",
+        "majorFontSize": 18,
+        "backgroundColor": "#1A1C20",
+        "underLabel": "results",
+        "underLabelFontSize": 12
+      }
+    },
+    "new_behaviors": {
+      "type": "splunk.singlevalue",
+      "dataSources": {
+        "primary": "a_behaviors"
+      },
+      "options": {
+        "majorValue": "> primary | seriesByName('new') | lastPoint()",
+        "trendDisplay": "off",
+        "sparklineDisplay": "off",
+        "majorColor": "#E8EAED",
+        "majorFontSize": 18,
+        "backgroundColor": "#1A1C20",
+        "underLabel": "new, 7 days",
+        "underLabelFontSize": 12
+      }
+    },
+    "all_behaviors": {
+      "type": "splunk.singlevalue",
+      "dataSources": {
+        "primary": "a_behaviors"
+      },
+      "options": {
+        "majorValue": "> primary | seriesByName('all_time') | lastPoint()",
+        "trendDisplay": "off",
+        "sparklineDisplay": "off",
+        "majorColor": "#E8EAED",
+        "majorFontSize": 18,
+        "backgroundColor": "#1A1C20",
+        "underLabel": "all time",
+        "underLabelFontSize": 12
+      }
+    },
+    "port_behaviors": {
+      "type": "splunk.markdown",
+      "options": {
+        "markdown": "**any**  \nframework",
+        "fontColor": "#9AA0A6",
+        "fontSize": "small"
+      }
+    },
+    "latest_title": {
+      "type": "splunk.markdown",
+      "options": {
+        "markdown": "### Latest results",
+        "fontColor": "#E8EAED"
+      }
+    },
+    "latest": {
+      "type": "splunk.table",
+      "dataSources": {
+        "primary": "latest"
+      },
+      "options": {
+        "backgroundColor": "#1A1C20"
+      }
+    }
+  },
+  "dataSources": {
+    "base": {
+      "type": "ds.search",
+      "name": "Results by framework",
+      "options": {
+        "query": "index=summary search_name=* aad_framework=* aad_entity=*\n| fields _time aad_framework aad_entity aad_rule\n| append [| makeresults | eval aad_framework=\"none\"]",
+        "queryParameters": {
+          "earliest": "$global_time.earliest$",
+          "latest": "$global_time.latest$"
+        }
+      }
+    },
+    "alltime": {
+      "type": "ds.search",
+      "name": "All time",
+      "options": {
+        "query": "index=summary search_name=* aad_framework=* aad_entity=*\n| stats min(_time) AS first_seen BY aad_framework aad_entity\n| stats dc(aad_entity) AS all_time count(eval(first_seen >= relative_time(now(), \"-7d@d\"))) AS new BY aad_framework",
+        "queryParameters": {
+          "earliest": "0",
+          "latest": "now"
+        }
+      }
+    },
+    "t_artex": {
+      "type": "ds.chain",
+      "options": {
+        "extend": "base",
+        "query": "| eval h=if(aad_framework=\"artex\", 1, 0), e=if(aad_framework=\"artex\", aad_entity, null())\n| eventstats dc(e) AS sources\n| timechart span=1d sum(h) AS hits max(sources) AS sources\n| fillnull value=0 hits\n| eventstats max(sources) AS sources sum(hits) AS total_hits\n| fillnull value=0 sources total_hits"
+      }
+    },
+    "a_artex": {
+      "type": "ds.chain",
+      "options": {
+        "extend": "alltime",
+        "query": "| search aad_framework=\"artex\"\n| append [| makeresults | eval all_time=0, new=0]\n| stats max(all_time) AS all_time max(new) AS new"
+      }
+    },
+    "t_cyberstrikeai": {
+      "type": "ds.chain",
+      "options": {
+        "extend": "base",
+        "query": "| eval h=if(aad_framework=\"cyberstrikeai\", 1, 0), e=if(aad_framework=\"cyberstrikeai\", aad_entity, null())\n| eventstats dc(e) AS sources\n| timechart span=1d sum(h) AS hits max(sources) AS sources\n| fillnull value=0 hits\n| eventstats max(sources) AS sources sum(hits) AS total_hits\n| fillnull value=0 sources total_hits"
+      }
+    },
+    "a_cyberstrikeai": {
+      "type": "ds.chain",
+      "options": {
+        "extend": "alltime",
+        "query": "| search aad_framework=\"cyberstrikeai\"\n| append [| makeresults | eval all_time=0, new=0]\n| stats max(all_time) AS all_time max(new) AS new"
+      }
+    },
+    "t_pentagi": {
+      "type": "ds.chain",
+      "options": {
+        "extend": "base",
+        "query": "| eval h=if(aad_framework=\"pentagi\", 1, 0), e=if(aad_framework=\"pentagi\", aad_entity, null())\n| eventstats dc(e) AS sources\n| timechart span=1d sum(h) AS hits max(sources) AS sources\n| fillnull value=0 hits\n| eventstats max(sources) AS sources sum(hits) AS total_hits\n| fillnull value=0 sources total_hits"
+      }
+    },
+    "a_pentagi": {
+      "type": "ds.chain",
+      "options": {
+        "extend": "alltime",
+        "query": "| search aad_framework=\"pentagi\"\n| append [| makeresults | eval all_time=0, new=0]\n| stats max(all_time) AS all_time max(new) AS new"
+      }
+    },
+    "t_cairn": {
+      "type": "ds.chain",
+      "options": {
+        "extend": "base",
+        "query": "| eval h=if(aad_framework=\"cairn\", 1, 0), e=if(aad_framework=\"cairn\", aad_entity, null())\n| eventstats dc(e) AS sources\n| timechart span=1d sum(h) AS hits max(sources) AS sources\n| fillnull value=0 hits\n| eventstats max(sources) AS sources sum(hits) AS total_hits\n| fillnull value=0 sources total_hits"
+      }
+    },
+    "a_cairn": {
+      "type": "ds.chain",
+      "options": {
+        "extend": "alltime",
+        "query": "| search aad_framework=\"cairn\"\n| append [| makeresults | eval all_time=0, new=0]\n| stats max(all_time) AS all_time max(new) AS new"
+      }
+    },
+    "t_hermes": {
+      "type": "ds.chain",
+      "options": {
+        "extend": "base",
+        "query": "| eval h=if(aad_framework=\"hermes\", 1, 0), e=if(aad_framework=\"hermes\", aad_entity, null())\n| eventstats dc(e) AS sources\n| timechart span=1d sum(h) AS hits max(sources) AS sources\n| fillnull value=0 hits\n| eventstats max(sources) AS sources sum(hits) AS total_hits\n| fillnull value=0 sources total_hits"
+      }
+    },
+    "a_hermes": {
+      "type": "ds.chain",
+      "options": {
+        "extend": "alltime",
+        "query": "| search aad_framework=\"hermes\"\n| append [| makeresults | eval all_time=0, new=0]\n| stats max(all_time) AS all_time max(new) AS new"
+      }
+    },
+    "t_strix": {
+      "type": "ds.chain",
+      "options": {
+        "extend": "base",
+        "query": "| eval h=if(aad_framework=\"strix\", 1, 0), e=if(aad_framework=\"strix\", aad_entity, null())\n| eventstats dc(e) AS sources\n| timechart span=1d sum(h) AS hits max(sources) AS sources\n| fillnull value=0 hits\n| eventstats max(sources) AS sources sum(hits) AS total_hits\n| fillnull value=0 sources total_hits"
+      }
+    },
+    "a_strix": {
+      "type": "ds.chain",
+      "options": {
+        "extend": "alltime",
+        "query": "| search aad_framework=\"strix\"\n| append [| makeresults | eval all_time=0, new=0]\n| stats max(all_time) AS all_time max(new) AS new"
+      }
+    },
+    "t_hexstrike": {
+      "type": "ds.chain",
+      "options": {
+        "extend": "base",
+        "query": "| eval h=if(aad_framework=\"hexstrike\", 1, 0), e=if(aad_framework=\"hexstrike\", aad_entity, null())\n| eventstats dc(e) AS sources\n| timechart span=1d sum(h) AS hits max(sources) AS sources\n| fillnull value=0 hits\n| eventstats max(sources) AS sources sum(hits) AS total_hits\n| fillnull value=0 sources total_hits"
+      }
+    },
+    "a_hexstrike": {
+      "type": "ds.chain",
+      "options": {
+        "extend": "alltime",
+        "query": "| search aad_framework=\"hexstrike\"\n| append [| makeresults | eval all_time=0, new=0]\n| stats max(all_time) AS all_time max(new) AS new"
+      }
+    },
+    "t_agent_zero": {
+      "type": "ds.chain",
+      "options": {
+        "extend": "base",
+        "query": "| eval h=if(aad_framework=\"agent-zero\", 1, 0), e=if(aad_framework=\"agent-zero\", aad_entity, null())\n| eventstats dc(e) AS sources\n| timechart span=1d sum(h) AS hits max(sources) AS sources\n| fillnull value=0 hits\n| eventstats max(sources) AS sources sum(hits) AS total_hits\n| fillnull value=0 sources total_hits"
+      }
+    },
+    "a_agent_zero": {
+      "type": "ds.chain",
+      "options": {
+        "extend": "alltime",
+        "query": "| search aad_framework=\"agent-zero\"\n| append [| makeresults | eval all_time=0, new=0]\n| stats max(all_time) AS all_time max(new) AS new"
+      }
+    },
+    "t_redamon": {
+      "type": "ds.chain",
+      "options": {
+        "extend": "base",
+        "query": "| eval h=if(aad_framework=\"redamon\", 1, 0), e=if(aad_framework=\"redamon\", aad_entity, null())\n| eventstats dc(e) AS sources\n| timechart span=1d sum(h) AS hits max(sources) AS sources\n| fillnull value=0 hits\n| eventstats max(sources) AS sources sum(hits) AS total_hits\n| fillnull value=0 sources total_hits"
+      }
+    },
+    "a_redamon": {
+      "type": "ds.chain",
+      "options": {
+        "extend": "alltime",
+        "query": "| search aad_framework=\"redamon\"\n| append [| makeresults | eval all_time=0, new=0]\n| stats max(all_time) AS all_time max(new) AS new"
+      }
+    },
+    "t_xalgorix": {
+      "type": "ds.chain",
+      "options": {
+        "extend": "base",
+        "query": "| eval h=if(aad_framework=\"xalgorix\", 1, 0), e=if(aad_framework=\"xalgorix\", aad_entity, null())\n| eventstats dc(e) AS sources\n| timechart span=1d sum(h) AS hits max(sources) AS sources\n| fillnull value=0 hits\n| eventstats max(sources) AS sources sum(hits) AS total_hits\n| fillnull value=0 sources total_hits"
+      }
+    },
+    "a_xalgorix": {
+      "type": "ds.chain",
+      "options": {
+        "extend": "alltime",
+        "query": "| search aad_framework=\"xalgorix\"\n| append [| makeresults | eval all_time=0, new=0]\n| stats max(all_time) AS all_time max(new) AS new"
+      }
+    },
+    "t_pentestswarm": {
+      "type": "ds.chain",
+      "options": {
+        "extend": "base",
+        "query": "| eval h=if(aad_framework=\"pentestswarm\", 1, 0), e=if(aad_framework=\"pentestswarm\", aad_entity, null())\n| eventstats dc(e) AS sources\n| timechart span=1d sum(h) AS hits max(sources) AS sources\n| fillnull value=0 hits\n| eventstats max(sources) AS sources sum(hits) AS total_hits\n| fillnull value=0 sources total_hits"
+      }
+    },
+    "a_pentestswarm": {
+      "type": "ds.chain",
+      "options": {
+        "extend": "alltime",
+        "query": "| search aad_framework=\"pentestswarm\"\n| append [| makeresults | eval all_time=0, new=0]\n| stats max(all_time) AS all_time max(new) AS new"
+      }
+    },
+    "t_behaviors": {
+      "type": "ds.chain",
+      "options": {
+        "extend": "base",
+        "query": "| eval h=if(aad_framework=\"behaviors\", 1, 0), e=if(aad_framework=\"behaviors\", aad_entity, null())\n| eventstats dc(e) AS sources\n| timechart span=1d sum(h) AS hits max(sources) AS sources\n| fillnull value=0 hits\n| eventstats max(sources) AS sources sum(hits) AS total_hits\n| fillnull value=0 sources total_hits"
+      }
+    },
+    "a_behaviors": {
+      "type": "ds.chain",
+      "options": {
+        "extend": "alltime",
+        "query": "| search aad_framework=\"behaviors\"\n| append [| makeresults | eval all_time=0, new=0]\n| stats max(all_time) AS all_time max(new) AS new"
+      }
+    },
+    "latest": {
+      "type": "ds.search",
+      "name": "Latest results",
+      "options": {
+        "query": "index=summary search_name=* aad_framework=* aad_entity=*\n| stats count AS results max(_time) AS last_seen BY aad_framework search_name aad_entity\n| sort - last_seen\n| head 200\n| eval last_seen=strftime(last_seen, \"%Y-%m-%d %H:%M\")\n| rename aad_framework AS framework search_name AS search aad_entity AS \"host or address\"",
+        "queryParameters": {
+          "earliest": "$global_time.earliest$",
+          "latest": "$global_time.latest$"
+        }
+      }
+    }
+  },
+  "layout": {
+    "type": "absolute",
+    "options": {
+      "width": 1440,
+      "height": 1460,
+      "backgroundColor": "#0F1117",
+      "display": "auto-scale"
+    },
+    "structure": [
+      {
+        "item": "bg_artex",
+        "type": "block",
+        "position": {
+          "x": 18,
+          "y": 18,
+          "w": 342,
+          "h": 300
+        }
+      },
+      {
+        "item": "bar_artex",
+        "type": "block",
+        "position": {
+          "x": 24,
+          "y": 18,
+          "w": 330,
+          "h": 3
+        }
+      },
+      {
+        "item": "dot_artex",
+        "type": "block",
+        "position": {
+          "x": 38,
+          "y": 42,
+          "w": 10,
+          "h": 10
+        }
+      },
+      {
+        "item": "name_artex",
+        "type": "block",
+        "position": {
+          "x": 56,
+          "y": 32,
+          "w": 292,
+          "h": 30
+        }
+      },
+      {
+        "item": "desc_artex",
+        "type": "block",
+        "position": {
+          "x": 38,
+          "y": 64,
+          "w": 306,
+          "h": 48
+        }
+      },
+      {
+        "item": "big_artex",
+        "type": "block",
+        "position": {
+          "x": 32,
+          "y": 114,
+          "w": 314,
+          "h": 130
+        }
+      },
+      {
+        "item": "rule_artex",
+        "type": "block",
+        "position": {
+          "x": 38,
+          "y": 252,
+          "w": 302,
+          "h": 1
+        }
+      },
+      {
+        "item": "hits_artex",
+        "type": "block",
+        "position": {
+          "x": 32,
+          "y": 258,
+          "w": 80,
+          "h": 54
+        }
+      },
+      {
+        "item": "new_artex",
+        "type": "block",
+        "position": {
+          "x": 114,
+          "y": 258,
+          "w": 84,
+          "h": 54
+        }
+      },
+      {
+        "item": "all_artex",
+        "type": "block",
+        "position": {
+          "x": 200,
+          "y": 258,
+          "w": 76,
+          "h": 54
+        }
+      },
+      {
+        "item": "port_artex",
+        "type": "block",
+        "position": {
+          "x": 280,
+          "y": 264,
+          "w": 76,
+          "h": 48
+        }
+      },
+      {
+        "item": "bg_cyberstrikeai",
+        "type": "block",
+        "position": {
+          "x": 378,
+          "y": 18,
+          "w": 342,
+          "h": 300
+        }
+      },
+      {
+        "item": "bar_cyberstrikeai",
+        "type": "block",
+        "position": {
+          "x": 384,
+          "y": 18,
+          "w": 330,
+          "h": 3
+        }
+      },
+      {
+        "item": "dot_cyberstrikeai",
+        "type": "block",
+        "position": {
+          "x": 398,
+          "y": 42,
+          "w": 10,
+          "h": 10
+        }
+      },
+      {
+        "item": "name_cyberstrikeai",
+        "type": "block",
+        "position": {
+          "x": 416,
+          "y": 32,
+          "w": 292,
+          "h": 30
+        }
+      },
+      {
+        "item": "desc_cyberstrikeai",
+        "type": "block",
+        "position": {
+          "x": 398,
+          "y": 64,
+          "w": 306,
+          "h": 48
+        }
+      },
+      {
+        "item": "big_cyberstrikeai",
+        "type": "block",
+        "position": {
+          "x": 392,
+          "y": 114,
+          "w": 314,
+          "h": 130
+        }
+      },
+      {
+        "item": "rule_cyberstrikeai",
+        "type": "block",
+        "position": {
+          "x": 398,
+          "y": 252,
+          "w": 302,
+          "h": 1
+        }
+      },
+      {
+        "item": "hits_cyberstrikeai",
+        "type": "block",
+        "position": {
+          "x": 392,
+          "y": 258,
+          "w": 80,
+          "h": 54
+        }
+      },
+      {
+        "item": "new_cyberstrikeai",
+        "type": "block",
+        "position": {
+          "x": 474,
+          "y": 258,
+          "w": 84,
+          "h": 54
+        }
+      },
+      {
+        "item": "all_cyberstrikeai",
+        "type": "block",
+        "position": {
+          "x": 560,
+          "y": 258,
+          "w": 76,
+          "h": 54
+        }
+      },
+      {
+        "item": "port_cyberstrikeai",
+        "type": "block",
+        "position": {
+          "x": 640,
+          "y": 264,
+          "w": 76,
+          "h": 48
+        }
+      },
+      {
+        "item": "bg_pentagi",
+        "type": "block",
+        "position": {
+          "x": 738,
+          "y": 18,
+          "w": 342,
+          "h": 300
+        }
+      },
+      {
+        "item": "bar_pentagi",
+        "type": "block",
+        "position": {
+          "x": 744,
+          "y": 18,
+          "w": 330,
+          "h": 3
+        }
+      },
+      {
+        "item": "dot_pentagi",
+        "type": "block",
+        "position": {
+          "x": 758,
+          "y": 42,
+          "w": 10,
+          "h": 10
+        }
+      },
+      {
+        "item": "name_pentagi",
+        "type": "block",
+        "position": {
+          "x": 776,
+          "y": 32,
+          "w": 292,
+          "h": 30
+        }
+      },
+      {
+        "item": "desc_pentagi",
+        "type": "block",
+        "position": {
+          "x": 758,
+          "y": 64,
+          "w": 306,
+          "h": 48
+        }
+      },
+      {
+        "item": "big_pentagi",
+        "type": "block",
+        "position": {
+          "x": 752,
+          "y": 114,
+          "w": 314,
+          "h": 130
+        }
+      },
+      {
+        "item": "rule_pentagi",
+        "type": "block",
+        "position": {
+          "x": 758,
+          "y": 252,
+          "w": 302,
+          "h": 1
+        }
+      },
+      {
+        "item": "hits_pentagi",
+        "type": "block",
+        "position": {
+          "x": 752,
+          "y": 258,
+          "w": 80,
+          "h": 54
+        }
+      },
+      {
+        "item": "new_pentagi",
+        "type": "block",
+        "position": {
+          "x": 834,
+          "y": 258,
+          "w": 84,
+          "h": 54
+        }
+      },
+      {
+        "item": "all_pentagi",
+        "type": "block",
+        "position": {
+          "x": 920,
+          "y": 258,
+          "w": 76,
+          "h": 54
+        }
+      },
+      {
+        "item": "port_pentagi",
+        "type": "block",
+        "position": {
+          "x": 1000,
+          "y": 264,
+          "w": 76,
+          "h": 48
+        }
+      },
+      {
+        "item": "bg_cairn",
+        "type": "block",
+        "position": {
+          "x": 1098,
+          "y": 18,
+          "w": 342,
+          "h": 300
+        }
+      },
+      {
+        "item": "bar_cairn",
+        "type": "block",
+        "position": {
+          "x": 1104,
+          "y": 18,
+          "w": 330,
+          "h": 3
+        }
+      },
+      {
+        "item": "dot_cairn",
+        "type": "block",
+        "position": {
+          "x": 1118,
+          "y": 42,
+          "w": 10,
+          "h": 10
+        }
+      },
+      {
+        "item": "name_cairn",
+        "type": "block",
+        "position": {
+          "x": 1136,
+          "y": 32,
+          "w": 292,
+          "h": 30
+        }
+      },
+      {
+        "item": "desc_cairn",
+        "type": "block",
+        "position": {
+          "x": 1118,
+          "y": 64,
+          "w": 306,
+          "h": 48
+        }
+      },
+      {
+        "item": "big_cairn",
+        "type": "block",
+        "position": {
+          "x": 1112,
+          "y": 114,
+          "w": 314,
+          "h": 130
+        }
+      },
+      {
+        "item": "rule_cairn",
+        "type": "block",
+        "position": {
+          "x": 1118,
+          "y": 252,
+          "w": 302,
+          "h": 1
+        }
+      },
+      {
+        "item": "hits_cairn",
+        "type": "block",
+        "position": {
+          "x": 1112,
+          "y": 258,
+          "w": 80,
+          "h": 54
+        }
+      },
+      {
+        "item": "new_cairn",
+        "type": "block",
+        "position": {
+          "x": 1194,
+          "y": 258,
+          "w": 84,
+          "h": 54
+        }
+      },
+      {
+        "item": "all_cairn",
+        "type": "block",
+        "position": {
+          "x": 1280,
+          "y": 258,
+          "w": 76,
+          "h": 54
+        }
+      },
+      {
+        "item": "port_cairn",
+        "type": "block",
+        "position": {
+          "x": 1360,
+          "y": 264,
+          "w": 76,
+          "h": 48
+        }
+      },
+      {
+        "item": "bg_hermes",
+        "type": "block",
+        "position": {
+          "x": 18,
+          "y": 336,
+          "w": 342,
+          "h": 300
+        }
+      },
+      {
+        "item": "bar_hermes",
+        "type": "block",
+        "position": {
+          "x": 24,
+          "y": 336,
+          "w": 330,
+          "h": 3
+        }
+      },
+      {
+        "item": "dot_hermes",
+        "type": "block",
+        "position": {
+          "x": 38,
+          "y": 360,
+          "w": 10,
+          "h": 10
+        }
+      },
+      {
+        "item": "name_hermes",
+        "type": "block",
+        "position": {
+          "x": 56,
+          "y": 350,
+          "w": 292,
+          "h": 30
+        }
+      },
+      {
+        "item": "desc_hermes",
+        "type": "block",
+        "position": {
+          "x": 38,
+          "y": 382,
+          "w": 306,
+          "h": 48
+        }
+      },
+      {
+        "item": "big_hermes",
+        "type": "block",
+        "position": {
+          "x": 32,
+          "y": 432,
+          "w": 314,
+          "h": 130
+        }
+      },
+      {
+        "item": "rule_hermes",
+        "type": "block",
+        "position": {
+          "x": 38,
+          "y": 570,
+          "w": 302,
+          "h": 1
+        }
+      },
+      {
+        "item": "hits_hermes",
+        "type": "block",
+        "position": {
+          "x": 32,
+          "y": 576,
+          "w": 80,
+          "h": 54
+        }
+      },
+      {
+        "item": "new_hermes",
+        "type": "block",
+        "position": {
+          "x": 114,
+          "y": 576,
+          "w": 84,
+          "h": 54
+        }
+      },
+      {
+        "item": "all_hermes",
+        "type": "block",
+        "position": {
+          "x": 200,
+          "y": 576,
+          "w": 76,
+          "h": 54
+        }
+      },
+      {
+        "item": "port_hermes",
+        "type": "block",
+        "position": {
+          "x": 280,
+          "y": 582,
+          "w": 76,
+          "h": 48
+        }
+      },
+      {
+        "item": "bg_strix",
+        "type": "block",
+        "position": {
+          "x": 378,
+          "y": 336,
+          "w": 342,
+          "h": 300
+        }
+      },
+      {
+        "item": "bar_strix",
+        "type": "block",
+        "position": {
+          "x": 384,
+          "y": 336,
+          "w": 330,
+          "h": 3
+        }
+      },
+      {
+        "item": "dot_strix",
+        "type": "block",
+        "position": {
+          "x": 398,
+          "y": 360,
+          "w": 10,
+          "h": 10
+        }
+      },
+      {
+        "item": "name_strix",
+        "type": "block",
+        "position": {
+          "x": 416,
+          "y": 350,
+          "w": 292,
+          "h": 30
+        }
+      },
+      {
+        "item": "desc_strix",
+        "type": "block",
+        "position": {
+          "x": 398,
+          "y": 382,
+          "w": 306,
+          "h": 48
+        }
+      },
+      {
+        "item": "big_strix",
+        "type": "block",
+        "position": {
+          "x": 392,
+          "y": 432,
+          "w": 314,
+          "h": 130
+        }
+      },
+      {
+        "item": "rule_strix",
+        "type": "block",
+        "position": {
+          "x": 398,
+          "y": 570,
+          "w": 302,
+          "h": 1
+        }
+      },
+      {
+        "item": "hits_strix",
+        "type": "block",
+        "position": {
+          "x": 392,
+          "y": 576,
+          "w": 80,
+          "h": 54
+        }
+      },
+      {
+        "item": "new_strix",
+        "type": "block",
+        "position": {
+          "x": 474,
+          "y": 576,
+          "w": 84,
+          "h": 54
+        }
+      },
+      {
+        "item": "all_strix",
+        "type": "block",
+        "position": {
+          "x": 560,
+          "y": 576,
+          "w": 76,
+          "h": 54
+        }
+      },
+      {
+        "item": "port_strix",
+        "type": "block",
+        "position": {
+          "x": 640,
+          "y": 582,
+          "w": 76,
+          "h": 48
+        }
+      },
+      {
+        "item": "bg_hexstrike",
+        "type": "block",
+        "position": {
+          "x": 738,
+          "y": 336,
+          "w": 342,
+          "h": 300
+        }
+      },
+      {
+        "item": "bar_hexstrike",
+        "type": "block",
+        "position": {
+          "x": 744,
+          "y": 336,
+          "w": 330,
+          "h": 3
+        }
+      },
+      {
+        "item": "dot_hexstrike",
+        "type": "block",
+        "position": {
+          "x": 758,
+          "y": 360,
+          "w": 10,
+          "h": 10
+        }
+      },
+      {
+        "item": "name_hexstrike",
+        "type": "block",
+        "position": {
+          "x": 776,
+          "y": 350,
+          "w": 292,
+          "h": 30
+        }
+      },
+      {
+        "item": "desc_hexstrike",
+        "type": "block",
+        "position": {
+          "x": 758,
+          "y": 382,
+          "w": 306,
+          "h": 48
+        }
+      },
+      {
+        "item": "big_hexstrike",
+        "type": "block",
+        "position": {
+          "x": 752,
+          "y": 432,
+          "w": 314,
+          "h": 130
+        }
+      },
+      {
+        "item": "rule_hexstrike",
+        "type": "block",
+        "position": {
+          "x": 758,
+          "y": 570,
+          "w": 302,
+          "h": 1
+        }
+      },
+      {
+        "item": "hits_hexstrike",
+        "type": "block",
+        "position": {
+          "x": 752,
+          "y": 576,
+          "w": 80,
+          "h": 54
+        }
+      },
+      {
+        "item": "new_hexstrike",
+        "type": "block",
+        "position": {
+          "x": 834,
+          "y": 576,
+          "w": 84,
+          "h": 54
+        }
+      },
+      {
+        "item": "all_hexstrike",
+        "type": "block",
+        "position": {
+          "x": 920,
+          "y": 576,
+          "w": 76,
+          "h": 54
+        }
+      },
+      {
+        "item": "port_hexstrike",
+        "type": "block",
+        "position": {
+          "x": 1000,
+          "y": 582,
+          "w": 76,
+          "h": 48
+        }
+      },
+      {
+        "item": "bg_agent_zero",
+        "type": "block",
+        "position": {
+          "x": 1098,
+          "y": 336,
+          "w": 342,
+          "h": 300
+        }
+      },
+      {
+        "item": "bar_agent_zero",
+        "type": "block",
+        "position": {
+          "x": 1104,
+          "y": 336,
+          "w": 330,
+          "h": 3
+        }
+      },
+      {
+        "item": "dot_agent_zero",
+        "type": "block",
+        "position": {
+          "x": 1118,
+          "y": 360,
+          "w": 10,
+          "h": 10
+        }
+      },
+      {
+        "item": "name_agent_zero",
+        "type": "block",
+        "position": {
+          "x": 1136,
+          "y": 350,
+          "w": 292,
+          "h": 30
+        }
+      },
+      {
+        "item": "desc_agent_zero",
+        "type": "block",
+        "position": {
+          "x": 1118,
+          "y": 382,
+          "w": 306,
+          "h": 48
+        }
+      },
+      {
+        "item": "big_agent_zero",
+        "type": "block",
+        "position": {
+          "x": 1112,
+          "y": 432,
+          "w": 314,
+          "h": 130
+        }
+      },
+      {
+        "item": "rule_agent_zero",
+        "type": "block",
+        "position": {
+          "x": 1118,
+          "y": 570,
+          "w": 302,
+          "h": 1
+        }
+      },
+      {
+        "item": "hits_agent_zero",
+        "type": "block",
+        "position": {
+          "x": 1112,
+          "y": 576,
+          "w": 80,
+          "h": 54
+        }
+      },
+      {
+        "item": "new_agent_zero",
+        "type": "block",
+        "position": {
+          "x": 1194,
+          "y": 576,
+          "w": 84,
+          "h": 54
+        }
+      },
+      {
+        "item": "all_agent_zero",
+        "type": "block",
+        "position": {
+          "x": 1280,
+          "y": 576,
+          "w": 76,
+          "h": 54
+        }
+      },
+      {
+        "item": "port_agent_zero",
+        "type": "block",
+        "position": {
+          "x": 1360,
+          "y": 582,
+          "w": 76,
+          "h": 48
+        }
+      },
+      {
+        "item": "bg_redamon",
+        "type": "block",
+        "position": {
+          "x": 18,
+          "y": 654,
+          "w": 342,
+          "h": 300
+        }
+      },
+      {
+        "item": "bar_redamon",
+        "type": "block",
+        "position": {
+          "x": 24,
+          "y": 654,
+          "w": 330,
+          "h": 3
+        }
+      },
+      {
+        "item": "dot_redamon",
+        "type": "block",
+        "position": {
+          "x": 38,
+          "y": 678,
+          "w": 10,
+          "h": 10
+        }
+      },
+      {
+        "item": "name_redamon",
+        "type": "block",
+        "position": {
+          "x": 56,
+          "y": 668,
+          "w": 292,
+          "h": 30
+        }
+      },
+      {
+        "item": "desc_redamon",
+        "type": "block",
+        "position": {
+          "x": 38,
+          "y": 700,
+          "w": 306,
+          "h": 48
+        }
+      },
+      {
+        "item": "big_redamon",
+        "type": "block",
+        "position": {
+          "x": 32,
+          "y": 750,
+          "w": 314,
+          "h": 130
+        }
+      },
+      {
+        "item": "rule_redamon",
+        "type": "block",
+        "position": {
+          "x": 38,
+          "y": 888,
+          "w": 302,
+          "h": 1
+        }
+      },
+      {
+        "item": "hits_redamon",
+        "type": "block",
+        "position": {
+          "x": 32,
+          "y": 894,
+          "w": 80,
+          "h": 54
+        }
+      },
+      {
+        "item": "new_redamon",
+        "type": "block",
+        "position": {
+          "x": 114,
+          "y": 894,
+          "w": 84,
+          "h": 54
+        }
+      },
+      {
+        "item": "all_redamon",
+        "type": "block",
+        "position": {
+          "x": 200,
+          "y": 894,
+          "w": 76,
+          "h": 54
+        }
+      },
+      {
+        "item": "port_redamon",
+        "type": "block",
+        "position": {
+          "x": 280,
+          "y": 900,
+          "w": 76,
+          "h": 48
+        }
+      },
+      {
+        "item": "bg_xalgorix",
+        "type": "block",
+        "position": {
+          "x": 378,
+          "y": 654,
+          "w": 342,
+          "h": 300
+        }
+      },
+      {
+        "item": "bar_xalgorix",
+        "type": "block",
+        "position": {
+          "x": 384,
+          "y": 654,
+          "w": 330,
+          "h": 3
+        }
+      },
+      {
+        "item": "dot_xalgorix",
+        "type": "block",
+        "position": {
+          "x": 398,
+          "y": 678,
+          "w": 10,
+          "h": 10
+        }
+      },
+      {
+        "item": "name_xalgorix",
+        "type": "block",
+        "position": {
+          "x": 416,
+          "y": 668,
+          "w": 292,
+          "h": 30
+        }
+      },
+      {
+        "item": "desc_xalgorix",
+        "type": "block",
+        "position": {
+          "x": 398,
+          "y": 700,
+          "w": 306,
+          "h": 48
+        }
+      },
+      {
+        "item": "big_xalgorix",
+        "type": "block",
+        "position": {
+          "x": 392,
+          "y": 750,
+          "w": 314,
+          "h": 130
+        }
+      },
+      {
+        "item": "rule_xalgorix",
+        "type": "block",
+        "position": {
+          "x": 398,
+          "y": 888,
+          "w": 302,
+          "h": 1
+        }
+      },
+      {
+        "item": "hits_xalgorix",
+        "type": "block",
+        "position": {
+          "x": 392,
+          "y": 894,
+          "w": 80,
+          "h": 54
+        }
+      },
+      {
+        "item": "new_xalgorix",
+        "type": "block",
+        "position": {
+          "x": 474,
+          "y": 894,
+          "w": 84,
+          "h": 54
+        }
+      },
+      {
+        "item": "all_xalgorix",
+        "type": "block",
+        "position": {
+          "x": 560,
+          "y": 894,
+          "w": 76,
+          "h": 54
+        }
+      },
+      {
+        "item": "port_xalgorix",
+        "type": "block",
+        "position": {
+          "x": 640,
+          "y": 900,
+          "w": 76,
+          "h": 48
+        }
+      },
+      {
+        "item": "bg_pentestswarm",
+        "type": "block",
+        "position": {
+          "x": 738,
+          "y": 654,
+          "w": 342,
+          "h": 300
+        }
+      },
+      {
+        "item": "bar_pentestswarm",
+        "type": "block",
+        "position": {
+          "x": 744,
+          "y": 654,
+          "w": 330,
+          "h": 3
+        }
+      },
+      {
+        "item": "dot_pentestswarm",
+        "type": "block",
+        "position": {
+          "x": 758,
+          "y": 678,
+          "w": 10,
+          "h": 10
+        }
+      },
+      {
+        "item": "name_pentestswarm",
+        "type": "block",
+        "position": {
+          "x": 776,
+          "y": 668,
+          "w": 292,
+          "h": 30
+        }
+      },
+      {
+        "item": "desc_pentestswarm",
+        "type": "block",
+        "position": {
+          "x": 758,
+          "y": 700,
+          "w": 306,
+          "h": 48
+        }
+      },
+      {
+        "item": "big_pentestswarm",
+        "type": "block",
+        "position": {
+          "x": 752,
+          "y": 750,
+          "w": 314,
+          "h": 130
+        }
+      },
+      {
+        "item": "rule_pentestswarm",
+        "type": "block",
+        "position": {
+          "x": 758,
+          "y": 888,
+          "w": 302,
+          "h": 1
+        }
+      },
+      {
+        "item": "hits_pentestswarm",
+        "type": "block",
+        "position": {
+          "x": 752,
+          "y": 894,
+          "w": 80,
+          "h": 54
+        }
+      },
+      {
+        "item": "new_pentestswarm",
+        "type": "block",
+        "position": {
+          "x": 834,
+          "y": 894,
+          "w": 84,
+          "h": 54
+        }
+      },
+      {
+        "item": "all_pentestswarm",
+        "type": "block",
+        "position": {
+          "x": 920,
+          "y": 894,
+          "w": 76,
+          "h": 54
+        }
+      },
+      {
+        "item": "port_pentestswarm",
+        "type": "block",
+        "position": {
+          "x": 1000,
+          "y": 900,
+          "w": 76,
+          "h": 48
+        }
+      },
+      {
+        "item": "bg_behaviors",
+        "type": "block",
+        "position": {
+          "x": 1098,
+          "y": 654,
+          "w": 342,
+          "h": 300
+        }
+      },
+      {
+        "item": "bar_behaviors",
+        "type": "block",
+        "position": {
+          "x": 1104,
+          "y": 654,
+          "w": 330,
+          "h": 3
+        }
+      },
+      {
+        "item": "dot_behaviors",
+        "type": "block",
+        "position": {
+          "x": 1118,
+          "y": 678,
+          "w": 10,
+          "h": 10
+        }
+      },
+      {
+        "item": "name_behaviors",
+        "type": "block",
+        "position": {
+          "x": 1136,
+          "y": 668,
+          "w": 292,
+          "h": 30
+        }
+      },
+      {
+        "item": "desc_behaviors",
+        "type": "block",
+        "position": {
+          "x": 1118,
+          "y": 700,
+          "w": 306,
+          "h": 48
+        }
+      },
+      {
+        "item": "big_behaviors",
+        "type": "block",
+        "position": {
+          "x": 1112,
+          "y": 750,
+          "w": 314,
+          "h": 130
+        }
+      },
+      {
+        "item": "rule_behaviors",
+        "type": "block",
+        "position": {
+          "x": 1118,
+          "y": 888,
+          "w": 302,
+          "h": 1
+        }
+      },
+      {
+        "item": "hits_behaviors",
+        "type": "block",
+        "position": {
+          "x": 1112,
+          "y": 894,
+          "w": 80,
+          "h": 54
+        }
+      },
+      {
+        "item": "new_behaviors",
+        "type": "block",
+        "position": {
+          "x": 1194,
+          "y": 894,
+          "w": 84,
+          "h": 54
+        }
+      },
+      {
+        "item": "all_behaviors",
+        "type": "block",
+        "position": {
+          "x": 1280,
+          "y": 894,
+          "w": 76,
+          "h": 54
+        }
+      },
+      {
+        "item": "port_behaviors",
+        "type": "block",
+        "position": {
+          "x": 1360,
+          "y": 900,
+          "w": 76,
+          "h": 48
+        }
+      },
+      {
+        "item": "latest_title",
+        "type": "block",
+        "position": {
+          "x": 18,
+          "y": 982,
+          "w": 600,
+          "h": 36
+        }
+      },
+      {
+        "item": "latest",
+        "type": "block",
+        "position": {
+          "x": 18,
+          "y": 1022,
+          "w": 1404,
+          "h": 420
+        }
+      }
+    ],
+    "globalInputs": [
+      "time"
+    ]
+  }
+}
+  ]]></definition>
+  <meta type="hiddenElements"><![CDATA[
+{
+  "hideEdit": false,
+  "hideOpenInSearch": false,
+  "hideExport": false
+}
+  ]]></meta>
+</dashboard>

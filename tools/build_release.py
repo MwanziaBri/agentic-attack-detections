@@ -12,6 +12,7 @@ Writes:
     agentic-attack-detections-waf.zip            everything under waf/
     agentic-attack-detections-sentinel.json      the Microsoft Sentinel ARM template with everything (deploy/sentinel/)
     agentic-attack-detections-sentinel.zip       every Microsoft Sentinel template: everything, and one per framework
+    agentic-attack-detections-splunk.tgz         the Splunk app (deploy/splunk/TA-agentic-attack-detections), installable as is
     SHA256SUMS.txt                               SHA-256 of each file above
 
 The names carry no version, so https://github.com/<owner>/<repo>/releases/latest/download/<name> always points at
@@ -19,8 +20,11 @@ the newest release. The version is written inside each file instead. The output 
 and version give the same bytes. Standard library only.
 """
 import argparse
+import gzip
 import hashlib
+import io
 import re
+import tarfile
 import zipfile
 from pathlib import Path
 
@@ -69,6 +73,43 @@ def write_zip(path, members, version):
     return len(members)
 
 
+SPLUNK_APP = "TA-agentic-attack-detections"
+
+
+def splunk_app_files(version):
+    """The committed Splunk app, with the release version written into app.conf and README.txt."""
+    app = ROOT / "deploy" / "splunk" / SPLUNK_APP
+    files = {p.relative_to(app).as_posix(): p.read_text(encoding="utf-8") for p in sorted(app.rglob("*")) if p.is_file() and p.name != ".DS_Store"}
+    files["default/app.conf"] = re.sub(r"^(version = ).*$", rf"\g<1>{version}", files["default/app.conf"], flags=re.M)
+    files["default/app.conf"] = re.sub(r"^(build = ).*$", rf"\g<1>{version.replace('.', '')}", files["default/app.conf"], flags=re.M)
+    files["README.txt"] = re.sub(r"version \S+$", f"version {version}", files["README.txt"], count=1, flags=re.M)
+    return files
+
+
+def write_splunk_tgz(path, files, app=SPLUNK_APP):
+    """files: {path inside the app: text}. Fixed times, owners and order, so the package is reproducible."""
+    dirs = set()
+    for n in files:
+        parent = Path(app, n).parent
+        while parent.as_posix() not in (".", ""):
+            dirs.add(parent.as_posix())
+            parent = parent.parent
+    buf = io.BytesIO()
+    with tarfile.open(fileobj=buf, mode="w", format=tarfile.USTAR_FORMAT) as tar:
+        for d in sorted(dirs):
+            info = tarfile.TarInfo(d)
+            info.type, info.mode, info.mtime = tarfile.DIRTYPE, 0o755, 0
+            tar.addfile(info)
+        for n in sorted(files):
+            data = files[n].encode("utf-8")
+            info = tarfile.TarInfo(f"{app}/{n}")
+            info.size, info.mode, info.mtime = len(data), 0o644, 0
+            tar.addfile(info, io.BytesIO(data))
+    with open(path, "wb") as f, gzip.GzipFile(filename="", mode="wb", fileobj=f, mtime=0) as gz:
+        gz.write(buf.getvalue())
+    return len(files)
+
+
 def tree(folder):
     return [(p.relative_to(ROOT).as_posix(), p.read_bytes()) for p in sorted(folder.rglob("*")) if p.is_file() and p.name != ".DS_Store"]
 
@@ -105,6 +146,9 @@ def main():
     (out / f"{NAME}-sentinel.json").write_bytes((sentinel / f"{NAME}.json").read_bytes())
     print(f"{NAME}-sentinel.json: copied from deploy/sentinel/{NAME}.json")
     print(f"{NAME}-sentinel.zip: {write_zip(out / f'{NAME}-sentinel.zip', tree(sentinel), version)} files")
+
+    n = write_splunk_tgz(out / f"{NAME}-splunk.tgz", splunk_app_files(version))
+    print(f"{NAME}-splunk.tgz: {n} files from deploy/splunk/{SPLUNK_APP}")
 
     built = sorted(p for p in out.glob(f"{NAME}*") if p.is_file())
     sums = "".join(f"{hashlib.sha256(p.read_bytes()).hexdigest()}  {p.name}\n" for p in built)

@@ -15,7 +15,7 @@ Free to use under the MIT license. Fixes, false-positive reports and new indicat
 - **Indicators and feeds.** One CSV of 580 sourced indicators, and the feeds generated from it.
 - **Exposed consoles.** A dated list of addresses where one of these consoles answers on the internet, in [`exposure/`](exposure), with a [count per framework](#exposed-consoles). It is a record of what is exposed, not a detection feed.
 
-Formats: KQL for Microsoft Sentinel and Defender XDR, Sigma, Suricata, Zeek, YARA and STIX 2.1, plus WAF rules for Cloudflare, AWS WAF and Azure WAF. Splunk and Elastic are covered by a Splunk app and Elastic rules for ARTEX, and by Sigma conversions for everything else.
+Formats: KQL for Microsoft Sentinel and Defender XDR, Sigma, Suricata, Zeek, YARA and STIX 2.1, plus WAF rules for Cloudflare, AWS WAF and Azure WAF. Splunk has one app for every framework. Elastic is covered by rules for ARTEX and by Sigma conversions for everything else.
 
 ## Try it in a minute
 
@@ -49,7 +49,8 @@ The capture is test traffic written from the framework source code and published
 | Zeek | Install the behaviors package with `zkg install https://github.com/ThreatDefence/agentic-attack-detections` (or load `behaviors/zeek/agentic-behaviors/` by path), set `server_nets` to your server ranges ([setup](behaviors/zeek/README.md)), load the framework scripts `frameworks/artex/zeek/artex/`, `frameworks/cyberstrikeai/zeek/cyberstrikeai/` and `frameworks/hexstrike/zeek/hexstrike/`, and feed `frameworks/*/zeek/intel/*.intel` to the Intel framework |
 | YARA | Scan container layers, home folders, `/tmp` and web roots with `frameworks/*/yara/` |
 | Any SIEM with Sigma | Convert `frameworks/*/sigma/` and `behaviors/sigma/` with `sigma convert`, or take the conversions in [`generated/`](generated) |
-| Splunk or Elastic | The ARTEX folder has a Splunk app and Elastic rules. For the other frameworks use [`generated/`](generated) |
+| Splunk | Install [`agentic-attack-detections-splunk.tgz`](https://github.com/ThreatDefence/agentic-attack-detections/releases/latest/download/agentic-attack-detections-splunk.tgz) from the latest release (Apps > Install app from file). One app has the searches for every framework, the indicator lookups and a dashboard with a card per framework. Point the `aad_indexes` macro at your indexes. [Setup](deploy/splunk) |
+| Elastic | The ARTEX folder has Elastic rules. For the other frameworks use [`generated/`](generated) |
 | A WAF: Cloudflare, AWS WAF or Azure WAF | Deploy the rules in [`waf/`](waf): framework user agents, probe markers and unsigned JWT probes to block, and reported addresses to challenge. A WAF is optional. It adds blocking at the edge to the detections, it doesn't replace them |
 | A threat intelligence platform | Import `feeds/stix2.1-bundle.json`, or the per-framework lists in `feeds/by-framework/`. Steps for MISP and OpenCTI, and which fields arrive: [docs/threat-intelligence-platforms.md](docs/threat-intelligence-platforms.md) |
 
@@ -70,7 +71,7 @@ The capture is test traffic written from the framework source code and published
 | [Pentest Swarm AI](frameworks/pentestswarm) | 3 | | 3 | 11 | 1 | intel | 15 |
 | [Shared behaviors](behaviors) | 9 | 2 | 6 | 18 | | package | |
 
-Suricata counts are hand-written rules; each framework also has address rules generated from its indicators. Some indicators belong to more than one framework. ARTEX also has a Splunk app, Elastic rules and ES\|QL queries, and an osquery pack.
+Suricata counts are hand-written rules; each framework also has address rules generated from its indicators. Some indicators belong to more than one framework. Every framework is in the [Splunk app](deploy/splunk). ARTEX also has Elastic rules and ES\|QL queries, and an osquery pack.
 
 ## Frameworks
 

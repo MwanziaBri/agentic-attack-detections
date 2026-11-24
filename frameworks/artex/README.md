@@ -40,7 +40,7 @@ See [`CHANGELOG.md`](../../CHANGELOG.md) for the full list.
 | [`generated/`](../../generated) | The Sigma rules converted to Splunk SPL, Sentinel ASIM KQL and Elastic ES\|QL and Lucene. [`SUMMARY.md`](../../generated/SUMMARY.md) shows which rule converted to which backend |
 | [`sentinel/hunting/`](sentinel/hunting) | 30 KQL hunts for Microsoft Sentinel and Defender XDR advanced hunting. Hunts 23 to 30 come from a review of the ARTEX source code ([`docs/source-code-signals.md`](source-code-signals.md)) |
 | [`sentinel/analytics/`](sentinel/analytics) | 7 scheduled analytics rules in the Sentinel template format |
-| [`splunk/`](splunk) | A Splunk app: 15 saved searches (disabled by default), macros for your indexes and the indicator lookup |
+| [`splunk/`](splunk) | The hand-written ARTEX Splunk searches and macros. They ship in the [Splunk app](../../deploy/splunk) with the searches for every other framework |
 | [`elastic/`](elastic) | 9 ES\|QL hunts and 5 detection rules in the Elastic detection-rules TOML format |
 | [`zeek/`](zeek) | A detection script that raises notices for ARTEX traffic, and an Intel framework file |
 | [`suricata/`](suricata) | 27 rules for user agents, probe artifacts, console pages, C2 domains and toolkit payload hosts, plus generated address rules |
@@ -54,7 +54,7 @@ See [`CHANGELOG.md`](../../CHANGELOG.md) for the full list.
 
 **Microsoft Sentinel.** Upload `feeds/sentinel-watchlist.csv` as a watchlist with the alias `AGENTIC_IOCs` and the search key `value`, then run `sentinel/hunting/21-watchlist-indicator-sweep.kql` (it filters the watchlist to ARTEX rows). Import the analytics rules from `sentinel/analytics/`. The hunts also run in Defender XDR advanced hunting where the tables exist.
 
-**Splunk.** Copy `frameworks/artex/splunk/` into `$SPLUNK_HOME/etc/apps/TA-agentic-attack-detections`, point the macros in `default/macros.conf` at your indexes, run each saved search over 30 days, then enable it. The endpoint, web, authentication and network searches use the CIM data models.
+**Splunk.** Install the [Splunk app](../../deploy/splunk) from the latest release. It has the ARTEX searches, every other framework's, and the indicator lookups. Point the `aad_indexes` macro at your indexes, run each saved search over 30 days, then enable it.
 
 **Elastic.** Paste the ES|QL hunts into Discover. Load the TOML rules with Elastic's detection-rules tooling, or recreate them in Kibana from the query and settings in each file. Fields follow ECS and the AWS, Azure and Elastic Defend integrations.
 

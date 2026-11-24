@@ -1,0 +1,296 @@
+{
+ "modelName": "Endpoint",
+ "displayName": "Endpoint",
+ "description": "Test stand-in for the CIM data model",
+ "editable": true,
+ "objectNameList": [
+  "Processes",
+  "Filesystem"
+ ],
+ "objects": [
+  {
+   "objectName": "Processes",
+   "displayName": "Processes",
+   "parentName": "BaseEvent",
+   "comment": "",
+   "fields": [
+    {
+     "fieldName": "_time",
+     "owner": "BaseEvent",
+     "type": "timestamp",
+     "fieldSearch": "",
+     "required": false,
+     "multivalue": false,
+     "hidden": false,
+     "editable": true,
+     "displayName": "_time",
+     "comment": ""
+    },
+    {
+     "fieldName": "host",
+     "owner": "BaseEvent",
+     "type": "string",
+     "fieldSearch": "",
+     "required": false,
+     "multivalue": false,
+     "hidden": false,
+     "editable": true,
+     "displayName": "host",
+     "comment": ""
+    },
+    {
+     "fieldName": "source",
+     "owner": "BaseEvent",
+     "type": "string",
+     "fieldSearch": "",
+     "required": false,
+     "multivalue": false,
+     "hidden": false,
+     "editable": true,
+     "displayName": "source",
+     "comment": ""
+    },
+    {
+     "fieldName": "sourcetype",
+     "owner": "BaseEvent",
+     "type": "string",
+     "fieldSearch": "",
+     "required": false,
+     "multivalue": false,
+     "hidden": false,
+     "editable": true,
+     "displayName": "sourcetype",
+     "comment": ""
+    },
+    {
+     "fieldName": "process",
+     "owner": "Processes",
+     "type": "string",
+     "fieldSearch": "",
+     "required": false,
+     "multivalue": false,
+     "hidden": false,
+     "editable": true,
+     "displayName": "process",
+     "comment": ""
+    },
+    {
+     "fieldName": "process_name",
+     "owner": "Processes",
+     "type": "string",
+     "fieldSearch": "",
+     "required": false,
+     "multivalue": false,
+     "hidden": false,
+     "editable": true,
+     "displayName": "process_name",
+     "comment": ""
+    },
+    {
+     "fieldName": "process_path",
+     "owner": "Processes",
+     "type": "string",
+     "fieldSearch": "",
+     "required": false,
+     "multivalue": false,
+     "hidden": false,
+     "editable": true,
+     "displayName": "process_path",
+     "comment": ""
+    },
+    {
+     "fieldName": "parent_process",
+     "owner": "Processes",
+     "type": "string",
+     "fieldSearch": "",
+     "required": false,
+     "multivalue": false,
+     "hidden": false,
+     "editable": true,
+     "displayName": "parent_process",
+     "comment": ""
+    },
+    {
+     "fieldName": "parent_process_name",
+     "owner": "Processes",
+     "type": "string",
+     "fieldSearch": "",
+     "required": false,
+     "multivalue": false,
+     "hidden": false,
+     "editable": true,
+     "displayName": "parent_process_name",
+     "comment": ""
+    },
+    {
+     "fieldName": "parent_process_path",
+     "owner": "Processes",
+     "type": "string",
+     "fieldSearch": "",
+     "required": false,
+     "multivalue": false,
+     "hidden": false,
+     "editable": true,
+     "displayName": "parent_process_path",
+     "comment": ""
+    },
+    {
+     "fieldName": "user",
+     "owner": "Processes",
+     "type": "string",
+     "fieldSearch": "",
+     "required": false,
+     "multivalue": false,
+     "hidden": false,
+     "editable": true,
+     "displayName": "user",
+     "comment": ""
+    },
+    {
+     "fieldName": "dest",
+     "owner": "Processes",
+     "type": "string",
+     "fieldSearch": "",
+     "required": false,
+     "multivalue": false,
+     "hidden": false,
+     "editable": true,
+     "displayName": "dest",
+     "comment": ""
+    }
+   ],
+   "calculations": [],
+   "constraints": [
+    {
+     "search": "tag=process tag=report",
+     "owner": "Processes"
+    }
+   ],
+   "lineage": "Processes"
+  },
+  {
+   "objectName": "Filesystem",
+   "displayName": "Filesystem",
+   "parentName": "BaseEvent",
+   "comment": "",
+   "fields": [
+    {
+     "fieldName": "_time",
+     "owner": "BaseEvent",
+     "type": "timestamp",
+     "fieldSearch": "",
+     "required": false,
+     "multivalue": false,
+     "hidden": false,
+     "editable": true,
+     "displayName": "_time",
+     "comment": ""
+    },
+    {
+     "fieldName": "host",
+     "owner": "BaseEvent",
+     "type": "string",
+     "fieldSearch": "",
+     "required": false,
+     "multivalue": false,
+     "hidden": false,
+     "editable": true,
+     "displayName": "host",
+     "comment": ""
+    },
+    {
+     "fieldName": "source",
+     "owner": "BaseEvent",
+     "type": "string",
+     "fieldSearch": "",
+     "required": false,
+     "multivalue": false,
+     "hidden": false,
+     "editable": true,
+     "displayName": "source",
+     "comment": ""
+    },
+    {
+     "fieldName": "sourcetype",
+     "owner": "BaseEvent",
+     "type": "string",
+     "fieldSearch": "",
+     "required": false,
+     "multivalue": false,
+     "hidden": false,
+     "editable": true,
+     "displayName": "sourcetype",
+     "comment": ""
+    },
+    {
+     "fieldName": "file_name",
+     "owner": "Filesystem",
+     "type": "string",
+     "fieldSearch": "",
+     "required": false,
+     "multivalue": false,
+     "hidden": false,
+     "editable": true,
+     "displayName": "file_name",
+     "comment": ""
+    },
+    {
+     "fieldName": "file_path",
+     "owner": "Filesystem",
+     "type": "string",
+     "fieldSearch": "",
+     "required": false,
+     "multivalue": false,
+     "hidden": false,
+     "editable": true,
+     "displayName": "file_path",
+     "comment": ""
+    },
+    {
+     "fieldName": "file_hash",
+     "owner": "Filesystem",
+     "type": "string",
+     "fieldSearch": "",
+     "required": false,
+     "multivalue": false,
+     "hidden": false,
+     "editable": true,
+     "displayName": "file_hash",
+     "comment": ""
+    },
+    {
+     "fieldName": "user",
+     "owner": "Filesystem",
+     "type": "string",
+     "fieldSearch": "",
+     "required": false,
+     "multivalue": false,
+     "hidden": false,
+     "editable": true,
+     "displayName": "user",
+     "comment": ""
+    },
+    {
+     "fieldName": "dest",
+     "owner": "Filesystem",
+     "type": "string",
+     "fieldSearch": "",
+     "required": false,
+     "multivalue": false,
+     "hidden": false,
+     "editable": true,
+     "displayName": "dest",
+     "comment": ""
+    }
+   ],
+   "calculations": [],
+   "constraints": [
+    {
+     "search": "tag=endpoint tag=filesystem",
+     "owner": "Filesystem"
+    }
+   ],
+   "lineage": "Filesystem"
+  }
+ ]
+}

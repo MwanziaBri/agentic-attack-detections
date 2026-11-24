@@ -45,6 +45,12 @@ jobs:
         run: git diff --exit-code generated/ || (echo "Run tools/convert.py and commit generated/" && exit 1)
       - name: Build the Microsoft Sentinel templates, validate them and check they are committed
         run: python tools/build_sentinel.py --check
+      - name: Build the Splunk app, check it is committed and run Splunk AppInspect
+        run: |
+          python tools/build_splunk.py --check --package dist-splunk
+          pip install splunk-appinspect
+          splunk-appinspect inspect dist-splunk/agentic-attack-detections-splunk.tgz --data-format json --output-file appinspect.json > /dev/null
+          python tools/build_splunk.py --appinspect-result appinspect.json
       - name: Build WAF rules and check they are committed
         run: |
           python tools/build_waf.py
@@ -58,6 +64,38 @@ jobs:
           python tools/build_release.py --out dist
           (cd dist && sha256sum -c SHA256SUMS.txt)
           suricata -T -S dist/agentic-attack-detections.rules -l /tmp --init-errors-fatal --set unix-command.enabled=no
+
+  splunk:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+      - name: Install tools
+        run: pip install -r tools/requirements.txt
+      - name: Package the app and the test data app
+        run: |
+          python tools/build_splunk.py --check --package /tmp/apps
+          tar -C tests/splunk -czf /tmp/apps/aad-test.tgz TA-aad-test
+          chmod -R a+rX /tmp/apps
+      - name: Start Splunk with both apps installed
+        run: |
+          echo "SPLUNK_PASSWORD=$(openssl rand -hex 12)Aa1!" >> "$GITHUB_ENV"
+          echo "SPLUNK_HEC_TOKEN=$(cat /proc/sys/kernel/random/uuid)" >> "$GITHUB_ENV"
+      - run: |
+          docker run -d --name splunk -p 8089:8089 -p 8088:8088 -v /tmp/apps:/tmp/apps:ro \
+            -e SPLUNK_START_ARGS=--accept-license -e SPLUNK_GENERAL_TERMS=--accept-sgt-current-at-splunk-com \
+            -e SPLUNK_PASSWORD -e SPLUNK_HEC_TOKEN \
+            -e SPLUNK_APPS_URL=/tmp/apps/agentic-attack-detections-splunk.tgz,/tmp/apps/aad-test.tgz \
+            splunk/splunk:10.6.2
+          for i in $(seq 1 90); do
+            [ "$(docker inspect -f '{{.State.Health.Status}}' splunk)" = healthy ] && break
+            sleep 10
+          done
+          docker inspect -f '{{.State.Health.Status}}' splunk | grep -qx healthy || { docker logs splunk | tail -50; exit 1; }
+      - name: Run the searches against test events
+        run: python tests/splunk/run_tests.py --url https://localhost:8089 --hec https://localhost:8088
 
   waf-iac:
     runs-on: ubuntu-24.04
