@@ -210,6 +210,9 @@ CASELESS = ["process.executable", "process.parent.executable", "process.name", "
             "process.command_line", "process.parent.command_line", "file.path", "file.name"]
 
 
+NUMERIC = {"azure.signinlogs.properties.status.error_code": "long"}
+
+
 def ensure_template(es):
     """logs-aad.test-*: the built-in logs template plus Elastic Defend's caseless sub-fields."""
     base = es.call("GET", "/_index_template/logs")["index_templates"][0]["index_template"]
@@ -220,6 +223,13 @@ def ensure_template(es):
         for part in parts[:-1]:
             node = node.setdefault(part, {"properties": {}})["properties"]
         node[parts[-1]] = {"type": "keyword", "fields": {"caseless": {"type": "keyword", "normalizer": "aad_lowercase"}}}
+    # Typed as in Elastic's integrations, so the ES|QL correlations compare like with like.
+    for f, kind in NUMERIC.items():
+        node = props
+        parts = f.split(".")
+        for part in parts[:-1]:
+            node = node.setdefault(part, {"properties": {}})["properties"]
+        node[parts[-1]] = {"type": kind}
     es.call("PUT", "/_index_template/aad-test", {
         "index_patterns": ["logs-aad.test-*"], "priority": 200, "data_stream": {},
         "composed_of": base["composed_of"], "ignore_missing_component_templates": base.get("ignore_missing_component_templates", []),
@@ -382,6 +392,7 @@ def main():
     fired = {b["key"]: b["doc_count"] for b in alerts.get("aggregations", {}).get("r", {}).get("buckets", [])}
     should = {str(r.id): r.title for r, _, _ in converted
               if any(p[4] for p in plan if p[0] is r) and r.title not in wrong}
+    should = {rid: title for rid, title in should.items() if rid in rule_ids}  # base rules of correlations are not imported
     should.update(extra_expect)
     for rid, title in sorted(should.items(), key=lambda x: x[1]):
         if rid not in fired:
