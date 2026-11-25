@@ -54,6 +54,28 @@ def ecs():
         ProcessingItem(identifier=f"ecs_{category}_fields", transformation=FieldMappingTransformation(fields),
                        rule_conditions=[LogsourceCondition(category=category)])
         for category, fields in network_fields.items()])
+    # Cloud logs: the field names of Elastic's AWS and Azure integrations (logs-aws.cloudtrail-*, logs-azure.*-*).
+    cloud_fields = {
+        ("aws", "cloudtrail"): {"eventName": "event.action", "eventSource": "event.provider", "errorCode": "aws.cloudtrail.error_code",
+                                "errorMessage": "aws.cloudtrail.error_message", "userIdentity.arn": "aws.cloudtrail.user_identity.arn",
+                                "userAgent": "user_agent.original", "sourceIPAddress": "source.address",
+                                # The integration keeps request parameters as one string, so a contains match still works.
+                                "requestParameters.filterPattern": "aws.cloudtrail.request_parameters",
+                                "requestParameters.userAttributes": "aws.cloudtrail.request_parameters"},
+        ("azure", "signinlogs"): {"ResultType": "azure.signinlogs.properties.status.error_code",
+                                  "UserPrincipalName": "azure.signinlogs.properties.user_principal_name",
+                                  "IPAddress": "source.ip", "userAgent": "user_agent.original"},
+        ("azure", "activitylogs"): {"operationName": "azure.activitylogs.operation_name",
+                                    "caller": "azure.activitylogs.identity.claims_initiated_by_user.name"},
+        ("azure", "auditlogs"): {"properties.message": "azure.auditlogs.operation_name"},
+    }
+    cloud_pipeline = ProcessingPipeline(name="ECS fields of the AWS and Azure integrations", priority=30, items=[
+        ProcessingItem(identifier=f"ecs_{product}_{service}_fields", transformation=FieldMappingTransformation(fields),
+                       rule_conditions=[LogsourceCondition(product=product, service=service)])
+        for (product, service), fields in cloud_fields.items()] + [
+        # ecs_windows leaves Computer as a winlog field; ECS and Elastic Defend carry the host in host.name.
+        ProcessingItem(identifier="ecs_windows_host", transformation=FieldMappingTransformation({"winlog.event_data.Computer": "host.name"}),
+                       rule_conditions=[LogsourceCondition(product="windows")])])
     # Elasticsearch regexes and keyword fields differ from Sigma's: see elastic_values.py.
     from sigma.processing.conditions import IncludeFieldCondition
     from elastic_values import HOST_FIELDS, CaseFoldTransformation, LuceneRegexTransformation
@@ -63,7 +85,7 @@ def ecs():
                        field_name_conditions=[IncludeFieldCondition(fields=HOST_FIELDS)])])
     return ecs_windows() + ProcessingPipeline(name="ECS process fields for non-Windows rules", priority=30, items=[
         ProcessingItem(identifier="ecs_process_fields", transformation=FieldMappingTransformation(process_fields),
-                       rule_conditions=[LogsourceCondition(category="process_creation")])]) + network_pipeline + values_pipeline
+                       rule_conditions=[LogsourceCondition(category="process_creation")])]) + network_pipeline + cloud_pipeline + values_pipeline
 
 
 def pipelines():

@@ -1,5 +1,5 @@
 # Remote tasklist Fan-Out From One Host
 # Sigma id c53722c6-23d3-5460-a002-2d1b034e2809, pipeline ecs
 from * metadata _id, _index, _version | where (ends_with(process.executable.caseless, "\\tasklist.exe") or process.pe.original_file_name=="tasklist.exe") and (process.command_line like "* -s *" or process.command_line like "* /s *" or process.command_line like "* –s *" or process.command_line like "* —s *" or process.command_line like "* ―s *")
-| eval timebucket=date_trunc(10minutes, @timestamp) | stats event_count=count() by timebucket, winlog.event_data.Computer
+| eval timebucket=date_trunc(10minutes, @timestamp) | stats event_count=count() by timebucket, host.name
 | where event_count >= 10

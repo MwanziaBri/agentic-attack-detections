@@ -15,7 +15,7 @@ Free to use under the MIT license. Fixes, false-positive reports and new indicat
 - **Indicators and feeds.** One CSV of 580 sourced indicators, and the feeds generated from it.
 - **Exposed consoles.** A dated list of addresses where one of these consoles answers on the internet, in [`exposure/`](exposure), with a [count per framework](#exposed-consoles). It is a record of what is exposed, not a detection feed.
 
-Formats: KQL for Microsoft Sentinel and Defender XDR, Sigma, Suricata, Zeek, YARA and STIX 2.1, plus WAF rules for Cloudflare, AWS WAF and Azure WAF. Splunk has one app for every framework. Elastic is covered by rules for ARTEX and by Sigma conversions for everything else.
+Formats: KQL for Microsoft Sentinel and Defender XDR, Sigma, Suricata, Zeek, YARA and STIX 2.1, plus WAF rules for Cloudflare, AWS WAF and Azure WAF. Splunk has one app for every framework. Elastic has one import with a rule for every framework.
 
 ## Try it in a minute
 
@@ -50,7 +50,7 @@ The capture is test traffic written from the framework source code and published
 | YARA | Scan container layers, home folders, `/tmp` and web roots with `frameworks/*/yara/` |
 | Any SIEM with Sigma | Convert `frameworks/*/sigma/` and `behaviors/sigma/` with `sigma convert`, or take the conversions in [`generated/`](generated) |
 | Splunk | Install [`agentic-attack-detections-splunk.tgz`](https://github.com/ThreatDefence/agentic-attack-detections/releases/latest/download/agentic-attack-detections-splunk.tgz) from the latest release (Apps > Install app from file). One app has the searches for every framework, the indicator lookups and a dashboard with a card per framework. Point the `aad_indexes` macro at your indexes. [Setup](deploy/splunk) |
-| Elastic | Import [`agentic-attack-detections.ndjson`](https://github.com/ThreatDefence/agentic-attack-detections/releases/latest/download/agentic-attack-detections.ndjson) through Security > Rules > Import, or post it to `/api/detection_engine/rules/_import`. One file carries every framework and the shared behaviors, all disabled. Point the index patterns at your own data before you enable them |
+| Elastic | Import [`agentic-attack-detections.ndjson`](https://github.com/ThreatDefence/agentic-attack-detections/releases/latest/download/agentic-attack-detections.ndjson) through Security > Rules > Import, or post it to `/api/detection_engine/rules/_import`. One file carries every framework and the shared behaviors, all disabled: the Sigma rules as query rules, the correlations as ES\|QL rules, the hand-written ARTEX rules, and an indicator match rule. For that one, load [`agentic-attack-indicators.ndjson`](https://github.com/ThreatDefence/agentic-attack-detections/releases/latest/download/agentic-attack-indicators.ndjson) with `POST logs-ti_agentic_attacks-default/_bulk`. Point the index patterns at your own data before you enable them. [Details](generated/elastic_ndjson) |
 | A WAF: Cloudflare, AWS WAF or Azure WAF | Deploy the rules in [`waf/`](waf): framework user agents, probe markers and unsigned JWT probes to block, and reported addresses to challenge. A WAF is optional. It adds blocking at the edge to the detections, it doesn't replace them |
 | A threat intelligence platform | Import `feeds/stix2.1-bundle.json`, or the per-framework lists in `feeds/by-framework/`. Steps for MISP and OpenCTI, and which fields arrive: [docs/threat-intelligence-platforms.md](docs/threat-intelligence-platforms.md) |
 

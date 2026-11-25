@@ -26,6 +26,7 @@ import copy
 import importlib.util
 import json
 import os
+import re
 import sys
 import time
 import tomllib
@@ -99,24 +100,73 @@ def sigma_rules():
     for rule in SigmaCollection.load_ruleset([str(p) for p in files]).rules:
         if isinstance(rule, SigmaCorrelationRule):
             continue
-        for _, pipe in plist:
-            mapped = copy.deepcopy(rule)
-            try:
-                q = convert.convert_one(cls, pipe, SigmaCollection([mapped]))
-            except Exception:  # noqa: BLE001 - the next pipeline may map what this one could not
-                continue
-            if q:
-                break
-        else:
-            print(f"skip (no Elastic conversion): {convert.rel_of(Path(str(rule.source.path)))}")
+        done = convert_rule(rule)
+        if done is None:
+            if rule._output:
+                print(f"skip (no Elastic conversion): {convert.rel_of(Path(str(rule.source.path)))}")
             continue
-        fields = {}
-        for name, det in rule.detection.detections.items():
-            for a, b in zip(leaf_items(det), leaf_items(mapped.detection.detections[name])):
-                if a.field and b.field and a.field != b.field:
-                    fields[a.field] = b.field
-        out.append((rule, q[0], fields))
+        out.append((rule, *done))
     return out
+
+
+def convert_rule(rule):
+    """(lucene query, {sigma field: ECS field}) for one rule, or None. A correlation's base rule converts too."""
+    cls, plist = convert.pipelines()["elastic_lucene"]
+    if not rule._output:
+        rule = copy.deepcopy(rule)
+        rule._output = True
+    for _, pipe in plist:
+        mapped = copy.deepcopy(rule)
+        try:
+            q = convert.convert_one(cls, pipe, SigmaCollection([mapped]))
+        except Exception:  # noqa: BLE001 - the next pipeline may map what this one could not
+            continue
+        if q:
+            break
+    else:
+        return None
+    fields = {}
+    for name, det in rule.detection.detections.items():
+        for a, b in zip(leaf_items(det), leaf_items(mapped.detection.detections[name])):
+            if a.field and b.field and a.field != b.field:
+                fields[a.field] = b.field
+    return q[0], fields
+
+
+def correlation_events(rules, run, stamp):
+    """For each correlation in the import: enough events from one source to cross its threshold.
+
+    The events are the union of every matching branch of the base rule, so each column the ES|QL query names exists.
+    The group-by and counted fields come from the query itself. Returns (docs, {rule_id: title}).
+    """
+    by_id = {}
+    files = sorted(p for d in convert.SIGMA_DIRS for p in d.rglob("*.yml"))
+    for r in SigmaCollection.load_ruleset([str(p) for p in files]).rules:
+        if isinstance(r, SigmaCorrelationRule):
+            by_id[str(r.id)] = r
+    docs, expect = [], {}
+    for rule in rules:
+        corr = by_id.get(rule["rule_id"])
+        if corr is None or rule.get("type") != "esql":
+            continue
+        base = corr.rules[0].rule
+        query, fields = convert_rule(base)
+        event = {}
+        for _, expected, ev in splunk_tests.rule_events(base, ROOT / "tests" / "sigma" / "fixtures"):
+            if expected:
+                event.update(ev)
+        # Numbers stay numbers (Entra ID result codes are numeric in the Azure integration).
+        event = {k: int(v) if isinstance(v, str) and v.isdigit() else v for k, v in event.items()}
+        group = re.search(r"by timebucket, ([\w.@]+)", rule["query"]).group(1)
+        counted = re.search(r"count_distinct\(([\w.@]+)\)", rule["query"])
+        for i in range(corr.condition.count + 2):
+            doc = ecs_event(event, fields, base.logsource.category, f"{run}-corr-{rule['rule_id']}-{i}", stamp)
+            put(doc, group, "198.51.100.7" if group.endswith(".ip") else f"aad-{run}-group")
+            if counted:
+                put(doc, counted.group(1), f"aad-{run}-value-{i}")
+            docs.append(doc)
+        expect[rule["rule_id"]] = rule["name"]
+    return docs, expect
 
 
 def link(path):
@@ -189,8 +239,17 @@ def ecs_event(event, fields, category, case, stamp):
     if category in CATEGORY:
         doc["event"].update(category=CATEGORY[category][0], type=CATEGORY[category][1])
     for k, v in event.items():
-        doc[fields.get(k, k).removesuffix(".caseless")] = v
+        put(doc, fields.get(k, k).removesuffix(".caseless"), v)
     return doc
+
+
+def put(doc, key, value):
+    """Set a dotted field, inside an object the event already has (event, host, labels) so no field is written twice."""
+    head, _, rest = key.partition(".")
+    if rest and isinstance(doc.get(head), dict):
+        put(doc[head], rest, value)
+    else:
+        doc[key] = value
 
 
 def bulk(es, docs):
@@ -266,8 +325,27 @@ def main():
                   ctype=f"multipart/form-data; boundary={boundary}")
     for err in res.get("errors", []):
         fail(f"import: rule {err.get('rule_id')}: {err.get('error', {}).get('message')}")
-    rule_ids = [json.loads(line)["rule_id"] for line in data.decode().splitlines() if line.strip()]
+    imported = [json.loads(line) for line in data.decode().splitlines() if line.strip()]
+    rule_ids = [r["rule_id"] for r in imported]
     print(f"import: {res.get('rules_count')} rules, {res.get('success_count')} imported, {len(res.get('errors', []))} errors")
+
+    # Events for the correlations (ES|QL rules) and the indicator match rule, written before the rules run.
+    extra_docs, extra_expect = correlation_events(imported, run, stamp)
+    iocs = ROOT / "generated" / "elastic_ndjson" / "agentic-attack-indicators.ndjson"
+    tm = [r for r in imported if r.get("type") == "threat_match"]
+    if tm and iocs.exists():
+        res = es.call("POST", f"/{tm[0]['threat_index'][0]}/_bulk?refresh=true", raw=iocs.read_bytes(),
+                      ctype="application/x-ndjson")
+        if res.get("errors"):
+            fail(f"indicator bulk: {[it['create'].get('error') for it in res['items'] if 'error' in it['create']][:3]}")
+        docs_in = [json.loads(line) for line in iocs.read_text(encoding="utf-8").splitlines()[1::2]]
+        ip = next(d["threat.indicator.ip"] for d in docs_in if d.get("threat.indicator.type") == "ipv4-addr")
+        print(f"indicators: {len(docs_in)} loaded into {tm[0]['threat_index'][0]}, test event to {ip}")
+        extra_docs.append({"@timestamp": stamp, "event.ingested": stamp, "event.category": "network",
+                           "labels.aad_case": f"{run}-ioc", "source.ip": "10.20.30.40", "destination.ip": ip})
+        extra_expect[tm[0]["rule_id"]] = tm[0]["name"]
+    bulk(es, extra_docs)
+    print(f"{len(extra_docs)} events for {len(extra_expect)} correlation and indicator rules")
 
     # 3. Enable them, wait for every first run, and check the run and the alerts.
     ids = []
@@ -304,6 +382,7 @@ def main():
     fired = {b["key"]: b["doc_count"] for b in alerts.get("aggregations", {}).get("r", {}).get("buckets", [])}
     should = {str(r.id): r.title for r, _, _ in converted
               if any(p[4] for p in plan if p[0] is r) and r.title not in wrong}
+    should.update(extra_expect)
     for rid, title in sorted(should.items(), key=lambda x: x[1]):
         if rid not in fired:
             fail(f"{title}: no alert, though its test events match in Elasticsearch")

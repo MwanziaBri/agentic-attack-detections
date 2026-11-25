@@ -1,5 +1,11 @@
 # Changelog
 
+## Unreleased
+
+- One Elastic Security import for every framework (#25, from #27 by @shiwng). `tools/build_elastic.py` writes [`generated/elastic_ndjson/`](generated/elastic_ndjson): 74 rules, all disabled. Every Sigma rule is a query rule on ECS fields, the five Sigma correlations (password spray, AWS access-denied sweep, ARM validate sweep, remote tasklist fan-out; the DryRun burst keeps its hand-written rule) are ES|QL rules, the hand-written ARTEX rules are included, and an indicator match rule reads the medium and high confidence addresses, domains, URLs and hashes from `agentic-attack-indicators.ndjson`, loaded into `logs-ti_agentic_attacks-default`. Each rule keeps its Sigma severity and risk score and its ATT&CK techniques. Each release carries both files, and CI checks they are committed.
+- Sigma conversions for Elastic use the field names of Elastic's AWS CloudTrail and Azure integrations (`event.action`, `aws.cloudtrail.*`, `azure.signinlogs.*`, `azure.activitylogs.*`, `azure.auditlogs.operation_name`), and `host.name` for the Windows computer. `generated/elastic_lucene/` and `generated/elastic_esql/` were rebuilt.
+- The Elastic test (`tests/elastic/run_tests.py`, in CI and `lab/lab.sh test`) imports the file into Kibana, sends each correlation enough events to cross its threshold and an event to a listed address, and checks that every rule runs and that those rules raise an alert.
+
 ## 2.11.1, November 25, 2026
 
 Analytics rules deployed from the Microsoft Sentinel templates can now be enabled, and two console rules are added.
