@@ -1,5 +1,5 @@
 {
- "description": "168 rules from https://github.com/ThreatDefence/agentic-attack-detections, checked against ATT&CK 20.1. Score: the number of rules that name the technique.",
+ "description": "172 rules from https://github.com/ThreatDefence/agentic-attack-detections, checked against ATT&CK 20.1. Score: the number of rules that name the technique.",
  "domain": "enterprise-attack",
  "gradient": {
   "colors": [
@@ -106,9 +106,9 @@
    "techniqueID": "T1071"
   },
   {
-   "comment": "KQL hunt: ARTEX console and side-channel traffic in your outbound proxy logs; KQL hunt: An ARTEX console or a backdoored ARTEX image inside your network; Sigma: DNS Query for Reported ARTEX Infrastructure; Suricata: 3800040 TD ARTEX console page served; Suricata: 3800041 TD ARTEX renamed console page served (ScopeWeaver); Suricata: 3800042 TD ARTEX Basic auth realm; Suricata: 3800043 TD ARTEX renamed console page served (LUCK); Suricata: 3800061 TD VAPOR PANDA BLOODALCHEMY C2 domain in TLS SNI, ARTEX campaign (nginxmysql.com); Suricata: 3800072 TD VAPOR PANDA BLOODALCHEMY C2 domain in TLS SNI, ARTEX campaign (sqlserver-sqlite.com); Suricata: 3800073 TD VAPOR PANDA BLOODALCHEMY C2 domain in TLS SNI, ARTEX campaign (ddduuuppp.com); Suricata: 3800081 TD ARTEX renamed console page served (title ending); Suricata: 3800082 TD ARTEX renamed console page served (Chinese title ending); Suricata: 3800083 TD ARTEX renamed console page served (Korean title ending); YARA: ARTEX_Console_Web_Assets; Zeek notice: ARTEX::Console_Page",
+   "comment": "KQL hunt: ARTEX console and side-channel traffic in your outbound proxy logs; KQL hunt: An ARTEX console or a backdoored ARTEX image inside your network; Sigma: DNS Query for Reported ARTEX Infrastructure; Suricata: 3800040 TD ARTEX console page served; Suricata: 3800041 TD ARTEX renamed console page served (ScopeWeaver); Suricata: 3800042 TD ARTEX Basic auth realm; Suricata: 3800043 TD ARTEX renamed console page served (LUCK); Suricata: 3800061 TD VAPOR PANDA BLOODALCHEMY C2 domain in TLS SNI, ARTEX campaign (nginxmysql.com); Suricata: 3800072 TD VAPOR PANDA BLOODALCHEMY C2 domain in TLS SNI, ARTEX campaign (sqlserver-sqlite.com); Suricata: 3800073 TD VAPOR PANDA BLOODALCHEMY C2 domain in TLS SNI, ARTEX campaign (ddduuuppp.com); Suricata: 3800081 TD ARTEX renamed console page served (title ending); Suricata: 3800082 TD ARTEX renamed console page served (Chinese title ending); Suricata: 3800083 TD ARTEX renamed console page served (Korean title ending); Suricata: 3800084 TD ARTEX console auth proxy header X-Artex-Auth; Suricata: 3800085 TD ARTEX renamed console page served (Japanese title ending); Suricata: 3800086 TD ARTEX derivative Pojun console page served; YARA: ARTEX_Console_Web_Assets; Zeek notice: ARTEX::Console_Auth; Zeek notice: ARTEX::Console_Page",
    "enabled": true,
-   "score": 15,
+   "score": 19,
    "showSubtechniques": true,
    "techniqueID": "T1071.001"
   },

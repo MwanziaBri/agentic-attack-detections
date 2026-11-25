@@ -1,5 +1,5 @@
 {
- "description": "46 rules from https://github.com/ThreatDefence/agentic-attack-detections, checked against ATT&CK 20.1. Score: the number of rules that name the technique.",
+ "description": "48 rules from https://github.com/ThreatDefence/agentic-attack-detections, checked against ATT&CK 20.1. Score: the number of rules that name the technique.",
  "domain": "enterprise-attack",
  "gradient": {
   "colors": [
@@ -57,9 +57,9 @@
    "techniqueID": "T1071"
   },
   {
-   "comment": "KQL hunt: AI model API traffic from servers: an agentic attack tool running on your infrastructure; Sigma: AI Agent Client Calling a Chinese Model API or Model Gateway; Zeek notice: AgenticBehaviors::Model_API_From_Server",
+   "comment": "KQL hunt: AI model API traffic from servers: an agentic attack tool running on your infrastructure; Sigma: AI Agent Client Calling a Chinese Model API or Model Gateway; Suricata: 3801043 TD Basic auth realm naming an agentic attack framework; Zeek notice: AgenticBehaviors::Agent_Console_Realm; Zeek notice: AgenticBehaviors::Model_API_From_Server",
    "enabled": true,
-   "score": 3,
+   "score": 5,
    "showSubtechniques": true,
    "techniqueID": "T1071.001"
   },

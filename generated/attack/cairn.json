@@ -1,5 +1,5 @@
 {
- "description": "73 rules from https://github.com/ThreatDefence/agentic-attack-detections, checked against ATT&CK 20.1. Score: the number of rules that name the technique.",
+ "description": "74 rules from https://github.com/ThreatDefence/agentic-attack-detections, checked against ATT&CK 20.1. Score: the number of rules that name the technique.",
  "domain": "enterprise-attack",
  "gradient": {
   "colors": [
@@ -71,9 +71,9 @@
    "techniqueID": "T1071"
   },
   {
-   "comment": "KQL hunt: Cairn server, dispatcher and worker containers on a host you monitor; Suricata: 3801001 TD Cairn server OpenAPI description in response; Suricata: 3801002 TD Cairn server project list in response; Suricata: 3801003 TD Cairn dispatcher intent heartbeat; Suricata: 3801031 TD Cairn campaign skimmer or C2 domain in TLS SNI (medbooksource.com); Suricata: 3801110 TD Cairn campaign skimmer or C2 domain in TLS SNI (traffic-analyzer.net); Suricata: 3801111 TD Cairn campaign skimmer or C2 domain in TLS SNI (b8t.shop); Suricata: 3801112 TD Cairn campaign skimmer or C2 domain in TLS SNI (netlfjs.com); Suricata: 3801113 TD Cairn campaign skimmer or C2 domain in TLS SNI (x1opay.co); Suricata: 3801114 TD Cairn campaign skimmer or C2 domain in TLS SNI (static-js.com); Suricata: 3801115 TD Cairn campaign skimmer or C2 domain in TLS SNI (js-static.com); Suricata: 3801116 TD Cairn campaign skimmer or C2 domain in TLS SNI (jsnetlify.com); Suricata: 3801117 TD Cairn campaign skimmer or C2 domain in TLS SNI (netlifyjs.com); Suricata: 3801118 TD Cairn campaign skimmer or C2 domain in TLS SNI (newssjs.com)",
+   "comment": "KQL hunt: Cairn server, dispatcher and worker containers on a host you monitor; Suricata: 3801001 TD Cairn server OpenAPI description in response; Suricata: 3801002 TD Cairn server project list in response; Suricata: 3801003 TD Cairn dispatcher intent heartbeat; Suricata: 3801004 TD Cairn console auto-generated certificate; Suricata: 3801031 TD Cairn campaign skimmer or C2 domain in TLS SNI (medbooksource.com); Suricata: 3801110 TD Cairn campaign skimmer or C2 domain in TLS SNI (traffic-analyzer.net); Suricata: 3801111 TD Cairn campaign skimmer or C2 domain in TLS SNI (b8t.shop); Suricata: 3801112 TD Cairn campaign skimmer or C2 domain in TLS SNI (netlfjs.com); Suricata: 3801113 TD Cairn campaign skimmer or C2 domain in TLS SNI (x1opay.co); Suricata: 3801114 TD Cairn campaign skimmer or C2 domain in TLS SNI (static-js.com); Suricata: 3801115 TD Cairn campaign skimmer or C2 domain in TLS SNI (js-static.com); Suricata: 3801116 TD Cairn campaign skimmer or C2 domain in TLS SNI (jsnetlify.com); Suricata: 3801117 TD Cairn campaign skimmer or C2 domain in TLS SNI (netlifyjs.com); Suricata: 3801118 TD Cairn campaign skimmer or C2 domain in TLS SNI (newssjs.com)",
    "enabled": true,
-   "score": 14,
+   "score": 15,
    "showSubtechniques": true,
    "techniqueID": "T1071.001"
   },
